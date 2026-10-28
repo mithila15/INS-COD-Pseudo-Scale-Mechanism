@@ -39,3 +39,9 @@ FFP는 다른 scale 특징을 근사하는 근거에 가깝지만 원래 gradien
 [이번 검증 결과](../../../Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md)는 실제 Git 추적 대상이며 이 문서와 실험 README에서 연결한다. 원본 가중치를 매핑한 연산 동치, 합성 입력 전후 shape와 유한값, gradient 연결, 단일 encoder 호출, 공통 초기화, 데이터 split 및 strict checkpoint 검증을 수행했다. 이때 optimizer step은 0이다. 합성 inference profile은 학습·COD 성능 측정과 별도로 표시한다.
 
 실제 데이터셋 다운로드, pretrained weight 다운로드, 학습·재학습은 실행하지 않았다. 현재 특정 생성/fusion 조합을 최종 권장할 근거는 없다. 다음 단계는 사용자가 로컬 데이터·가중치 경로를 지정하여 manifest를 준비하고, 동일 조건의 학습을 시작하는 것이다. 실행 명령은 [실험 실행 안내](../../../Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md)에 있다.
+
+## README 실행 안내 정리
+
+사용자 요청에 따라 저장소·실험·환경의 대표 `README.md`를 영어로 정리하고 `README.ko.md` 한국어판과 언어 전환 링크를 추가했다. [대표 영어 안내](../../../README.md)와 [한국어 안내](../../../README.ko.md)는 환경 설치 → 기존 데이터·가중치 준비 → 계획 생성 → 학습 → validation·비용 → 테스트 평가 순서다. 전체 `cross` 474회를 기본 경로로 안내하고, 생성 비교42회와 활용 비교45회는 별도 선택지로 구분했다. 참고 논문11편, 원문 출처와 적용 범위는 양쪽 언어판에 보존했다.
+
+이번 변경은 문서 정리이며 모델·데이터 분할·학습·평가 코드는 변경하지 않았다. README 6개의 Bash 블록18개와 영문·한글 명령 일치를 검사했다. 임시 경로에서 세 phase의 계획만 생성해42/45/474회를 확인하고, 생성된 학습·평가 명령 각각561개를 실제 parser로 검사했다. 참고 논문 링크11개 보존과 문서 상대 링크190개도 확인했다. 실제 환경 설치·다운로드·학습은 실행하지 않았으며 이전 검증 산출물과 환경 lock은 그대로 보존한다.

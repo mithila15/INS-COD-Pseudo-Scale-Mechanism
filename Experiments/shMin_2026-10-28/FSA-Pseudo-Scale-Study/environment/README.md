@@ -1,23 +1,91 @@
-# 2026-10-28 · FSA Study Environment — 원본 환경과 신규 검증 프로필
+# 2026-10-28 · FSA Study Environment — Installation and Runtime Checks
 
-이 연구는 [원본 FSA requirements](../../../FSA-ZoomNeXt/requirements.txt)를 보존하고 별도 환경에서 동작한다. 원본 환경을 업그레이드하거나 다른 연구 환경에 패키지를 설치하지 않는다.
+**English** | [한국어](README.ko.md) · [Experiment guide](../../../../README.md)
 
-- Python **3.12.13**, PyTorch **2.11.0** (`2.11.0+cu130` runtime), torchvision **0.26.0**, timm **1.0.30**.
-- [직접 의존성](../requirements.txt), [검증 버전 constraints](constraints-verified.txt), [해시 포함 transitive lock](requirements.lock), [실제 설치·검증 기록](verification.json).
-- 이번 로컬 검증은 `/home/robin/shMin/INS_COD/.venv/fsa-study`에 lightweight 의존성을 설치하고, 기존 `/home/robin/shMin/GeneralGodhand/.venv/isaac`의 PyTorch 패키지를 `.pth`로 읽는 overlay를 사용했다. 원본 환경은 수정하지 않았다. 이 방식은 해당 로컬 경로가 있어야 하므로 다른 장비의 재현 설치 명령으로 사용하지 않는다. 다른 연구의 Isaac 패키지는 이 연구의 의존성이 아니다.
-- lock은 이번에 실제 사용한 관련 패키지 버전에 고정하고 배포 파일 해시를 추가했다. 완전히 새 환경에서 lock 전체를 설치하는 작업은 수행하지 않았다. CPU/GPU 런타임과 드라이버 호환은 해당 장비에서 확인한다.
+Create a dedicated environment before preparing or training experiments. The commands below target **Linux x86_64 and Python 3.12.13**, using the recorded package versions and distribution hashes. A complete fresh installation from this lock has **not yet been validated**; the existing verification used the local overlay described below.
 
-**English.** Archived dependencies remain unchanged. Verification used an isolated environment with a read-only overlay for existing PyTorch binaries; it did not modify the shared environment. The portable lock pins the relevant installed package versions and distribution hashes. A fresh full lock installation has not been tested.
+## 1. Create a new environment
 
-새 장비의 설치 예시다. 필요한 Python 3.12.13을 먼저 준비한다. 패키지 다운로드를 수행하며 데이터셋이나 모델 가중치를 다운로드하지 않는다.
+Install `uv` using its [official installation guide](https://docs.astral.sh/uv/getting-started/installation/) if it is unavailable. The setup commands use uv's [version-specific Python installation](https://docs.astral.sh/uv/guides/install-python/); their flags were checked with local uv **0.12.11** on 2026-10-28.
+
+Use the same terminal for all blocks. Change `REPO` to the absolute checkout path on another machine. `PY` is the interpreter to use in the experiment guide as well. This block downloads Python and packages when executed; it does not download datasets or model weights or start training. An existing environment is preserved.
 
 ```bash
 REPO=/home/robin/shMin/INS_COD
 STUDY="$REPO/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
-python3.12 -m venv "$REPO/.venv/fsa-study-clean"
 PY="$REPO/.venv/fsa-study-clean/bin/python"
-"$PY" -m pip install --require-hashes -r "$STUDY/environment/requirements.lock"
+
+if [ -e "$REPO/.venv/fsa-study-clean" ]; then
+  printf '%s\n' 'Environment already exists; use it after checks, or choose a new environment path.'
+else
+  uv python install --no-bin 3.12.13 &&
+  uv venv --directory "$STUDY" --no-project --managed-python --python 3.12.13 \
+    "$REPO/.venv/fsa-study-clean" &&
+  uv pip sync --directory "$STUDY" --python "$PY" --require-hashes \
+    "$STUDY/environment/requirements.lock"
+fi
+```
+
+The lock includes CUDA-related packages. Selecting CPU execution does not turn it into a lightweight CPU-only installation. If a different platform or runtime requires a different dependency set, keep it as a separate environment and record the changed versions instead of modifying this study's historical lock. A partial installation is not a successful setup: if installation fails, retain the failure information and resolve it before the checks below.
+
+## 2. Check imports and device availability
+
+These commands only inspect the environment and parse CLI options. They do not construct a training job or update parameters.
+
+```bash
+"$PY" - <<'PY'
+import json
+import platform
+import torch
+import torchvision
+import timm
+import einops
+import numpy
+import PIL
+import py_sod_metrics
+
+print(json.dumps({
+    "python": platform.python_version(),
+    "torch": str(torch.__version__),
+    "torchvision": str(torchvision.__version__),
+    "timm": timm.__version__,
+    "cuda_runtime": torch.version.cuda,
+    "cuda_available": torch.cuda.is_available(),
+    "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+}, indent=2))
+PY
+
+"$PY" "$STUDY/run_study.py" prepare --help
+"$PY" "$STUDY/run_study.py" train --help
+"$PY" "$STUDY/plan_study.py" --help
+```
+
+The verified runtime was **torch 2.11.0+cu130, torchvision 0.26.0+cu130, timm 1.0.30, Python 3.12.13**. CPU inference and one CUDA inference configuration were checked. The local GPU is **NVIDIA GeForce RTX 5080**; a read-only device check on 2026-10-28 reported driver **595.91.07**. This is the observed host, not a claimed minimum driver requirement. Confirm `cuda_available` on the target machine and use `--device cpu` when running on CPU. The recorded GPU check did not validate GPU backward or complete training.
+
+## 3. Run checks without training
+
+```bash
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 "$PY" -m pytest -q "$STUDY/tests"
 ```
 
-원본 PVT 구현은 timm의 옛 import 경로 및 torch의 옛 SDPA context manager에 대한 deprecation warning을 발생시키지만 검증된 버전에서 실행된다. 원본 소스 무결성을 유지하기 위해 해당 파일을 수정하지 않았다.
+The tests use synthetic tensors and temporary image/mask fixtures. Some checks call backward to inspect gradient connectivity; they perform **zero optimizer steps** and do not train or download data. The [historical verification](../results/verification-2026-10-28/README.md) passed **281 tests and 67 subtests** in the existing overlay environment. Those results do not certify a fresh lock installation, actual pretrained weights, full real-data loading, or convergence. Record new results separately when checking a newly installed environment.
+
+## 4. Supply local inputs and start experiments
+
+Continue with the [experiment guide](../../../../README.md) using this `PY` value. Supply an existing local **PVTv2-B2** checkpoint to `--backbone-weights`. The loader accepts a flat state dictionary or `{"state_dict": ...}`, removes only `head.weight` and `head.bias`, then loads the encoder with `strict=True`. It does not silently accept an unrelated or partially matching backbone. The actual pretrained file has not been verified in this workspace.
+
+Datasets and weights must already be present before their respective stages. `--random-init` is available only for an intentional random-initialization comparison, with the same initialization condition across all variants. Training begins when the user executes `train` or a generated `train.sh`; environment setup, `--help`, and these tests do not start it.
+
+## Provenance and existing local environment
+
+| Record | Purpose |
+| --- | --- |
+| [Archived FSA requirements](../../../FSA-ZoomNeXt/requirements.txt) | Original experiment dependencies, preserved unchanged |
+| [Study requirements](../requirements.txt) | Direct dependencies of the new study |
+| [Verified constraints](constraints-verified.txt) | Versions used for local verification |
+| [Hashed lock](requirements.lock) | Pinned transitive dependencies and allowed distribution hashes |
+| [Verification environment](verification.json) | Original installation method and package inventory |
+
+The existing `/home/robin/shMin/INS_COD/.venv/fsa-study` is a **local verification overlay**: its lightweight dependencies are isolated, but a `.pth` file reads PyTorch packages from `/home/robin/shMin/GeneralGodhand/.venv/isaac`. The source environment was not modified. This absolute-path dependency makes the overlay unsuitable as a portable installation recipe, and Isaac packages are not study dependencies. Do not upgrade or sync that shared environment for this experiment; use the new independent environment above.
+
+The archived backbone emits deprecation warnings for older timm import paths and a PyTorch SDPA context manager. It ran with the recorded versions; the original source was retained to preserve its provenance.
