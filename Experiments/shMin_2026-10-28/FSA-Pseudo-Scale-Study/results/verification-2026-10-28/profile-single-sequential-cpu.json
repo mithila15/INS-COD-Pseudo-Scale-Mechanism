@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "config": {
+      "generator": "legacy",
+      "utilizer": "mean",
+      "channels": 48,
+      "seed": 3407,
+      "baseline": true,
+      "legacy_reference": false,
+      "generator_options": {},
+      "utilizer_options": {}
+    },
+    "architecture": "controlled_common_decoder",
+    "generator": null,
+    "utilizer": null
+  },
+  "parameters": 25318163,
+  "encoder_parameters": 24849856,
+  "latency_ms": {
+    "median": 228.72567899685237,
+    "mean": 228.52537689905148,
+    "stdev": 1.7605516366376248,
+    "samples": [
+      231.98352599865757,
+      226.22187699744245,
+      229.08152799936943,
+      229.3190769996727,
+      227.58011999394512,
+      230.08869100158336,
+      228.5445859961328,
+      226.73154400399653,
+      228.90677199757192,
+      226.79604800214292
+    ]
+  },
+  "images_per_second": 4.375881635420029,
+  "cuda_memory": null,
+  "diagnostics": [],
+  "protocol": {
+    "generator": "legacy",
+    "utilizer": "mean",
+    "baseline": true,
+    "legacy_reference": false,
+    "checkpoint": null,
+    "image": null,
+    "size": 384,
+    "batch_size": 1,
+    "channels": 48,
+    "seed": 3407,
+    "device": "cpu",
+    "threads": 2,
+    "warmup": 3,
+    "repeats": 10,
+    "output": "/home/robin/shMin/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-single-sequential-cpu.json",
+    "dtype": "float32",
+    "inference_mode": true,
+    "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
+    "input": "synthetic_uniform_RGB",
+    "weights": "random_initialization",
+    "interpretation": "Execution diagnostics only; random input/weights cannot establish COD quality or learned branch utility"
+  },
+  "checkpoint_sha256": null,
+  "image_sha256": null,
+  "environment": {
+    "torch": "2.11.0+cu130",
+    "python": "3.12.13",
+    "device": "x86_64"
+  }
+}

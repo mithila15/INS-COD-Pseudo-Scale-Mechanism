@@ -1,0 +1,15 @@
+{
+  "source_commit": "d3a482289f66921487a33c9965e6c37cfdab3cb3",
+  "counts": {
+    "kept_in_cod": 1212,
+    "local_document_links": 142,
+    "moved_to_ins_cod": 1077,
+    "pinned_source_entries": 2289,
+    "python_syntax": 866,
+    "shell_syntax": 127
+  },
+  "errors": [],
+  "model_initialization": "not_part_of_archive_integrity_check",
+  "training": "not_run",
+  "dataset_download": "not_run"
+}

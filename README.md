@@ -6,6 +6,7 @@ main 실험인 COD 루트의 BRG/ZoomNeXt 프로젝트는 COD에 유지한다. `
 
 | 구분 | 대표 위치 | 내용 | 이관 원본 파일 수 |
 | --- | --- | --- | ---: |
+| 신규 비교 실험 | [Pseudo-Scale Study](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/) | 생성12 × 활용13 + 2개 대조군, 논문 근거·공통 학습 및 평가 | 신규 작성 |
 | 실험 | [FSA-ZoomNeXt](Experiments/FSA-ZoomNeXt/) | Feature-Space Scale Approximation 모델, 학습·평가·연산량 도구 | 56 |
 | 보존 실험 | [BRG-ZoomNeXt-Lite-EvalFix](Experiments/BRG-ZoomNeXt-Lite-EvalFix/) | COD 루트 main의 과거 복사본 | 48 |
 | 실험 | [AHDPS-OWOBJ-COD](Experiments/AHDPS-OWOBJ-COD/) | AHDPS와 objectness 관련 모델·설정 | 45 |
@@ -15,6 +16,7 @@ main 실험인 COD 루트의 BRG/ZoomNeXt 프로젝트는 COD에 유지한다. `
 합계 1,077개는 원본 코드·설정·의존성 기록·실행 스크립트·동반 라이선스 파일 수이며, 새로 작성한 문서는 제외한 수치다. 원본 COD가 이미 추적하던 범위를 이관했으므로 데이터셋, 학습 가중치, 데이터 분할 산출물, 실험 결과·로그, 발표자료, ZIP은 포함되지 않는다. 데이터 로더의 Python 소스는 코드이므로 포함한다.
 
 - [실험 목록](Experiments/README.md): FSA, BRG 보존본, AHDPS 위치
+- [연구 변경 기록](Progress/README.md): pseudo-scale 논리 분석과 실험 결정
 - [비교 도구 목록](Benchmarks/README.md): 비교 스크립트와 참조 소스
 - [실행 진입점과 준비 조건](docs/EXPERIMENTS.md): 모델·설정·의존성 위치
 - [학습·비교 실행 명령](docs/RUNNING.md): 절대 경로, 설정 사본, 결과 저장 위치

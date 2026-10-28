@@ -4,6 +4,7 @@
 
 | 연구 계열 | 위치 | 시작 파일 | 설정과 의존성 |
 | --- | --- | --- | --- |
+| Pseudo-scale 비교 | [2026-10-28 실험](shMin_2026-10-28/README.md) | [run_study.py](shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py), [plan_study.py](shMin_2026-10-28/FSA-Pseudo-Scale-Study/plan_study.py) | [생성·활용 조합과 참고 논문](shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md) |
 | FSA-ZoomNeXt | [FSA-ZoomNeXt](FSA-ZoomNeXt/) | [main_for_fsa.py](FSA-ZoomNeXt/main_for_fsa.py) | [configs](FSA-ZoomNeXt/configs/), [requirements.txt](FSA-ZoomNeXt/requirements.txt) |
 | BRG 과거 복사본 | [BRG-ZoomNeXt-Lite-EvalFix](BRG-ZoomNeXt-Lite-EvalFix/) | [main_for_brg_lite.py](BRG-ZoomNeXt-Lite-EvalFix/main_for_brg_lite.py) | [configs](BRG-ZoomNeXt-Lite-EvalFix/configs/), [requirements_brg_lite.txt](BRG-ZoomNeXt-Lite-EvalFix/requirements_brg_lite.txt) |
 | AHDPS / objectness | [AHDPS-OWOBJ-COD](AHDPS-OWOBJ-COD/) | [tools/train.py](AHDPS-OWOBJ-COD/tools/train.py), [tools/eval.py](AHDPS-OWOBJ-COD/tools/eval.py) | [configs](AHDPS-OWOBJ-COD/configs/), [requirements.txt](AHDPS-OWOBJ-COD/requirements.txt) |
