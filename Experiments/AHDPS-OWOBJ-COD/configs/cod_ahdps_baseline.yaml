@@ -1,0 +1,123 @@
+project:
+  name: ahdps_cod_baseline
+  seed: 3407
+paths:
+  datasets:
+    splits_root: ${PROJECT_ROOT}/splits
+    cod10k:
+      train_image_root: ${COD_DATASETS_ROOT}/COD10K-v3/Train/Image
+      train_mask_root: ${COD_DATASETS_ROOT}/COD10K-v3/Train/GT_Object
+      test_image_root: ${COD_DATASETS_ROOT}/COD10K-v3/Test/Image
+      test_mask_root: ${COD_DATASETS_ROOT}/COD10K-v3/Test/GT_Object
+    camo:
+      train_image_root: ${COD_DATASETS_ROOT}/CAMO-V.1.0-CVIU2019/Images/Train
+      test_image_root: ${COD_DATASETS_ROOT}/CAMO-V.1.0-CVIU2019/Images/Test
+      mask_root: ${COD_DATASETS_ROOT}/CAMO-V.1.0-CVIU2019/GT
+    chameleon:
+      image_root: ${COD_DATASETS_ROOT}/CHAMELEON/Imgs
+      mask_root: ${COD_DATASETS_ROOT}/CHAMELEON/GT
+    nc4k:
+      image_root: ${COD_DATASETS_ROOT}/NC4K/Imgs
+      mask_root: ${COD_DATASETS_ROOT}/NC4K/GT
+  results:
+    root: ${PROJECT_ROOT}/results
+    checkpoints: ${PROJECT_ROOT}/results/checkpoints
+    logs: ${PROJECT_ROOT}/results/logs
+    metrics: ${PROJECT_ROOT}/results/metrics
+    predictions: ${PROJECT_ROOT}/results/predictions
+    visualizations: ${PROJECT_ROOT}/results/visualizations
+    comparisons: ${PROJECT_ROOT}/results/comparisons
+    debug: ${PROJECT_ROOT}/results/debug
+data:
+  train_split: train_main
+  dev_split: train_dev
+  eval_splits:
+  - cod10k_test
+  - camo_test
+  - chameleon_test
+  - nc4k_test
+  dev_ratio: 0.1
+  image_size: 384
+  num_workers: 4
+  pin_memory: true
+  train_batch_size: 8
+  eval_batch_size: 8
+  mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  std:
+  - 0.229
+  - 0.224
+  - 0.225
+  hflip_prob: 0.5
+model:
+  name: AHDPSCODNet
+  in_channels: 3
+  backbone:
+    widths:
+    - 64
+    - 128
+    - 256
+    - 512
+  neck:
+    out_channels: 128
+  decoder:
+    channels: 128
+    dropout: 0.1
+  hdps:
+    core_kernel: 7
+    halo_kernel: 11
+    halo_target: 0.2
+    boundary_weight: 2.0
+    aux_weights:
+      p3: 0.7
+      p4: 0.5
+      p5: 0.25
+    coarse_weight: 0.35
+    prior_weight: 0.15
+    final_weight: 1.0
+  objectness:
+    enabled: false
+    warmup_epochs: 3
+    hidden_channels: 128
+    embed_channels: 64
+    grid_size:
+    - 8
+    - 8
+    temperature: 0.75
+    ema_momentum: 0.95
+    eps: 0.0001
+    update_min_points: 4
+    pos_body_thresh: 0.55
+    pos_core_thresh: 0.1
+    neg_body_thresh: 0.02
+    neg_halo_thresh: 0.05
+    amb_halo_thresh: 0.1
+    amb_boundary_thresh: 0.1
+    amb_guidance_mix: 0.5
+    energy_margin_pos_amb: 0.05
+    energy_margin_amb_neg: 0.05
+    loss_weights:
+      bce: 0.2
+      proto: 0.1
+      kl: 0.05
+      energy: 0.05
+      consistency: 0.1
+train:
+  epochs: 50
+  device: cuda
+  amp: true
+  cpu_num_threads: 1
+  clip_grad_norm: 1.0
+  optimizer:
+    name: adamw
+    lr: 0.0002
+    weight_decay: 0.0001
+  scheduler:
+    name: cosine
+    min_lr: 1.0e-06
+    warmup_epochs: 3
+  save_every: 1
+  log_every: 20
+  selection_metric: Smeasure

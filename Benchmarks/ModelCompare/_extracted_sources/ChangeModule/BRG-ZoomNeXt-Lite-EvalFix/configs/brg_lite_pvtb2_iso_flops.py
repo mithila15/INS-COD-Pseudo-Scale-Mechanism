@@ -1,0 +1,91 @@
+# BRG-ZoomNeXt-Lite iso-FLOPs training config.
+# Goal: train BRG-Lite with a larger single-scale input so its measured FLOPs
+# are close to the original 3-scale PvtV2B2_ZoomNeXt at 384.
+# Run tools/find_iso_flops.py first and adjust __IMAGE_SIZE if needed.
+# Dataset paths are in configs/dataset_cod_runpod.yaml.
+
+has_test = True
+deterministic = True
+use_custom_worker_init = True
+log_interval = 20
+base_seed = 112358
+
+# Evaluation/checkpoint policy.
+# COD papers commonly report S_alpha, E-measure, weighted F_beta, and MAE.
+# The trainer monitors COD10K weighted F by default and stores state_best.pth.
+eval_interval = 5
+save_best = True
+monitor = "cod10k_te.wF"
+monitor_mode = "max"
+save_epoch_interval = 0
+
+__BATCHSIZE = 2
+__NUM_EPOCHS = 150
+__NUM_TR_SAMPLES = 3040 + 1000
+__ITER_PER_EPOCH = __NUM_TR_SAMPLES // __BATCHSIZE
+__NUM_ITERS = __NUM_EPOCHS * __ITER_PER_EPOCH
+
+# Model kwargs passed to PvtV2B2_BRG_ZoomNeXt_Lite.
+model = dict(
+    mid_dim=48,
+    hmu_groups=2,
+    use_rfrm=True,
+    use_gmffm=True,
+    ual_weight=1.0,
+    edge_weight=1.0,
+    region_weight=0.5,
+    deep_weight=0.25,
+    kd_weight=0.0,
+)
+
+train = dict(
+    batch_size=__BATCHSIZE,
+    num_workers=2,
+    use_amp=False,  # disabled by default for Blackwell/sm120 stability; set USE_AMP=1 to enable
+    num_epochs=__NUM_EPOCHS,
+    epoch_based=True,
+    num_iters=None,
+    lr=0.0001,
+    grad_acc_step=2,
+    optimizer=dict(
+        mode="adam",
+        set_to_none=False,
+        group_mode="finetune",
+        cfg=dict(
+            weight_decay=0,
+            diff_factor=0.1,
+        ),
+    ),
+    sche_usebatch=True,
+    scheduler=dict(
+        warmup=dict(
+            num_iters=0,
+            initial_coef=0.01,
+            mode="linear",
+        ),
+        mode="step",
+        cfg=dict(
+            milestones=int(__NUM_ITERS * 2 / 3),
+            gamma=0.1,
+        ),
+    ),
+    bn=dict(
+        freeze_status=True,
+        freeze_affine=True,
+        freeze_encoder=False,
+    ),
+    data=dict(
+        shape=dict(h=640, w=640),
+        names=["cod10k_tr", "camo_tr"],
+    ),
+)
+
+test = dict(
+    batch_size=__BATCHSIZE,
+    num_workers=2,
+    clip_range=None,
+    data=dict(
+        shape=dict(h=640, w=640),
+        names=["chameleon", "camo_te", "cod10k_te", "nc4k"],
+    ),
+)

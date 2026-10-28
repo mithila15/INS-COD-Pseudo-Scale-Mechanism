@@ -1,0 +1,24 @@
+{
+  "source_commit": "d3a482289f66921487a33c9965e6c37cfdab3cb3",
+  "counts": {
+    "kept_in_cod": 1212,
+    "local_document_links": 80,
+    "moved_to_ins_cod": 1077,
+    "pinned_source_entries": 2289,
+    "python_syntax": 866,
+    "shell_syntax": 127
+  },
+  "errors": [],
+  "model_initialization": "not_run_missing_research_environment",
+  "training": "not_run",
+  "dataset_download": "not_run",
+  "additional_checks": {
+    "temporary_staged_checkout": "passed",
+    "relocated_fsa_config_read": "passed",
+    "relocated_ahdps_config_paths": "passed",
+    "brg_ahdps_run_config_generation_in_temporary_directory": "passed",
+    "document_bash_blocks": 9,
+    "document_bash_syntax": "passed",
+    "original_crlf_and_whitespace": "preserved_without_normalization"
+  }
+}

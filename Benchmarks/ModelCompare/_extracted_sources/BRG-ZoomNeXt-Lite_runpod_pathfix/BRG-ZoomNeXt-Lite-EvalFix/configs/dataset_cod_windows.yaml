@@ -1,0 +1,57 @@
+# Paths provided by the user. Forward slashes work on Windows Python and avoid escaping issues.
+# File extensions are auto-detected by main_for_brg_lite.py.
+
+cod10k_tr:
+  root: E:/COD/datasets/COD10K-v3/Train
+  image:
+    path: Image
+  mask:
+    path: GT_Object
+  edge:
+    path: GT_Edge
+  instance:
+    path: GT_Instance
+
+cod10k_te:
+  root: E:/COD/datasets/COD10K-v3/Test
+  image:
+    path: Image
+  mask:
+    path: GT_Object
+  edge:
+    path: GT_Edge
+  instance:
+    path: GT_Instance
+
+camo_tr:
+  root: E:/COD/datasets/CAMO-V.1.0-CVIU2019
+  image:
+    path: Images/Train
+  mask:
+    path: GT
+  # CAMO edge path is not provided. The trainer generates edges from masks.
+
+camo_te:
+  root: E:/COD/datasets/CAMO-V.1.0-CVIU2019
+  image:
+    path: Images/Test
+  mask:
+    path: GT
+
+chameleon:
+  root: E:/COD/datasets/CHAMELEON
+  image:
+    path: Imgs
+  mask:
+    path: GT
+  edge:
+    path: Edge
+
+nc4k:
+  root: E:/COD/datasets/NC4K
+  image:
+    path: Imgs
+  mask:
+    path: GT
+  instance:
+    path: Instance

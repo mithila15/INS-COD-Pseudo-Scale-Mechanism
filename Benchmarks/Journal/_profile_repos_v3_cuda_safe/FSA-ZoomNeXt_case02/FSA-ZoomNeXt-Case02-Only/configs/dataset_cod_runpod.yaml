@@ -1,0 +1,76 @@
+# RunPod/Linux dataset paths.
+# Default root is /workspace/COD/datasets.
+# Override without editing this file:
+#   export DATASETS_ROOT=/workspace/datasets
+#   bash scripts/train_fsa_pvtb2.sh
+#
+# Expected RunPod layout:
+#   ${DATASETS_ROOT}/COD10K-v3/Train/Image
+#   ${DATASETS_ROOT}/COD10K-v3/Train/GT_Object
+#   ${DATASETS_ROOT}/COD10K-v3/Train/GT_Edge
+#   ${DATASETS_ROOT}/COD10K-v3/Test/Image
+#   ${DATASETS_ROOT}/COD10K-v3/Test/GT_Object
+#   ${DATASETS_ROOT}/COD10K-v3/Test/GT_Edge
+#   ${DATASETS_ROOT}/CAMO-V.1.0-CVIU2019/Images/Train
+#   ${DATASETS_ROOT}/CAMO-V.1.0-CVIU2019/Images/Test
+#   ${DATASETS_ROOT}/CAMO-V.1.0-CVIU2019/GT
+#   ${DATASETS_ROOT}/CHAMELEON/Imgs
+#   ${DATASETS_ROOT}/CHAMELEON/GT
+#   ${DATASETS_ROOT}/CHAMELEON/Edge
+#   ${DATASETS_ROOT}/NC4K/Imgs
+#   ${DATASETS_ROOT}/NC4K/GT
+
+cod10k_tr:
+  root: '${DATASETS_ROOT}/COD10K-v3/Train'
+  image:
+    path: Image
+  mask:
+    path: GT_Object
+  edge:
+    path: GT_Edge
+  instance:
+    path: GT_Instance
+
+cod10k_te:
+  root: '${DATASETS_ROOT}/COD10K-v3/Test'
+  image:
+    path: Image
+  mask:
+    path: GT_Object
+  edge:
+    path: GT_Edge
+  instance:
+    path: GT_Instance
+
+camo_tr:
+  root: '${DATASETS_ROOT}/CAMO-V.1.0-CVIU2019'
+  image:
+    path: Images/Train
+  mask:
+    path: GT
+  # CAMO edge path is not provided. The trainer generates edges from masks.
+
+camo_te:
+  root: '${DATASETS_ROOT}/CAMO-V.1.0-CVIU2019'
+  image:
+    path: Images/Test
+  mask:
+    path: GT
+
+chameleon:
+  root: '${DATASETS_ROOT}/CHAMELEON'
+  image:
+    path: Imgs
+  mask:
+    path: GT
+  edge:
+    path: Edge
+
+nc4k:
+  root: '${DATASETS_ROOT}/NC4K'
+  image:
+    path: Imgs
+  mask:
+    path: GT
+  instance:
+    path: Instance
