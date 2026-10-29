@@ -1,4 +1,4 @@
-# 2026-10-28 · INS_COD — Pseudo-scale 비교 실험 실행 안내
+# 2026-10-29 · INS_COD — Pseudo-scale 비교 실험 실행 안내
 
 [English](README.md) | **한국어**
 
@@ -92,54 +92,63 @@ RUNS="$RUN/runs/$PHASE"
   --output "$PLAN" --results "$RUNS"
 ```
 
-이 단계는 `plan.json`, `train.sh`, `evaluate.sh`, `profile.sh`를 생성하며 **학습을 시작하지 않는다.** 비교군의 크기, 채널 수, epochs, batch size, seeds, manifest와 backbone 초기화 조건을 고정한다. 기본 Adam lr 1e-4, encoder lr ×0.1, 첫 patch embedding 고정, 공통 loss를 사용한다. [전체 공통 조건](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.ko.md).
+이 단계는 `plan.json`, `train.sh`, `evaluate.sh`, `profile.sh`, `run_all.sh`를 생성하며 **학습을 시작하지 않는다.** 비교군의 크기, 채널 수, epochs, batch size, seeds, manifest와 backbone 초기화 조건을 고정한다. 기본 Adam lr 1e-4, encoder lr ×0.1, 첫 patch embedding 고정, 공통 loss를 사용한다. [전체 공통 조건](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.ko.md).
 
-## 4. 학습 시작
+## 4. 학습·평가·리더보드 자동 실행
 
-다음 줄을 실행하면 계획된 run을 순차 학습한다. 각 run의 `best.pth`는 **validation MAE만으로 선택**하고 `last.pth`와 설정·이력을 저장한다. 테스트 평가는 따로 실행한다.
+다음 명령은 각 run의 **학습 → 테스트 평가 → 추론 비용 측정**을 순차 실행하고, 단계가 끝날 때마다 리더보드를 갱신한다. `best.pth`는 **validation MAE만으로 선택**한다. 전체 비교군은 실행 전에 plan으로 확정하며, 테스트 순위는 보고용이고 체크포인트 선택에는 쓰지 않는다.
 
 ```bash
-bash "$PLAN/train.sh"
+bash "$PLAN/run_all.sh"
 ```
 
-기존 출력은 덮어쓰지 않고 중단한다. 실패하면 shell이 멈추며 자동 resume는 없다. 중간 결과를 보존하고 재시작하는 run에는 새 출력 경로를 사용한다. 전체 script를 처음부터 다시 돌리기보다 `plan.json`에서 아직 실행하지 않은 명령을 선택한다.
+브라우저로 **`$PLAN/leaderboard/leaderboard.html`**을 열면 된다. 전체 선택 순위는 validation MAE 기준이고, 테스트 표는 데이터셋별로 분리한다(기본 S-measure 순위). 비용 표는 같은 장비·조건끼리 비교한다. seed 평균·표본 표준편차·시행 수·완료 상태·비교 그룹을 표시하며, 프로토콜이나 완료된 seed 집합이 다르면 별도 그룹으로 둔다. HTML 정렬·검색을 지원하고 CSV·JSON·Markdown도 저장한다.
+
+학습만 하고 validation 리더보드를 자동 갱신하려면 대신 `bash "$PLAN/train.sh"`를 실행한다. 이후 `run_all.sh`는 조건이 일치하는 완료 단계를 건너뛴다. 중단된 학습의 optimizer resume는 지원하지 않는다. 부분 결과를 보존하고 새 run 경로·plan을 사용한다. 체크포인트·예측·프로파일 원본은 덮어쓰지 않으며, 리더보드 파생 파일만 갱신한다.
 
 ## 5. Validation 결과와 추론 비용 확인
 
-학습 후 각 run의 best 체크포인트를 profiling하고 validation 지표와 비용을 집계한다.
+필요하면 다음 명령으로 profiling을 마치고 별도 집계 스냅샷을 남긴다.
 
 ```bash
 bash "$PLAN/profile.sh"
 "$PY" "$STUDY/summarize_study.py" \
-  --results "$RUNS" --output "$RUN/summary/validation-$PHASE"
+  --results "$RUNS" --plan "$PLAN/plan.json" \
+  --output "$RUN/summary/validation-$PHASE"
 ```
 
-낮은 validation MAE를 기준으로 품질을 비교하고 같은 장비·입력 조건에서 파라미터 수, median latency, 메모리도 확인한다. Profiling은 합성 RGB, batch 1, FP32, 모든 예측 head의 추론을 측정한다. 데이터 로딩·전송·학습 메모리·FLOPs는 포함하지 않으며 정확도 검사도 아니다. seed 간 평균·표본 표준편차를 함께 보고 작은 차이를 곧바로 통계적 유의성으로 해석하지 않는다.
+파라미터 수·latency·throughput·CUDA 최대 메모리와 **MACs·FLOPs**, 별도로 표시한 비행렬 연산 추정량·연산 커버리지를 기록한다. 기본 규약은 **합성곱·행렬 multiply-accumulate 1회 = 2 FLOPs**이다. 보간·샘플링·비선형 연산은 명시한 근사 규칙으로 계산하며 하드웨어 명령어 수가 아니다. 미지원 연산은 목록에 남긴다. 합성 RGB, batch 1, FP32, 모든 head를 포함하며 데이터 로딩·전송·학습 메모리는 제외한다. [지표 정의와 한계](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.ko.md).
 
-## 6. 비교 조건을 확정한 뒤 테스트 평가
+## 6. 테스트 지표와 논문 표 확인
 
-Validation으로 비교 구성과 판단 기준을 정한 뒤 실행한다. 아래는 **선택한 계획의 모든 run**을 테스트하고 집계하는 명령이며 테스트 점수로 모델을 선택하지 않는다.
+학습만 따로 실행했다면 아래 명령으로 테스트 평가를 완료하고 별도 보고서를 저장한다. 이미 완료된 단계는 동일성 검사 후 건너뛴다.
 
 ```bash
 bash "$PLAN/evaluate.sh"
 "$PY" "$STUDY/summarize_study.py" \
-  --results "$RUNS" --output "$RUN/summary/test-$PHASE"
+  --results "$RUNS" --plan "$PLAN/plan.json" \
+  --test-metric S --output "$RUN/summary/test-$PHASE"
 ```
 
-데이터셋별 **S-measure, weighted F-measure, E-measure는 높을수록**, **MAE는 낮을수록** 좋다. 추론 비용을 함께 기록한다. 없는 데이터셋의 점수는 만들지 않는다. 활용기를 고정한 생성 비교, 생성기를 고정한 활용 비교, 전체 조합의 상호작용을 차례로 읽는다. `single` 기준 모델을 포함하고 `legacy_full`은 전체 구조 참고군으로 해석한다. 테스트 점수를 보면서 선택된 방법을 반복 수정하지 않는다.
+데이터셋별 **21개 수치**를 출력한다. S·weighted F·MAE, E와 일반 Fβ 각각 adaptive/mean/max, 고정 임계값 IoU·Dice/F1·precision·recall·specificity·BER·FPR·FNR·accuracy·balanced accuracy·Boundary IoU이다. Dice와 F1은 같은 값이므로 별개의 근거로 세지 않는다. 임계값 평균·최댓값은 데이터셋 평균 곡선에서 계산한다. **PR/Fβ/E 곡선 CSV+SVG+PNG, 이미지별 점수, 원본 크기 확률 PNG**도 저장한다. 저장 공간을 줄이려면 직접 평가 명령에 `--no-save-predictions`를 지정한다. 수치·곡선은 계속 저장한다.
 
-집계는 **phase별 root 하나씩** 수행한다. 서로 다른 phase의 동일 seed 대조군을 합쳐 독립 시행 수로 세면 안 된다. 결과 저장 구조는 다음과 같다.
+`--test-metric`에 `wF`, `Fbeta_max`, `MAE`, `BoundaryIoU_0_5` 등을 주면 해당 지표로 테스트 표를 정렬한다. 높음/낮음 방향을 함께 기록하고, 없는 데이터나 점수는 채워 넣지 않는다. 순위 자체는 통계적 유의성 검정이 아니다. 기존 체크포인트를 재평가할 때는 **새 폴더** `test-v2` 등에 저장하고 집계에 `--evaluation-subdir test-v2`를 지정한다. 기존 profile도 보존하려면 새 `profile-v2.json` 경로와 planner/집계의 `--profile-name profile-v2.json`을 사용한다. 기존·확장 지표 프로토콜은 별도로 묶는다.
+
+**phase root 하나씩** 집계한다. 활용기 고정 생성 비교와 생성기 고정 활용 비교를 구분하고 `single`, 전체 구조 참고군 `legacy_full`을 포함한다. 동일 seed·데이터 분할·초기화·측정 조건을 유지한다.
 
 ```text
 results/<run-id>/
   data/manifest.json
-  plans/<phase>/{plan.json,train.sh,evaluate.sh,profile.sh}
+  plans/<phase>/{plan.json,train.sh,evaluate.sh,profile.sh,run_all.sh}
+  plans/<phase>/leaderboard/{leaderboard.html,leaderboard.md,leaderboard.csv,leaderboard.json,summary.json,summary.csv}
   runs/<phase>/<variant>__seed<seed>/
     config.json, manifest.json, history.jsonl, status.json
     best.pth, last.pth
-    test/metrics.json
+    test/{metrics.json,per_image_metrics.csv}
+    test/predictions/<dataset-key>/*.png
+    test/curves/<dataset-key>/*.{csv,svg,png}
     profile.json
-  summary/{validation-<phase>,test-<phase>}/{summary.json,summary.csv}
+  summary/<snapshot>/{summary.json,summary.csv,leaderboard.html,leaderboard.md,leaderboard.csv,leaderboard.json}
 ```
 
 ## 참고 논문
@@ -159,9 +168,12 @@ results/<run-id>/
 | [EfficientDet: Scalable and Efficient Object Detection](https://openaccess.thecvf.com/content_CVPR_2020/html/Tan_EfficientDet_Scalable_and_Efficient_Object_Detection_CVPR_2020_paper.html)<br>EfficientDet: 확장 가능하고 효율적인 객체 탐지 | IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020, conference / 학회 | BiFPN의 빠른 정규화 혼합만 차용 / fusion operator, not full BiFPN |
 | [Attentional Feature Fusion](https://openaccess.thecvf.com/content/WACV2021/html/Dai_Attentional_Feature_Fusion_WACV_2021_paper.html)<br>어텐션 기반 특징 융합 | IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), 2021, conference / 학회 | 논문 Eq.4 convex blend. 공식 코드의 ×2 gain 생략 / paper blending convention |
 | [ZoomNeXt: A Unified Collaborative Pyramid Network for Camouflaged Object Detection](https://doi.org/10.1109/TPAMI.2024.3417329)<br>ZoomNeXt: 위장 객체 탐지를 위한 통합 협력 피라미드 네트워크 | IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI), 2024, journal / 저널 | MHSIU-inspired 활용. 원래 실제 세 입력 인코딩을 재현하지 않음 / pseudo-feature adaptation |
+| [Boundary IoU: Improving Object-Centric Image Segmentation Evaluation](https://openaccess.thecvf.com/content/CVPR2021/html/Cheng_Boundary_IoU_Improving_Object-Centric_Image_Segmentation_Evaluation_CVPR_2021_paper.html)<br>Boundary IoU: 객체 중심 이미지 분할 평가의 개선 | IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, conference / 학회 | 추가 경계 평가지표. 저자 erosion 규약 적용; 확인일 2026-10-29 / additional boundary evaluation |
 
 ## 검증 상태와 기존 실험
 
 기록된 코드 검증은 **281 tests + 67 subtests 통과**, CPU/GPU 추론 확인, optimizer step 0회다. 실제 데이터 학습·수렴·방법 간 정확도 순위는 미검증이다. [검증 산출물](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md)을 참고한다.
 
 기존 BRG main 실험은 [COD](https://github.com/sh-min/COD)에 유지하고 CoCoNet은 이번 업로드에서 제외했다. 보존 코드·라이선스는 유지한다. 이전 정리 과정은 [이관 기록](docs/MIGRATION.md), [실험 목록](Experiments/README.md), [비교 도구](Benchmarks/README.md), [연구 결정](Progress/README.md)에서 확인한다.
+
+최신 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md).

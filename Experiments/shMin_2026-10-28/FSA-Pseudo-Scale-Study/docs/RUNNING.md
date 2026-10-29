@@ -1,6 +1,6 @@
 # 2026-10-28 · Pseudo-Scale Study — 실행과 재현 / Running and Reproduction
 
-이 문서의 명령은 **입력 준비, 명령 생성, 학습, 평가, 추론 측정, 결과 집계**를 구분한다. `prepare`와 `plan_study.py`는 학습하지 않는다. `train` 또는 생성된 `train.sh`를 사용자가 실행해야 파라미터 업데이트가 시작된다. 데이터셋과 backbone 가중치는 자동 다운로드하지 않는다.
+이 문서의 명령은 **입력 준비, 명령 생성, 학습, 평가, 추론 측정, 결과 집계**를 구분한다. `prepare`와 `plan_study.py`는 학습하지 않는다. `train` 또는 생성된 `train.sh`/`run_all.sh`를 사용자가 실행해야 파라미터 업데이트가 시작된다. 데이터셋과 backbone 가중치는 자동 다운로드하지 않는다.
 
 The commands distinguish **input preparation, command generation, training, evaluation, inference profiling, and aggregation**. Only explicit `train`/`train.sh` execution starts optimization. Dataset and backbone files must already exist locally; no command downloads them.
 
@@ -116,9 +116,9 @@ export STUDY_RUNS="$STUDY_RESULTS/runs/cross"
   --results "$STUDY_RUNS" --output "$STUDY_PLAN"
 ```
 
-`plan.json`과 `train.sh` 내용을 검토한 뒤, 사용자가 다음을 실행하면 계획의 학습을 순차적으로 시작한다. 중간 실패 시 shell은 멈춘다. 다시 처음부터 실행하면 기존 출력 경로에서 중단하므로 `plan.json`에서 미실행 명령을 골라 별도 실행한다. 실행 시간을 줄이기 위한 축소 학습을 자동으로 수행하지 않는다.
+`plan.json`과 `train.sh` 내용을 검토한 뒤 다음 명령으로 학습과 validation 리더보드 갱신을 시작한다. 완료된 동일 조건 단계는 건너뛰지만 부분 학습은 resume하지 않고 보존·중단한다. 전체 학습→테스트→profiling 자동 실행은 `run_all.sh`를 사용한다. 실행 스크립트를 실제 호출하기 전에는 학습하지 않는다.
 
-After reviewing `plan.json`/`train.sh`, explicitly run the following to train sequentially. The script stops on failure. Re-running from the start also stops at existing outputs; select remaining commands from the plan rather than claiming an automatic resume. No reduced training run is started automatically.
+After reviewing `plan.json`/`train.sh`, run the following to train sequentially and refresh the validation leaderboard after each run. Completed matching stages skip, while partial training is preserved and rejected; optimizer resume is not implemented. Use `run_all.sh` for the complete training → test evaluation → profiling sequence. Creating a plan never executes these actions.
 
 ```bash
 bash "$STUDY_PLAN/train.sh"
@@ -126,9 +126,9 @@ bash "$STUDY_PLAN/train.sh"
 
 ## 4. 독립 테스트와 추론 비용 / Explicit test evaluation and inference cost
 
-다음은 **체크포인트 평가**이며 파라미터 업데이트가 없다. 학습 때와 동일한 manifest 해시·변형 메타데이터·정확한 state key를 검사한다. `--split test`는 manifest에 포함된 테스트셋만 평가하며 없는 CHAMELEON 점수를 만들지 않는다. 기본 공식 지표는 S-measure, weighted F-measure, MAE, E-measure adaptive/mean/max이다. `py_sod_metrics`가 없으면 대체 지표를 넣지 않고 중단한다.
+다음은 **체크포인트 평가**이며 파라미터 업데이트가 없다. 학습 때와 동일한 manifest 해시·변형 메타데이터·정확한 state key를 검사한다. `--split test`는 manifest에 포함된 테스트셋만 평가하며 없는 CHAMELEON 점수를 만들지 않는다. S·weighted F·MAE·E(adaptive/mean/max)에 일반 Fβ(adaptive/mean/max)와 고정 임계값 IoU·Dice/F1·precision·recall·specificity·BER·FPR·FNR·accuracy·balanced accuracy·Boundary IoU를 더해 21개 값을 출력한다. 이미지별 CSV·확률 PNG와 PR/Fβ/E 곡선 CSV/SVG/PNG를 저장한다. [평가 규약](EVALUATION.ko.md)을 참고한다. `py_sod_metrics`가 없으면 대체 지표를 넣지 않고 중단한다.
 
-This is **checkpoint evaluation without updates**. Manifest identity, variant metadata and exact state keys are checked. `test` evaluates only datasets present in the manifest; unavailable CHAMELEON is not fabricated. Official metrics are S-measure, weighted F-measure, MAE, and adaptive/mean/max E-measure. Missing `py_sod_metrics` causes a clear error rather than substituted scores.
+This is **checkpoint evaluation without updates**. Manifest identity, variant metadata and exact state keys are checked. `test` evaluates only datasets present in the manifest; unavailable CHAMELEON is not fabricated. The expanded protocol exports 21 scalar scores: S/wF/MAE, adaptive/mean/max E and Fβ, plus IoU/Dice/F1 and fixed-threshold confusion/boundary metrics. Per-image CSV, probability PNG and PR/Fβ/E curve CSV/SVG/PNG are saved. See [evaluation definitions](EVALUATION.md). Missing `py_sod_metrics` causes a clear error rather than substituted scores.
 
 ```bash
 "$STUDY_PYTHON" "$STUDY_ROOT/run_study.py" evaluate \
@@ -142,9 +142,9 @@ This is **checkpoint evaluation without updates**. Manifest identity, variant me
 
 Predictions use sigmoid, per-image min-max at model resolution, bilinear resize to the original mask, then uint8 conversion for official metrics. Validation selection uses float MAE before uint8 conversion. This preserves the archived evaluation order; verify resize/normalization conventions before comparing numbers with other papers.
 
-전체 행렬의 평가·추론 비용 측정은 각각 아래 명령이다. 학습 완료 후 사용할 수 있다. `profile.sh`는 batch 1, 학습 해상도, 동일 seed의 합성 RGB 입력으로 모델 전체 출력 head를 포함한 장치 내 추론 latency·파라미터·GPU peak memory·branch diagnostics를 기록한다. 데이터 로딩/CPU↔GPU 전송 시간·학습 메모리·FLOPs는 이 값에 포함되지 않는다. checkpoint를 지정하지 않은 profile은 무작위 초기화 검사이며 COD 성능이나 학습된 branch 유용성의 근거가 아니다.
+전체 행렬의 평가·추론 비용 측정은 각각 아래 명령이다. 학습 완료 후 사용할 수 있다. `profile.sh`는 batch 1, 학습 해상도, 동일 seed의 합성 RGB 입력으로 모델 전체 출력 head를 포함한 장치 내 추론 latency·파라미터·GPU peak memory·branch diagnostics를 기록한다. MACs와 2×MACs 규약의 FLOPs, 별도 비행렬 연산 추정량과 지원/미지원 연산 목록도 저장한다. 데이터 로딩/CPU↔GPU 전송 시간·학습 메모리는 제외한다. checkpoint를 지정하지 않은 profile은 무작위 초기화 검사이며 COD 성능이나 학습된 branch 유용성의 근거가 아니다.
 
-After training, these scripts separately perform test evaluation and inference profiling. Profiling uses batch 1, the training resolution and identically seeded synthetic RGB input, including all prediction heads. It reports latency, parameters, CUDA peak memory and branch diagnostics; it does not report IO/transfer time, training memory or FLOPs. Profiling without a checkpoint is an initialization check, not COD quality evidence.
+After training, these scripts separately perform test evaluation and inference profiling. Profiling uses batch 1, the training resolution and identically seeded synthetic RGB input, including all prediction heads. It reports latency, parameters, CUDA peak memory and branch diagnostics; it also reports MACs, 2×MACs FLOPs, separate noncontraction estimates and operation coverage. IO/transfer time and training memory are excluded. Profiling without a checkpoint is an initialization check, not COD quality evidence.
 
 ```bash
 bash "$STUDY_PLAN/evaluate.sh"
@@ -171,10 +171,12 @@ For an **inference-only** initialization check before training, use a separate o
   --results "$STUDY_RUNS" --output "$STUDY_RESULTS/summary/cross"
 ```
 
-이 명령은 완료된 run의 검증·테스트 지표를 조건별로 분리하고 seed 간 평균·표본 표준편차를 JSON/CSV로 기록한다. 같은 조건의 동일 seed가 중복되면 중단하며, 미완료 run은 따로 나열한다. 테스트셋 점수로 우승 조합을 자동 선택하지 않고 통계적 유의성을 주장하지 않는다. 전체 행렬을 탐색한 뒤 최종 조합은 검증 결과로 정하고 독립 테스트로 보고한다. 같은 테스트 결과를 보고 반복 수정했다면 독립 최종 검증이라고 해석하지 않는다.
+이 명령은 완료된 run의 검증·테스트 지표를 조건별로 분리하고 seed 간 평균·표본 표준편차를 JSON/CSV로 기록하고 HTML/Markdown/CSV/JSON 리더보드를 생성한다. Validation MAE 순위, 데이터셋별 테스트 순위, 비용 표를 분리한다. 같은 조건의 동일 seed가 중복되면 중단하며, 미완료 run은 따로 나열한다. 동일 프로토콜·동일 완료 seed 집합끼리만 순위를 계산한다. 테스트 점수는 보고용이며 체크포인트를 선택하지 않고 통계적 유의성을 주장하지 않는다. 전체 행렬을 탐색한 뒤 최종 조합은 검증 결과로 정하고 독립 테스트로 보고한다. 같은 테스트 결과를 보고 반복 수정했다면 독립 최종 검증이라고 해석하지 않는다.
 
-Aggregation separates comparison conditions and reports seed means/sample standard deviations in JSON/CSV. Duplicate seeds fail; incomplete runs are listed. It neither selects a winner using test scores nor claims statistical significance. Choose final variants using validation evidence before interpreting independent test results; repeated redesign after inspecting those tests breaks that interpretation.
+Aggregation separates comparison conditions and reports seed means/sample standard deviations in JSON/CSV, plus HTML/Markdown/CSV/JSON leaderboards. Validation MAE supplies the selection ranking; test and cost ranks are separate. Duplicate seeds fail; incomplete runs are listed. Only matching protocols and completed seed sets share a rank. Test ranks are descriptive and do not select checkpoints or establish significance. Choose final variants using validation evidence before interpreting independent test results; repeated redesign after inspecting those tests breaks that interpretation.
 
 현재 준비된 것은 실행 가능한 비교 코드, 합성 데이터 무결성 검사, 모델 초기화/연산 검증이다. 실제 데이터 전체 로딩·사전학습 원본 파일 로딩·학습 수렴·성능 순위·전체 GPU 학습 시간은 해당 단계를 실행해야 확인된다. 이 문서의 명령 제공은 학습 실행 기록이 아니다.
 
 The delivered artifacts prepare executable comparisons, synthetic data-integrity checks and initialization/operator verification. Full real-data loading, an actual pretrained backbone file, convergence, accuracy rankings and total GPU training time require their corresponding explicit runs. Providing these commands is not evidence that training occurred.
+
+Automatic reports: `$STUDY_PLAN/leaderboard/leaderboard.html`. `run_all.sh` runs every stage; `train.sh` runs training only. Both refresh the derived leaderboard after every stage. Add `--plan "$STUDY_PLAN/plan.json"` when summarizing manually to include not-started runs. / 자동 리더보드는 같은 경로에 저장하며 수동 집계에 `--plan`을 추가하면 미시작 실험도 표시한다.

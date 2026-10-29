@@ -162,7 +162,7 @@ def test_official_metrics_perfect_and_inverted_toy_predictions(tmp_path):
     batch, logits = _toy_batch(tmp_path)
     perfect = evaluate_model(ToyPredictor(logits), [batch], "cpu", official=True)
     inverted = evaluate_model(ToyPredictor(-logits), [batch], "cpu", official=True)
-    assert perfect["metric_protocol"] == "official_py_sod_metrics_uint8"
+    assert perfect["metric_protocol"] == "official_py_sod_metrics_uint8_v2"
     assert perfect["sample_weighted_MAE"] == pytest.approx(0, abs=1e-6)
     assert inverted["sample_weighted_MAE"] > .99
     for values in perfect["datasets"].values():

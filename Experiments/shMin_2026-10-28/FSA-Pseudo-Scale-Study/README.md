@@ -1,4 +1,4 @@
-# 2026-10-28 · Pseudo-Scale Study — Methods and comparison protocol
+# 2026-10-29 · Pseudo-Scale Study — Methods and comparison protocol
 
 **English** | [한국어](README.ko.md) | [Execution guide](../../../README.md) | [Environment setup](environment/README.md)
 
@@ -31,7 +31,7 @@ For the complete study, generate `cross` once and analyze these subsets. A stage
 | Schedule / frozen parts | lr ×0.1 at epoch 100; first patch embedding and encoder BN fixed |
 | Loss weights | segmentation 1 / deep .25 / region .5 / edge 1 / UAL 1 |
 | Selection | Minimum sample-weighted validation float MAE, evaluated every epoch |
-| Final reporting | Dataset-specific test S, wF, MAE, E(adaptive/mean/max); seed mean/sample SD and inference cost |
+| Final reporting | 21 dataset-specific test scores, curves, per-image artifacts; seed mean/sample SD, inference cost and validation-led leaderboards |
 
 The common edge head consumes fused features for all controlled variants, including `single`. No residual prior, compensation, or residual reinjection is forced onto fusion variants. `legacy_full` alone retains the [archived FSA architecture](../../FSA-ZoomNeXt/). Common encoder/decoder initialization and data order are isolated from variant module size. Most methods are **not parameter- or FLOP-matched**, so report cost rather than attributing all gains to scale reasoning.
 
@@ -99,6 +99,13 @@ The difference variants use main plus a bias-free projection of differences; zer
 
 Outputs, resumption limitations, strict checkpoint loading, metric conventions and per-variant JSON options are documented in [advanced execution details](docs/RUNNING.md). Environment installation is in the [English](environment/README.md) and [Korean](environment/README.ko.md) environment guides.
 
+
+## Expanded evaluation and automatic leaderboards
+
+The planned `run_all.sh` executes training, test evaluation and profiling per run and refreshes `plans/<phase>/leaderboard/leaderboard.html` after every stage. Use `train.sh` for training and validation ranking only. Validation MAE determines the overall selection ranking; dataset-specific test rankings and cost tables are separate. All tables retain protocol and completed-seed groups, mean/sample SD and missing-run status.
+
+Test evaluation now exports 21 scalar scores, per-image CSV, original-size probability PNGs and PR/Fβ/E curves as CSV+SVG+PNG. Profiling adds MACs, contraction FLOPs, a separate noncontraction estimate and operator coverage. See [metric definitions, references and reporting rules](docs/EVALUATION.md) and the [main execution guide](../../../README.md). Historical results are preserved; expanded evaluations have their own metric protocol.
+
 ## Referenced papers
 
 Checked on **2026-10-28**. Korean title translations are provided in the [Korean version](README.ko.md). These are adaptations, not full-paper reproductions. The original source, venue, formulas and precise changes are retained in [GENERATION](docs/GENERATION.md) and [UTILIZATION](docs/UTILIZATION.md).
@@ -116,7 +123,10 @@ Checked on **2026-10-28**. Korean title translations are provided in the [Korean
 | [EfficientDet: Scalable and Efficient Object Detection](https://openaccess.thecvf.com/content_CVPR_2020/html/Tan_EfficientDet_Scalable_and_Efficient_Object_Detection_CVPR_2020_paper.html) | IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020; conference | Fast normalized fusion operator only; not the complete bidirectional BiFPN network. |
 | [Attentional Feature Fusion](https://openaccess.thecvf.com/content/WACV2021/html/Dai_Attentional_Feature_Fusion_WACV_2021_paper.html) | IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), 2021; conference | Paper Eq. 4 convex blend with nested three-branch fusion; omit the official code's x2 gain. |
 | [ZoomNeXt: A Unified Collaborative Pyramid Network for Camouflaged Object Detection](https://doi.org/10.1109/TPAMI.2024.3417329) | IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI), 2024; journal | MHSIU-inspired grouped attention/value transforms; not the original three-image encoder pipeline. |
+| [Boundary IoU: Improving Object-Centric Image Segmentation Evaluation](https://openaccess.thecvf.com/content/CVPR2021/html/Cheng_Boundary_IoU_Improving_Object-Centric_Image_Segmentation_Evaluation_CVPR_2021_paper.html) | IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021; conference | Additional boundary metric using the authors' erosion convention; checked 2026-10-29. |
 
 ## Current verification status
 
 [Recorded verification](results/verification-2026-10-28/README.md): 281 tests and 67 subtests passed, including all 156 module pairings, common initialization, original-operator agreement, data/checkpoint checks and CPU/GPU inference. No optimizer steps, real-data training or dataset downloads were run. Actual pretrained-file loading, convergence and accuracy rankings remain unverified. The [research record](../../../Progress/2026-10-28/Pseudo-Scale-Study/README.md) separates code observations from hypotheses.
+
+Latest metric/leaderboard verification: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](results/verification-2026-10-29-metrics/README.md).

@@ -1,4 +1,4 @@
-# 2026-10-28 · INS_COD — Pseudo-scale experiment guide
+# 2026-10-29 · INS_COD — Pseudo-scale experiment guide
 
 **English** | [한국어](README.ko.md)
 
@@ -92,54 +92,63 @@ RUNS="$RUN/runs/$PHASE"
   --output "$PLAN" --results "$RUNS"
 ```
 
-This writes `plan.json`, `train.sh`, `evaluate.sh`, and `profile.sh`; it does **not** train. Keep size, channels, epochs, batch size, seeds, manifest and backbone initialization fixed across comparisons. Defaults use Adam, lr 1e-4, encoder lr ×0.1, frozen first patch embedding, and shared losses. [Full common protocol](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md).
+This writes `plan.json`, `train.sh`, `evaluate.sh`, `profile.sh`, and `run_all.sh`; it does **not** train. Keep size, channels, epochs, batch size, seeds, manifest and backbone initialization fixed across comparisons. Defaults use Adam, lr 1e-4, encoder lr ×0.1, frozen first patch embedding, and shared losses. [Full common protocol](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md).
 
-## 4. Start training
+## 4. Start training with automatic evaluation and leaderboards
 
-The next line starts the planned runs sequentially. Each run selects `best.pth` using **validation MAE only** and saves `last.pth` plus configuration/history. Test evaluation is a separate step.
+The following starts each planned run's **training → test evaluation → inference profiling**, sequentially, and refreshes the leaderboard after every stage. Each `best.pth` is selected using **validation MAE only**. The full comparison is specified in the plan before execution; test rankings are descriptive and never select checkpoints.
 
 ```bash
-bash "$PLAN/train.sh"
+bash "$PLAN/run_all.sh"
 ```
 
-Existing outputs are rejected. A failure stops the shell script; there is no automatic resume. Preserve partial runs, choose a new output path when restarting them, and select remaining commands from `plan.json` rather than rerunning completed jobs into their existing directories.
+Open **`$PLAN/leaderboard/leaderboard.html`** in a browser. Validation MAE supplies the overall selection ranking; test tables rank each dataset separately (default S-measure), while cost tables show matching hardware/settings. Tables include seed means, sample SD, seed count, completion status and a comparison-group identifier. Different protocols or seed sets are kept in separate groups. The HTML supports sorting/filtering; CSV, JSON and Markdown are also saved.
+
+To train only and automatically update the validation leaderboard, use `bash "$PLAN/train.sh"` instead. `run_all.sh` later skips completed matching stages. Interrupted/partial training does **not** resume: preserve it and create a new run destination/plan. Raw checkpoints, predictions and profiles are never overwritten. Only the derived leaderboard files are refreshed.
 
 ## 5. Inspect validation results and inference cost
 
-After training, profile each selected best checkpoint and aggregate validation scores and costs:
+These optional commands complete profiling and save an additional immutable summary snapshot:
 
 ```bash
 bash "$PLAN/profile.sh"
 "$PY" "$STUDY/summarize_study.py" \
-  --results "$RUNS" --output "$RUN/summary/validation-$PHASE"
+  --results "$RUNS" --plan "$PLAN/plan.json" \
+  --output "$RUN/summary/validation-$PHASE"
 ```
 
-Use lower validation MAE to compare quality, then inspect parameters, median latency and memory on the same device and input settings. Profiling uses synthetic RGB, batch 1, FP32, and all prediction heads; it excludes data loading, transfer time, training memory and FLOPs. It does not measure accuracy. Read the mean and sample standard deviation across seeds; a small difference alone is not evidence of statistical significance.
+Profiles report parameters, latency, throughput, CUDA peak memory, **MACs and FLOPs**, plus a separately labeled estimate of noncontraction operations and an operator coverage table. The common convention is **2 FLOPs per convolution/matrix multiply-accumulate**. Interpolation, sampling and nonlinear operations have explicit approximate counting rules; these are not hardware instruction counts. Unsupported operations are listed, never silently treated as free. Profiling includes all heads, batch 1, FP32 and synthetic RGB; it excludes data loading, transfers and training memory. [Metric definitions and limitations](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.md).
 
-## 6. Evaluate the fixed comparison on test sets
+## 6. Inspect test metrics and export paper tables
 
-Fix the configurations and comparison rule using validation first. The following evaluates **all runs in the chosen plan**, then aggregates the test metrics. It does not select a model from test scores.
+If training was run separately, the following completes test evaluation and saves an additional report. Completed stages are skipped after identity checks.
 
 ```bash
 bash "$PLAN/evaluate.sh"
 "$PY" "$STUDY/summarize_study.py" \
-  --results "$RUNS" --output "$RUN/summary/test-$PHASE"
+  --results "$RUNS" --plan "$PLAN/plan.json" \
+  --test-metric S --output "$RUN/summary/test-$PHASE"
 ```
 
-Report **S-measure, weighted F-measure and E-measure (higher is better), MAE (lower is better)** per dataset, together with inference cost. Missing datasets have no score. Compare generators at a fixed utilizer, utilizers at a fixed generator, then inspect their interaction across the grid. Include the `single` baseline and treat `legacy_full` as a whole-architecture reference. Do not use test scores to repeatedly redesign the selected method.
+Each available dataset reports **21 scalar scores**: S, weighted F, MAE; adaptive/mean/max E and ordinary Fβ; fixed-threshold IoU, Dice/F1, precision, recall, specificity, BER, FPR, FNR, accuracy, balanced accuracy and Boundary IoU. Dice and F1 are aliases, not independent evidence. Mean/max threshold scores are computed from the dataset-average curve. Also saved: **PR/Fβ/E curves as CSV+SVG+PNG, per-image scores, and original-size grayscale probability PNGs**. For disk-limited runs, direct evaluation accepts `--no-save-predictions`; numeric scores and curves remain available.
 
-Summarize **one phase root at a time**: duplicated controls with the same seed across phase roots must not be pooled. Generated results are organized as follows:
+`--test-metric` chooses the descriptive test table ordering, e.g. `wF`, `Fbeta_max`, `MAE` or `BoundaryIoU_0_5`; metric direction is recorded. Missing datasets/scores remain missing. Rankings alone are not significance tests. For existing checkpoints, evaluate into a **new** folder such as `test-v2`, then pass `--evaluation-subdir test-v2` to the summarizer. Use a new profile path such as `profile-v2.json` and `--profile-name profile-v2.json` in the planner/summarizer to preserve an older profile. Old and expanded metric protocols are separated.
+
+Summarize **one phase root at a time**. Compare generators at a fixed utilizer and vice versa, keeping `single` and the whole-architecture `legacy_full` reference. Keep the same seed set, data split, initialization and measurement conditions.
 
 ```text
 results/<run-id>/
   data/manifest.json
-  plans/<phase>/{plan.json,train.sh,evaluate.sh,profile.sh}
+  plans/<phase>/{plan.json,train.sh,evaluate.sh,profile.sh,run_all.sh}
+  plans/<phase>/leaderboard/{leaderboard.html,leaderboard.md,leaderboard.csv,leaderboard.json,summary.json,summary.csv}
   runs/<phase>/<variant>__seed<seed>/
     config.json, manifest.json, history.jsonl, status.json
     best.pth, last.pth
-    test/metrics.json
+    test/{metrics.json,per_image_metrics.csv}
+    test/predictions/<dataset-key>/*.png
+    test/curves/<dataset-key>/*.{csv,svg,png}
     profile.json
-  summary/{validation-<phase>,test-<phase>}/{summary.json,summary.csv}
+  summary/<snapshot>/{summary.json,summary.csv,leaderboard.html,leaderboard.md,leaderboard.csv,leaderboard.json}
 ```
 
 ## Referenced papers
@@ -159,9 +168,12 @@ Checked on **2026-10-28**. Korean title translations are provided in the [Korean
 | [EfficientDet: Scalable and Efficient Object Detection](https://openaccess.thecvf.com/content_CVPR_2020/html/Tan_EfficientDet_Scalable_and_Efficient_Object_Detection_CVPR_2020_paper.html) | IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020; conference | Fast normalized fusion operator only; not the complete bidirectional BiFPN network. |
 | [Attentional Feature Fusion](https://openaccess.thecvf.com/content/WACV2021/html/Dai_Attentional_Feature_Fusion_WACV_2021_paper.html) | IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), 2021; conference | Paper Eq. 4 convex blend with nested three-branch fusion; omit the official code's x2 gain. |
 | [ZoomNeXt: A Unified Collaborative Pyramid Network for Camouflaged Object Detection](https://doi.org/10.1109/TPAMI.2024.3417329) | IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI), 2024; journal | MHSIU-inspired grouped attention/value transforms; not the original three-image encoder pipeline. |
+| [Boundary IoU: Improving Object-Centric Image Segmentation Evaluation](https://openaccess.thecvf.com/content/CVPR2021/html/Cheng_Boundary_IoU_Improving_Object-Centric_Image_Segmentation_Evaluation_CVPR_2021_paper.html) | IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021; conference | Additional boundary metric using the authors' erosion convention; checked 2026-10-29. |
 
 ## Verification and existing experiments
 
 The recorded code verification passed **281 tests and 67 subtests**, with CPU/GPU inference checks and zero optimizer steps. Real-data training, convergence and method rankings remain unverified. See the [verification artifacts](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md).
 
 The original BRG main experiment remains in [COD](https://github.com/sh-min/COD); CoCoNet was excluded from this upload. Archived sources and their licenses remain intact. Historical organization details are in the [migration record](docs/MIGRATION.md), [experiment index](Experiments/README.md), [benchmark index](Benchmarks/README.md), and [research decisions](Progress/README.md).
+
+Latest metric/leaderboard verification: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md).

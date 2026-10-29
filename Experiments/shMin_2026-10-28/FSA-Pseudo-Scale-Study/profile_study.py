@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inference-only latency, memory, parameter and pseudo-feature diagnostics."""
+"""Inference-only latency, memory, MACs/FLOPs, parameters and feature diagnostics."""
 import argparse
 import json
 import platform
@@ -36,6 +36,7 @@ def main():
     from torch.nn import functional as F
     from fsa_study.model import StudyModel
     from fsa_study.data import sha256_file
+    from fsa_study.complexity import COMPLEXITY_PROTOCOL, measure_complexity
     torch.set_num_threads(args.threads)
     torch.manual_seed(args.seed)
     if args.checkpoint:
@@ -111,16 +112,20 @@ def main():
             handle.remove()
         if not torch.isfinite(prediction).all():
             raise FloatingPointError("Nonfinite model output")
+    # Counting adds dispatch overhead and is deliberately outside the timing,
+    # peak-memory measurement and feature-diagnostic hooks above.
+    complexity = measure_complexity(model, x)
     result = {"schema_version": 1, "metadata": model.metadata, "parameters": sum(p.numel() for p in model.parameters()),
               "encoder_parameters": sum(p.numel() for p in model.encoder.parameters()),
               "latency_ms": {"median": statistics.median(durations), "mean": statistics.mean(durations),
                              "stdev": statistics.stdev(durations) if len(durations)>1 else 0, "samples": durations},
               "images_per_second": args.batch_size * 1000 / statistics.mean(durations),
-              "cuda_memory": memory, "diagnostics": diagnostics,
+              "cuda_memory": memory, "diagnostics": diagnostics, "complexity": complexity,
               "protocol": {**vars(args), "dtype": "float32", "inference_mode": True,
                            "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
                            "input": "local_image" if args.image else "synthetic_uniform_RGB",
                            "weights": "study_checkpoint" if args.checkpoint else "random_initialization",
+                           "complexity_protocol": COMPLEXITY_PROTOCOL,
                            "interpretation": "Execution diagnostics only; random input/weights cannot establish COD quality or learned branch utility"},
               "checkpoint_sha256": sha256_file(args.checkpoint) if args.checkpoint else None,
               "image_sha256": sha256_file(args.image) if args.image else None,
@@ -129,7 +134,11 @@ def main():
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(result, indent=2, allow_nan=False) + "\n")
     print(json.dumps({"output": str(target), "parameters": result["parameters"],
-                      "median_ms": result["latency_ms"]["median"], "training": "not_run"}))
+                      "median_ms": result["latency_ms"]["median"],
+                      "macs_per_image": complexity["macs_per_image"],
+                      "flops_per_image": complexity["flops_per_image"],
+                      "complexity_unsupported_ops": complexity["coverage"]["unsupported_operators"],
+                      "training": "not_run"}))
 
 
 if __name__ == "__main__":

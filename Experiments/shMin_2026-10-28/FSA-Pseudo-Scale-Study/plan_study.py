@@ -46,12 +46,18 @@ def main():
     parser.add_argument("--size", type=int, default=384)
     parser.add_argument("--channels", type=int, default=48)
     parser.add_argument("--workers", type=int, default=2)
+    parser.add_argument("--evaluation-subdir", default="test", help="New relative evaluation folder inside each run")
+    parser.add_argument("--profile-name", default="profile.json", help="New relative profile filename inside each run")
     init = parser.add_mutually_exclusive_group(required=True)
     init.add_argument("--backbone-weights")
     init.add_argument("--random-init", action="store_true")
     args = parser.parse_args()
     if len(set(args.seeds)) != len(args.seeds):
         parser.error("seeds must be unique")
+    for field in ("evaluation_subdir", "profile_name"):
+        value = getattr(args, field)
+        if Path(value).is_absolute() or ".." in Path(value).parts or value in {"", "."}:
+            parser.error(f"{field} must be a nonempty relative path")
     for field in ("manifest", "output", "results", "python", "backbone_weights"):
         value = getattr(args, field)
         if value and not Path(value).is_absolute():
@@ -72,19 +78,22 @@ def main():
                             "--workers", str(args.workers), "--device", args.device] + flags
             train += ["--backbone-weights", args.backbone_weights] if args.backbone_weights else ["--random-init"]
             evaluate = base + ["evaluate", "--manifest", args.manifest, "--checkpoint", str(run / "best.pth"),
-                               "--split", "test", "--output", str(run / "test"), "--device", args.device,
+                               "--split", "test", "--output", str(run / args.evaluation_subdir), "--device", args.device,
                                "--batch-size", str(args.batch_size), "--workers", str(args.workers)]
             profile = [args.python, str(HERE / "profile_study.py"), "--checkpoint", str(run / "best.pth"),
-                       "--output", str(run / "profile.json"), "--device", args.device,
+                       "--output", str(run / args.profile_name), "--device", args.device,
                        "--size", str(args.size), "--batch-size", "1"]
             jobs.append({"variant": name, "seed": seed, "run": str(run),
                          "train": train, "evaluate": evaluate, "profile": profile})
-    payload = {"schema_version": 1, "phase": args.phase, "variant_count": len(variants_list),
+    payload = {"schema_version": 2, "phase": args.phase, "variant_count": len(variants_list),
+               "results": args.results, "evaluation_subdir": args.evaluation_subdir, "profile_name": args.profile_name,
                "run_count": len(jobs), "seeds": args.seeds, "status": "commands_only_not_executed", "jobs": jobs}
     (output / "plan.json").write_text(json.dumps(payload, indent=2) + "\n")
-    for action in ("train", "evaluate", "profile"):
-        lines = ["#!/usr/bin/env bash", "set -euo pipefail", "# Explicit execution only; existing output paths fail rather than overwrite."]
-        lines += [shlex.join(job[action]) for job in jobs]
+    for action in ("train", "evaluate", "profile", "run_all"):
+        actions = [action] if action != "run_all" else ["train", "evaluate", "profile"]
+        lines = ["#!/usr/bin/env bash", "set -euo pipefail", "# Explicit execution only. Completed stages skip; incomplete outputs are preserved and rejected."]
+        lines += [shlex.join([args.python, str(HERE / "run_plan.py"), "--plan", str(output / "plan.json"),
+                             "--actions", *actions, "--skip-completed"])]
         (output / f"{action}.sh").write_text("\n".join(lines) + "\n")
     print(json.dumps({k: v for k, v in payload.items() if k != "jobs"}, indent=2))
 

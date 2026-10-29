@@ -1,0 +1,20 @@
+........................................................................ [ 14%]
+........................................................................ [ 28%]
+........................................................................ [ 42%]
+........................................................................ [ 56%]
+........................................................................ [ 70%]
+........................................................................ [ 84%]
+............................................................................. [ 99%]
+.....                                                                    [100%]
+=============================== warnings summary ===============================
+tests/test_complexity.py::test_full_model_inference_coverage[config0]
+  /home/robin/shMin/INS_COD/.venv/fsa-study/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+    warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+
+tests/test_complexity.py: 4 warnings
+tests/test_model.py: 7 warnings
+  /home/robin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/contextlib.py:105: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+    self.gen = func(*args, **kwds)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+514 passed, 12 warnings, 67 subtests passed in 12.02s

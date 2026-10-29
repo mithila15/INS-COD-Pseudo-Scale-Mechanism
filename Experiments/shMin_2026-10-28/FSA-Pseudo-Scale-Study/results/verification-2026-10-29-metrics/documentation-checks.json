@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-29",
+  "status": "passed",
+  "documents": [
+    {
+      "file": "README.md",
+      "bash_blocks": 6,
+      "sha256": "0675918fbe2293888a4a0aab6a1b69ab25a3679fb2a3a823a9b71661155b7b9f"
+    },
+    {
+      "file": "README.ko.md",
+      "bash_blocks": 6,
+      "sha256": "fc2614a8721ff6a198f625ef84fa332afedfc24a21dc75b0df2857ec3553bfcd"
+    },
+    {
+      "file": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md",
+      "bash_blocks": 0,
+      "sha256": "7009286e51cb9bc3181b544b0d47203c39a633e15443a0fbdd813a33a6463508"
+    },
+    {
+      "file": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.ko.md",
+      "bash_blocks": 0,
+      "sha256": "ad1af804847a8755954baaed3d1e1ae7bcb035449d6368d3d4180f239fad262b"
+    },
+    {
+      "file": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.md",
+      "bash_blocks": 0,
+      "sha256": "3d97dd602181eb9d22c9c4dc7ff6936ec5ee0e612e8d62f109b29dde3125c434"
+    },
+    {
+      "file": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.ko.md",
+      "bash_blocks": 0,
+      "sha256": "275e8f6206a7978829eed76b01840b419dc821f098f78cdddd1a7d560900f291"
+    },
+    {
+      "file": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md",
+      "bash_blocks": 9,
+      "sha256": "335f354ddde099ee843a68d9c4b1cbe3a58e414a6fd0675a7ed2ffe3721266dd"
+    },
+    {
+      "file": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md",
+      "bash_blocks": 2,
+      "sha256": "6c216451e8185c79ca4a11a92ec9ed36d6aa48496b2df524f3f77a16c6458ba8"
+    }
+  ],
+  "english_korean_commands_identical": true,
+  "references_per_readme": 12,
+  "original_method_references_preserved": 11,
+  "added_boundary_metric_reference": 1,
+  "training": "not_run"
+}

@@ -114,30 +114,19 @@ def _loader(dataset, batch_size, workers, seed, shuffle=False, drop_last=False):
 
 
 def _official_metrics():
-    try:
-        from py_sod_metrics import Emeasure, MAE, Smeasure, WeightedFmeasure
-    except ImportError as error:
-        raise RuntimeError("Test evaluation requires official py_sod_metrics (install the pysodmetrics package); no substitute metrics are used.") from error
-    return {"S": Smeasure(), "wF": WeightedFmeasure(), "E": Emeasure(), "MAE": MAE()}
-
-
-def _metric_values(metrics):
-    e_result = metrics["E"].get_results()["em"]
-    return {"S": float(metrics["S"].get_results()["sm"]),
-            "wF": float(metrics["wF"].get_results()["wfm"]),
-            "MAE": float(metrics["MAE"].get_results()["mae"]),
-            "E_adaptive": float(e_result["adp"]),
-            "E_mean": float(np.mean(e_result["curve"])),
-            "E_max": float(np.max(e_result["curve"]))}
+    # Kept as a dependency-check helper for existing callers.
+    from .metrics import official_metrics
+    return official_metrics()
 
 
 @torch.inference_mode()
-def evaluate_model(model, loader, device, official=False):
+def evaluate_model(model, loader, device, official=False, output=None, save_predictions=True):
     model.eval()
-    metrics = {}
     totals, counts = defaultdict(float), defaultdict(int)
+    recorder = None
     if official:
-        _official_metrics()  # Fail clearly before processing any image.
+        from .metrics import METRIC_PROTOCOL, MetricRecorder, protocol_details
+        recorder = MetricRecorder(output, save_predictions)
     for batch in loader:
         outputs = model(batch["image"].to(device, non_blocking=True))
         if not torch.isfinite(outputs["logits"]).all():
@@ -154,25 +143,27 @@ def evaluate_model(model, loader, device, official=False):
             prediction = prediction[0, 0].cpu().numpy().clip(0, 1)
             counts[dataset] += 1
             if official:
-                if dataset not in metrics:
-                    metrics[dataset] = _official_metrics()
                 prediction_uint8 = (prediction * 255).astype(np.uint8)
                 mask_uint8 = mask.astype(np.uint8) * 255
-                for metric in metrics[dataset].values():
-                    metric.step(pred=prediction_uint8, gt=mask_uint8)
+                sample_id = batch["id"][index] if "id" in batch else str(mask_path)
+                recorder.step(prediction_uint8, mask_uint8, dataset, sample_id, mask_path)
             else:
                 totals[dataset] += float(np.abs(prediction - mask.astype(np.float32)).mean())
     if not counts:
         raise ValueError("Evaluation loader is empty")
-    results = {}
-    for dataset, count in sorted(counts.items()):
-        values = _metric_values(metrics[dataset]) if official else {"MAE": totals[dataset] / count}
-        results[dataset] = {"count": count, **values}
+    if official:
+        results, artifacts = recorder.finish()
+    else:
+        results = {dataset: {"count": count, "MAE": totals[dataset] / count}
+                   for dataset, count in sorted(counts.items())}
     # Validation selection is a sample-weighted mean, not test-set selection.
     mae = sum(values["MAE"] * values["count"] for values in results.values()) / sum(counts.values())
-    return {"datasets": results, "sample_weighted_MAE": mae,
-            "metric_protocol": "official_py_sod_metrics_uint8" if official else "float_MAE",
-            "prediction_protocol": "sigmoid; per-image min-max at model resolution; bilinear resize to original mask; mask>0"}
+    report = {"datasets": results, "sample_weighted_MAE": mae,
+              "metric_protocol": METRIC_PROTOCOL if official else "float_MAE",
+              "prediction_protocol": "sigmoid; per-image min-max at model resolution; bilinear resize to original mask; mask>0"}
+    if official:
+        report.update({"metric_protocol_details": protocol_details(), "artifacts": artifacts})
+    return report
 
 
 def _validate_args(args):
@@ -355,7 +346,8 @@ def evaluate(args):
     loader = _loader(dataset, args.batch_size, args.workers, checkpoint["model_config"]["seed"])
     output = Path(args.output).expanduser().resolve()
     output.mkdir(parents=True, exist_ok=False)
-    results = evaluate_model(model, loader, args.device, official=args.split == "test")
+    results = evaluate_model(model, loader, args.device, official=args.split == "test", output=output,
+                             save_predictions=not getattr(args, "no_save_predictions", False))
     results.update({"split": args.split, "checkpoint": str(checkpoint_path),
                     "checkpoint_sha256": sha256_file(checkpoint_path), "epoch": checkpoint["epoch"],
                     "model_config": checkpoint["model_config"], "manifest_sha256": manifest["content_sha256"],

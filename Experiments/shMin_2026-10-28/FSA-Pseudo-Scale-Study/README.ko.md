@@ -1,4 +1,4 @@
-# 2026-10-28 · Pseudo-Scale Study — 방법별 비교 기준과 실험 조건
+# 2026-10-29 · Pseudo-Scale Study — 방법별 비교 기준과 실험 조건
 
 [English](README.md) | **한국어** | [실행 안내](../../../README.ko.md) | [환경 설정](environment/README.ko.md)
 
@@ -99,6 +99,13 @@ flowchart LR
 
 산출물, 재개 제한, strict checkpoint, 지표 규약과 개별 JSON option은 [상세 실행 안내](docs/RUNNING.md)에 있다. 환경 설치는 [영어](environment/README.md)·[한국어](environment/README.ko.md)로 제공한다.
 
+
+## 확장 평가와 자동 리더보드
+
+계획의 `run_all.sh`는 각 run의 학습·테스트 평가·profiling을 실행하고 단계마다 `plans/<phase>/leaderboard/leaderboard.html`을 갱신한다. 학습과 validation 순위만 필요하면 `train.sh`를 쓴다. 전체 선택 순위는 validation MAE, 테스트는 데이터셋별 순위, 비용은 별도 표로 나눈다. 프로토콜·완료 seed 집합별 그룹, 평균·표본 표준편차·미완료 상태를 함께 표시한다.
+
+테스트 평가는 21개 수치, 이미지별 CSV, 원본 크기 확률 PNG, PR/Fβ/E 곡선 CSV+SVG+PNG를 저장한다. 비용 측정에는 MACs·행렬/합성곱 FLOPs·별도 비행렬 추정량·연산 커버리지를 추가했다. [지표 정의·근거·보고 규칙](docs/EVALUATION.ko.md)과 [대표 실행 안내](../../../README.ko.md)를 참고한다. 과거 결과는 보존하며 확장 평가에 별도 프로토콜을 부여한다.
+
 ## 참고 논문
 
 확인일 **2026-10-28**. 한국어 제목은 이해를 위한 번역이다. 전체 논문의 재현이 아닌 아이디어 적용 실험이다. 공식 출처·발표처·수식·수정 범위는 [GENERATION](docs/GENERATION.md)과 [UTILIZATION](docs/UTILIZATION.md)에 보존한다.
@@ -116,7 +123,10 @@ flowchart LR
 | [EfficientDet: Scalable and Efficient Object Detection](https://openaccess.thecvf.com/content_CVPR_2020/html/Tan_EfficientDet_Scalable_and_Efficient_Object_Detection_CVPR_2020_paper.html)<br>EfficientDet: 확장 가능하고 효율적인 객체 탐지 | IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020, conference / 학회 | BiFPN의 빠른 정규화 혼합만 차용 / fusion operator, not full BiFPN |
 | [Attentional Feature Fusion](https://openaccess.thecvf.com/content/WACV2021/html/Dai_Attentional_Feature_Fusion_WACV_2021_paper.html)<br>어텐션 기반 특징 융합 | IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), 2021, conference / 학회 | 논문 Eq.4 convex blend. 공식 코드의 ×2 gain 생략 / paper blending convention |
 | [ZoomNeXt: A Unified Collaborative Pyramid Network for Camouflaged Object Detection](https://doi.org/10.1109/TPAMI.2024.3417329)<br>ZoomNeXt: 위장 객체 탐지를 위한 통합 협력 피라미드 네트워크 | IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI), 2024, journal / 저널 | MHSIU-inspired 활용. 원래 실제 세 입력 인코딩을 재현하지 않음 / pseudo-feature adaptation |
+| [Boundary IoU: Improving Object-Centric Image Segmentation Evaluation](https://openaccess.thecvf.com/content/CVPR2021/html/Cheng_Boundary_IoU_Improving_Object-Centric_Image_Segmentation_Evaluation_CVPR_2021_paper.html)<br>Boundary IoU: 객체 중심 이미지 분할 평가의 개선 | IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2021, conference / 학회 | 추가 경계 평가지표. 저자 erosion 규약 적용; 확인일 2026-10-29 / additional boundary evaluation |
 
 ## 현재 검증 상태
 
 [기존 검증 기록](results/verification-2026-10-28/README.md)은 281 tests + 67 subtests 통과이며 전체 156개 모듈 조합, 공통 초기화, 원본 연산 일치, 데이터·체크포인트, CPU/GPU 추론을 포함한다. Optimizer step, 실제 데이터 학습, 데이터 다운로드는 실행하지 않았다. 실제 사전학습 파일 로딩·수렴·정확도 순위는 미검증이다. [연구 기록](../../../Progress/2026-10-28/Pseudo-Scale-Study/README.md)에서 코드 관측과 가설을 구분한다.
+
+최신 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](results/verification-2026-10-29-metrics/README.md).

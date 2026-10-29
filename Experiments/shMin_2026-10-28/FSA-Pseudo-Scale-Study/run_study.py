@@ -65,6 +65,8 @@ def build_parser():
     _common_input(evaluate)
     evaluate.add_argument("--checkpoint", required=True)
     evaluate.add_argument("--split", choices=["val", "test"], required=True)
+    evaluate.add_argument("--no-save-predictions", action="store_true",
+                          help="Skip test probability PNGs; scores, per-image CSV and CSV/SVG/PNG curves are still saved")
     return parser
 
 

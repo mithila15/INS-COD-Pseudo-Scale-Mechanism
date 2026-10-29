@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "checks": {
+    "validation_three_variants": true,
+    "validation_order": true,
+    "test_metric_default": true,
+    "test_three_variants": true,
+    "error_metric_lower_is_better": true,
+    "variant_filter": true,
+    "cost_metric_default": true,
+    "numeric_trailing_zero_preservation": true
+  },
+  "training": "not_run",
+  "inputs": "synthetic artifact fixtures only",
+  "browser": "Google Chrome 156.0.8078.47",
+  "browser_profile": "isolated temporary profile, removed after verification",
+  "source_sha256": {
+    "summarize_study.py": "ceb14a6013d3ccb655b267281fca9397f95c0044d6906d4f67d0034bfd863210",
+    "fsa_study/leaderboard.py": "e65630d3716b4e4638b1d5491ac4d2ed0726a4e27acf84bee64a8222f4a303d1",
+    "tests/test_leaderboard.py": "fad20dd9bc08a51ba57447c71aa0022a88008f4f9556568bd2236466c6c8c820"
+  }
+}

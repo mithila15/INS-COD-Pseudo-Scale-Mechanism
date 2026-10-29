@@ -1,0 +1,2848 @@
+{
+  "scope": "inference only; synthetic random weights/input; channels8 size64 batch1 CPU",
+  "elapsed_s": 38.298085720001836,
+  "variants": [
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "mean"
+      },
+      "macs": 322276128,
+      "estimated_total_flops": 655256432,
+      "coverage": {
+        "supported_calls": 454,
+        "contraction_calls": 188,
+        "estimated_calls": 266,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "concat"
+      },
+      "macs": 322341408,
+      "estimated_total_flops": 655378832,
+      "coverage": {
+        "supported_calls": 454,
+        "contraction_calls": 192,
+        "estimated_calls": 262,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "signed"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655343472,
+      "coverage": {
+        "supported_calls": 466,
+        "contraction_calls": 192,
+        "estimated_calls": 274,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "absolute"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655348912,
+      "coverage": {
+        "supported_calls": 474,
+        "contraction_calls": 192,
+        "estimated_calls": 282,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "relative"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655414192,
+      "coverage": {
+        "supported_calls": 570,
+        "contraction_calls": 192,
+        "estimated_calls": 378,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "normalized"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655368972,
+      "coverage": {
+        "supported_calls": 502,
+        "contraction_calls": 192,
+        "estimated_calls": 310,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "adjacent"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655343472,
+      "coverage": {
+        "supported_calls": 466,
+        "contraction_calls": 192,
+        "estimated_calls": 274,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322431168,
+      "estimated_total_flops": 655648304,
+      "coverage": {
+        "supported_calls": 526,
+        "contraction_calls": 204,
+        "estimated_calls": 322,
+        "non_arithmetic_calls": 344,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "bifpn"
+      },
+      "macs": 322276128,
+      "estimated_total_flops": 655261908,
+      "coverage": {
+        "supported_calls": 474,
+        "contraction_calls": 188,
+        "estimated_calls": 286,
+        "non_arithmetic_calls": 344,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "sk"
+      },
+      "macs": 322277152,
+      "estimated_total_flops": 655272720,
+      "coverage": {
+        "supported_calls": 482,
+        "contraction_calls": 196,
+        "estimated_calls": 286,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "asff"
+      },
+      "macs": 322455648,
+      "estimated_total_flops": 655790232,
+      "coverage": {
+        "supported_calls": 502,
+        "contraction_calls": 204,
+        "estimated_calls": 298,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "aff"
+      },
+      "macs": 322298144,
+      "estimated_total_flops": 655431120,
+      "coverage": {
+        "supported_calls": 590,
+        "contraction_calls": 220,
+        "estimated_calls": 370,
+        "non_arithmetic_calls": 336,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "identity",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322374048,
+      "estimated_total_flops": 655536592,
+      "coverage": {
+        "supported_calls": 482,
+        "contraction_calls": 200,
+        "estimated_calls": 282,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "mean"
+      },
+      "macs": 322368608,
+      "estimated_total_flops": 655593712,
+      "coverage": {
+        "supported_calls": 502,
+        "contraction_calls": 204,
+        "estimated_calls": 298,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "concat"
+      },
+      "macs": 322433888,
+      "estimated_total_flops": 655716112,
+      "coverage": {
+        "supported_calls": 502,
+        "contraction_calls": 208,
+        "estimated_calls": 294,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "signed"
+      },
+      "macs": 322412128,
+      "estimated_total_flops": 655680752,
+      "coverage": {
+        "supported_calls": 514,
+        "contraction_calls": 208,
+        "estimated_calls": 306,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "absolute"
+      },
+      "macs": 322412128,
+      "estimated_total_flops": 655686192,
+      "coverage": {
+        "supported_calls": 522,
+        "contraction_calls": 208,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "relative"
+      },
+      "macs": 322412128,
+      "estimated_total_flops": 655751472,
+      "coverage": {
+        "supported_calls": 618,
+        "contraction_calls": 208,
+        "estimated_calls": 410,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "normalized"
+      },
+      "macs": 322412128,
+      "estimated_total_flops": 655706252,
+      "coverage": {
+        "supported_calls": 550,
+        "contraction_calls": 208,
+        "estimated_calls": 342,
+        "non_arithmetic_calls": 384,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "adjacent"
+      },
+      "macs": 322412128,
+      "estimated_total_flops": 655680752,
+      "coverage": {
+        "supported_calls": 514,
+        "contraction_calls": 208,
+        "estimated_calls": 306,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322523648,
+      "estimated_total_flops": 655985584,
+      "coverage": {
+        "supported_calls": 574,
+        "contraction_calls": 220,
+        "estimated_calls": 354,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "bifpn"
+      },
+      "macs": 322368608,
+      "estimated_total_flops": 655599188,
+      "coverage": {
+        "supported_calls": 522,
+        "contraction_calls": 204,
+        "estimated_calls": 318,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "sk"
+      },
+      "macs": 322369632,
+      "estimated_total_flops": 655610000,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 212,
+        "estimated_calls": 318,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "asff"
+      },
+      "macs": 322548128,
+      "estimated_total_flops": 656127512,
+      "coverage": {
+        "supported_calls": 550,
+        "contraction_calls": 220,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "aff"
+      },
+      "macs": 322390624,
+      "estimated_total_flops": 655768400,
+      "coverage": {
+        "supported_calls": 638,
+        "contraction_calls": 236,
+        "estimated_calls": 402,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "projection",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322466528,
+      "estimated_total_flops": 655873872,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 216,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 400,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "mean"
+      },
+      "macs": 322412128,
+      "estimated_total_flops": 655632176,
+      "coverage": {
+        "supported_calls": 534,
+        "contraction_calls": 212,
+        "estimated_calls": 322,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "concat"
+      },
+      "macs": 322477408,
+      "estimated_total_flops": 655754576,
+      "coverage": {
+        "supported_calls": 534,
+        "contraction_calls": 216,
+        "estimated_calls": 318,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "signed"
+      },
+      "macs": 322455648,
+      "estimated_total_flops": 655719216,
+      "coverage": {
+        "supported_calls": 546,
+        "contraction_calls": 216,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "absolute"
+      },
+      "macs": 322455648,
+      "estimated_total_flops": 655724656,
+      "coverage": {
+        "supported_calls": 554,
+        "contraction_calls": 216,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "relative"
+      },
+      "macs": 322455648,
+      "estimated_total_flops": 655789936,
+      "coverage": {
+        "supported_calls": 650,
+        "contraction_calls": 216,
+        "estimated_calls": 434,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "normalized"
+      },
+      "macs": 322455648,
+      "estimated_total_flops": 655744716,
+      "coverage": {
+        "supported_calls": 582,
+        "contraction_calls": 216,
+        "estimated_calls": 366,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "adjacent"
+      },
+      "macs": 322455648,
+      "estimated_total_flops": 655719216,
+      "coverage": {
+        "supported_calls": 546,
+        "contraction_calls": 216,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322567168,
+      "estimated_total_flops": 656024048,
+      "coverage": {
+        "supported_calls": 606,
+        "contraction_calls": 228,
+        "estimated_calls": 378,
+        "non_arithmetic_calls": 344,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "bifpn"
+      },
+      "macs": 322412128,
+      "estimated_total_flops": 655637652,
+      "coverage": {
+        "supported_calls": 554,
+        "contraction_calls": 212,
+        "estimated_calls": 342,
+        "non_arithmetic_calls": 344,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "sk"
+      },
+      "macs": 322413152,
+      "estimated_total_flops": 655648464,
+      "coverage": {
+        "supported_calls": 562,
+        "contraction_calls": 220,
+        "estimated_calls": 342,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "asff"
+      },
+      "macs": 322591648,
+      "estimated_total_flops": 656165976,
+      "coverage": {
+        "supported_calls": 582,
+        "contraction_calls": 228,
+        "estimated_calls": 354,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "aff"
+      },
+      "macs": 322434144,
+      "estimated_total_flops": 655806864,
+      "coverage": {
+        "supported_calls": 670,
+        "contraction_calls": 244,
+        "estimated_calls": 426,
+        "non_arithmetic_calls": 336,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "legacy",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322510048,
+      "estimated_total_flops": 655912336,
+      "coverage": {
+        "supported_calls": 562,
+        "contraction_calls": 224,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "mean"
+      },
+      "macs": 322276128,
+      "estimated_total_flops": 655342112,
+      "coverage": {
+        "supported_calls": 470,
+        "contraction_calls": 188,
+        "estimated_calls": 282,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "concat"
+      },
+      "macs": 322341408,
+      "estimated_total_flops": 655464512,
+      "coverage": {
+        "supported_calls": 470,
+        "contraction_calls": 192,
+        "estimated_calls": 278,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "signed"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655429152,
+      "coverage": {
+        "supported_calls": 482,
+        "contraction_calls": 192,
+        "estimated_calls": 290,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "absolute"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655434592,
+      "coverage": {
+        "supported_calls": 490,
+        "contraction_calls": 192,
+        "estimated_calls": 298,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "relative"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655499872,
+      "coverage": {
+        "supported_calls": 586,
+        "contraction_calls": 192,
+        "estimated_calls": 394,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "normalized"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655454652,
+      "coverage": {
+        "supported_calls": 518,
+        "contraction_calls": 192,
+        "estimated_calls": 326,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "adjacent"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655429152,
+      "coverage": {
+        "supported_calls": 482,
+        "contraction_calls": 192,
+        "estimated_calls": 290,
+        "non_arithmetic_calls": 332,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322431168,
+      "estimated_total_flops": 655733984,
+      "coverage": {
+        "supported_calls": 542,
+        "contraction_calls": 204,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 344,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "bifpn"
+      },
+      "macs": 322276128,
+      "estimated_total_flops": 655347588,
+      "coverage": {
+        "supported_calls": 490,
+        "contraction_calls": 188,
+        "estimated_calls": 302,
+        "non_arithmetic_calls": 344,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "sk"
+      },
+      "macs": 322277152,
+      "estimated_total_flops": 655358400,
+      "coverage": {
+        "supported_calls": 498,
+        "contraction_calls": 196,
+        "estimated_calls": 302,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "asff"
+      },
+      "macs": 322455648,
+      "estimated_total_flops": 655875912,
+      "coverage": {
+        "supported_calls": 518,
+        "contraction_calls": 204,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 340,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "aff"
+      },
+      "macs": 322298144,
+      "estimated_total_flops": 655516800,
+      "coverage": {
+        "supported_calls": 606,
+        "contraction_calls": 220,
+        "estimated_calls": 386,
+        "non_arithmetic_calls": 336,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "resample",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322374048,
+      "estimated_total_flops": 655622272,
+      "coverage": {
+        "supported_calls": 498,
+        "contraction_calls": 200,
+        "estimated_calls": 298,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "mean"
+      },
+      "macs": 322391728,
+      "estimated_total_flops": 655763712,
+      "coverage": {
+        "supported_calls": 518,
+        "contraction_calls": 204,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "concat"
+      },
+      "macs": 322457008,
+      "estimated_total_flops": 655886112,
+      "coverage": {
+        "supported_calls": 518,
+        "contraction_calls": 208,
+        "estimated_calls": 310,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "signed"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655850752,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 208,
+        "estimated_calls": 322,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "absolute"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655856192,
+      "coverage": {
+        "supported_calls": 538,
+        "contraction_calls": 208,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "relative"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655921472,
+      "coverage": {
+        "supported_calls": 634,
+        "contraction_calls": 208,
+        "estimated_calls": 426,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "normalized"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655876252,
+      "coverage": {
+        "supported_calls": 566,
+        "contraction_calls": 208,
+        "estimated_calls": 358,
+        "non_arithmetic_calls": 384,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "adjacent"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655850752,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 208,
+        "estimated_calls": 322,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322546768,
+      "estimated_total_flops": 656155584,
+      "coverage": {
+        "supported_calls": 590,
+        "contraction_calls": 220,
+        "estimated_calls": 370,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "bifpn"
+      },
+      "macs": 322391728,
+      "estimated_total_flops": 655769188,
+      "coverage": {
+        "supported_calls": 538,
+        "contraction_calls": 204,
+        "estimated_calls": 334,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "sk"
+      },
+      "macs": 322392752,
+      "estimated_total_flops": 655780000,
+      "coverage": {
+        "supported_calls": 546,
+        "contraction_calls": 212,
+        "estimated_calls": 334,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "asff"
+      },
+      "macs": 322571248,
+      "estimated_total_flops": 656297512,
+      "coverage": {
+        "supported_calls": 566,
+        "contraction_calls": 220,
+        "estimated_calls": 346,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "aff"
+      },
+      "macs": 322413744,
+      "estimated_total_flops": 655938400,
+      "coverage": {
+        "supported_calls": 654,
+        "contraction_calls": 236,
+        "estimated_calls": 418,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "native_conv",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322489648,
+      "estimated_total_flops": 656043872,
+      "coverage": {
+        "supported_calls": 546,
+        "contraction_calls": 216,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 400,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "mean"
+      },
+      "macs": 322391728,
+      "estimated_total_flops": 655763712,
+      "coverage": {
+        "supported_calls": 518,
+        "contraction_calls": 204,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "concat"
+      },
+      "macs": 322457008,
+      "estimated_total_flops": 655886112,
+      "coverage": {
+        "supported_calls": 518,
+        "contraction_calls": 208,
+        "estimated_calls": 310,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "signed"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655850752,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 208,
+        "estimated_calls": 322,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "absolute"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655856192,
+      "coverage": {
+        "supported_calls": 538,
+        "contraction_calls": 208,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "relative"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655921472,
+      "coverage": {
+        "supported_calls": 634,
+        "contraction_calls": 208,
+        "estimated_calls": 426,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "normalized"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655876252,
+      "coverage": {
+        "supported_calls": 566,
+        "contraction_calls": 208,
+        "estimated_calls": 358,
+        "non_arithmetic_calls": 384,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "adjacent"
+      },
+      "macs": 322435248,
+      "estimated_total_flops": 655850752,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 208,
+        "estimated_calls": 322,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322546768,
+      "estimated_total_flops": 656155584,
+      "coverage": {
+        "supported_calls": 590,
+        "contraction_calls": 220,
+        "estimated_calls": 370,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "bifpn"
+      },
+      "macs": 322391728,
+      "estimated_total_flops": 655769188,
+      "coverage": {
+        "supported_calls": 538,
+        "contraction_calls": 204,
+        "estimated_calls": 334,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "sk"
+      },
+      "macs": 322392752,
+      "estimated_total_flops": 655780000,
+      "coverage": {
+        "supported_calls": 546,
+        "contraction_calls": 212,
+        "estimated_calls": 334,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "asff"
+      },
+      "macs": 322571248,
+      "estimated_total_flops": 656297512,
+      "coverage": {
+        "supported_calls": 566,
+        "contraction_calls": 220,
+        "estimated_calls": 346,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "aff"
+      },
+      "macs": 322413744,
+      "estimated_total_flops": 655938400,
+      "coverage": {
+        "supported_calls": 654,
+        "contraction_calls": 236,
+        "estimated_calls": 418,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "shared_native",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322489648,
+      "estimated_total_flops": 656043872,
+      "coverage": {
+        "supported_calls": 546,
+        "contraction_calls": 216,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 400,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "mean"
+      },
+      "macs": 322276128,
+      "estimated_total_flops": 655349112,
+      "coverage": {
+        "supported_calls": 510,
+        "contraction_calls": 188,
+        "estimated_calls": 322,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "concat"
+      },
+      "macs": 322341408,
+      "estimated_total_flops": 655471512,
+      "coverage": {
+        "supported_calls": 510,
+        "contraction_calls": 192,
+        "estimated_calls": 318,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "signed"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655436152,
+      "coverage": {
+        "supported_calls": 522,
+        "contraction_calls": 192,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "absolute"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655441592,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 192,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "relative"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655506872,
+      "coverage": {
+        "supported_calls": 626,
+        "contraction_calls": 192,
+        "estimated_calls": 434,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "normalized"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655461652,
+      "coverage": {
+        "supported_calls": 558,
+        "contraction_calls": 192,
+        "estimated_calls": 366,
+        "non_arithmetic_calls": 384,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "adjacent"
+      },
+      "macs": 322319648,
+      "estimated_total_flops": 655436152,
+      "coverage": {
+        "supported_calls": 522,
+        "contraction_calls": 192,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322431168,
+      "estimated_total_flops": 655740984,
+      "coverage": {
+        "supported_calls": 582,
+        "contraction_calls": 204,
+        "estimated_calls": 378,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "bifpn"
+      },
+      "macs": 322276128,
+      "estimated_total_flops": 655354588,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 188,
+        "estimated_calls": 342,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "sk"
+      },
+      "macs": 322277152,
+      "estimated_total_flops": 655365400,
+      "coverage": {
+        "supported_calls": 538,
+        "contraction_calls": 196,
+        "estimated_calls": 342,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "asff"
+      },
+      "macs": 322455648,
+      "estimated_total_flops": 655882912,
+      "coverage": {
+        "supported_calls": 558,
+        "contraction_calls": 204,
+        "estimated_calls": 354,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "aff"
+      },
+      "macs": 322298144,
+      "estimated_total_flops": 655523800,
+      "coverage": {
+        "supported_calls": 646,
+        "contraction_calls": 220,
+        "estimated_calls": 426,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ffp_gain",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322374048,
+      "estimated_total_flops": 655629272,
+      "coverage": {
+        "supported_calls": 538,
+        "contraction_calls": 200,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 400,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "mean"
+      },
+      "macs": 323200928,
+      "estimated_total_flops": 657359672,
+      "coverage": {
+        "supported_calls": 502,
+        "contraction_calls": 208,
+        "estimated_calls": 294,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "concat"
+      },
+      "macs": 323266208,
+      "estimated_total_flops": 657482072,
+      "coverage": {
+        "supported_calls": 502,
+        "contraction_calls": 212,
+        "estimated_calls": 290,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "signed"
+      },
+      "macs": 323244448,
+      "estimated_total_flops": 657446712,
+      "coverage": {
+        "supported_calls": 514,
+        "contraction_calls": 212,
+        "estimated_calls": 302,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "absolute"
+      },
+      "macs": 323244448,
+      "estimated_total_flops": 657452152,
+      "coverage": {
+        "supported_calls": 522,
+        "contraction_calls": 212,
+        "estimated_calls": 310,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "relative"
+      },
+      "macs": 323244448,
+      "estimated_total_flops": 657517432,
+      "coverage": {
+        "supported_calls": 618,
+        "contraction_calls": 212,
+        "estimated_calls": 406,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "normalized"
+      },
+      "macs": 323244448,
+      "estimated_total_flops": 657472212,
+      "coverage": {
+        "supported_calls": 550,
+        "contraction_calls": 212,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 384,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "adjacent"
+      },
+      "macs": 323244448,
+      "estimated_total_flops": 657446712,
+      "coverage": {
+        "supported_calls": 514,
+        "contraction_calls": 212,
+        "estimated_calls": 302,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 323355968,
+      "estimated_total_flops": 657751544,
+      "coverage": {
+        "supported_calls": 574,
+        "contraction_calls": 224,
+        "estimated_calls": 350,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "bifpn"
+      },
+      "macs": 323200928,
+      "estimated_total_flops": 657365148,
+      "coverage": {
+        "supported_calls": 522,
+        "contraction_calls": 208,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 376,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "sk"
+      },
+      "macs": 323201952,
+      "estimated_total_flops": 657375960,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 216,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "asff"
+      },
+      "macs": 323380448,
+      "estimated_total_flops": 657893472,
+      "coverage": {
+        "supported_calls": 550,
+        "contraction_calls": 224,
+        "estimated_calls": 326,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "aff"
+      },
+      "macs": 323222944,
+      "estimated_total_flops": 657534360,
+      "coverage": {
+        "supported_calls": 638,
+        "contraction_calls": 240,
+        "estimated_calls": 398,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "sfp",
+        "utilizer": "mhsiu"
+      },
+      "macs": 323298848,
+      "estimated_total_flops": 657639832,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 220,
+        "estimated_calls": 310,
+        "non_arithmetic_calls": 400,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "mean"
+      },
+      "macs": 322280480,
+      "estimated_total_flops": 655314928,
+      "coverage": {
+        "supported_calls": 491,
+        "contraction_calls": 196,
+        "estimated_calls": 295,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "concat"
+      },
+      "macs": 322345760,
+      "estimated_total_flops": 655437328,
+      "coverage": {
+        "supported_calls": 491,
+        "contraction_calls": 200,
+        "estimated_calls": 291,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "signed"
+      },
+      "macs": 322324000,
+      "estimated_total_flops": 655401968,
+      "coverage": {
+        "supported_calls": 503,
+        "contraction_calls": 200,
+        "estimated_calls": 303,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "absolute"
+      },
+      "macs": 322324000,
+      "estimated_total_flops": 655407408,
+      "coverage": {
+        "supported_calls": 511,
+        "contraction_calls": 200,
+        "estimated_calls": 311,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "relative"
+      },
+      "macs": 322324000,
+      "estimated_total_flops": 655472688,
+      "coverage": {
+        "supported_calls": 607,
+        "contraction_calls": 200,
+        "estimated_calls": 407,
+        "non_arithmetic_calls": 356,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "normalized"
+      },
+      "macs": 322324000,
+      "estimated_total_flops": 655427468,
+      "coverage": {
+        "supported_calls": 539,
+        "contraction_calls": 200,
+        "estimated_calls": 339,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "adjacent"
+      },
+      "macs": 322324000,
+      "estimated_total_flops": 655401968,
+      "coverage": {
+        "supported_calls": 503,
+        "contraction_calls": 200,
+        "estimated_calls": 303,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322435520,
+      "estimated_total_flops": 655706800,
+      "coverage": {
+        "supported_calls": 563,
+        "contraction_calls": 212,
+        "estimated_calls": 351,
+        "non_arithmetic_calls": 360,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "bifpn"
+      },
+      "macs": 322280480,
+      "estimated_total_flops": 655320404,
+      "coverage": {
+        "supported_calls": 511,
+        "contraction_calls": 196,
+        "estimated_calls": 315,
+        "non_arithmetic_calls": 360,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "sk"
+      },
+      "macs": 322281504,
+      "estimated_total_flops": 655331216,
+      "coverage": {
+        "supported_calls": 519,
+        "contraction_calls": 204,
+        "estimated_calls": 315,
+        "non_arithmetic_calls": 356,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "asff"
+      },
+      "macs": 322460000,
+      "estimated_total_flops": 655848728,
+      "coverage": {
+        "supported_calls": 539,
+        "contraction_calls": 212,
+        "estimated_calls": 327,
+        "non_arithmetic_calls": 356,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "aff"
+      },
+      "macs": 322302496,
+      "estimated_total_flops": 655489616,
+      "coverage": {
+        "supported_calls": 627,
+        "contraction_calls": 228,
+        "estimated_calls": 399,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "ppm",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322378400,
+      "estimated_total_flops": 655595088,
+      "coverage": {
+        "supported_calls": 519,
+        "contraction_calls": 208,
+        "estimated_calls": 311,
+        "non_arithmetic_calls": 384,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "mean"
+      },
+      "macs": 322667808,
+      "estimated_total_flops": 656115952,
+      "coverage": {
+        "supported_calls": 478,
+        "contraction_calls": 196,
+        "estimated_calls": 282,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "concat"
+      },
+      "macs": 322733088,
+      "estimated_total_flops": 656238352,
+      "coverage": {
+        "supported_calls": 478,
+        "contraction_calls": 200,
+        "estimated_calls": 278,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "signed"
+      },
+      "macs": 322711328,
+      "estimated_total_flops": 656202992,
+      "coverage": {
+        "supported_calls": 490,
+        "contraction_calls": 200,
+        "estimated_calls": 290,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "absolute"
+      },
+      "macs": 322711328,
+      "estimated_total_flops": 656208432,
+      "coverage": {
+        "supported_calls": 498,
+        "contraction_calls": 200,
+        "estimated_calls": 298,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "relative"
+      },
+      "macs": 322711328,
+      "estimated_total_flops": 656273712,
+      "coverage": {
+        "supported_calls": 594,
+        "contraction_calls": 200,
+        "estimated_calls": 394,
+        "non_arithmetic_calls": 356,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "normalized"
+      },
+      "macs": 322711328,
+      "estimated_total_flops": 656228492,
+      "coverage": {
+        "supported_calls": 526,
+        "contraction_calls": 200,
+        "estimated_calls": 326,
+        "non_arithmetic_calls": 368,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "adjacent"
+      },
+      "macs": 322711328,
+      "estimated_total_flops": 656202992,
+      "coverage": {
+        "supported_calls": 490,
+        "contraction_calls": 200,
+        "estimated_calls": 290,
+        "non_arithmetic_calls": 348,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322822848,
+      "estimated_total_flops": 656507824,
+      "coverage": {
+        "supported_calls": 550,
+        "contraction_calls": 212,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 360,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "bifpn"
+      },
+      "macs": 322667808,
+      "estimated_total_flops": 656121428,
+      "coverage": {
+        "supported_calls": 498,
+        "contraction_calls": 196,
+        "estimated_calls": 302,
+        "non_arithmetic_calls": 360,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "sk"
+      },
+      "macs": 322668832,
+      "estimated_total_flops": 656132240,
+      "coverage": {
+        "supported_calls": 506,
+        "contraction_calls": 204,
+        "estimated_calls": 302,
+        "non_arithmetic_calls": 356,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "asff"
+      },
+      "macs": 322847328,
+      "estimated_total_flops": 656649752,
+      "coverage": {
+        "supported_calls": 526,
+        "contraction_calls": 212,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 356,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "aff"
+      },
+      "macs": 322689824,
+      "estimated_total_flops": 656290640,
+      "coverage": {
+        "supported_calls": 614,
+        "contraction_calls": 228,
+        "estimated_calls": 386,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "aspp",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322765728,
+      "estimated_total_flops": 656396112,
+      "coverage": {
+        "supported_calls": 506,
+        "contraction_calls": 208,
+        "estimated_calls": 298,
+        "non_arithmetic_calls": 384,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "mean"
+      },
+      "macs": 342306208,
+      "estimated_total_flops": 695583152,
+      "coverage": {
+        "supported_calls": 482,
+        "contraction_calls": 200,
+        "estimated_calls": 282,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "concat"
+      },
+      "macs": 342371488,
+      "estimated_total_flops": 695705552,
+      "coverage": {
+        "supported_calls": 482,
+        "contraction_calls": 204,
+        "estimated_calls": 278,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "signed"
+      },
+      "macs": 342349728,
+      "estimated_total_flops": 695670192,
+      "coverage": {
+        "supported_calls": 494,
+        "contraction_calls": 204,
+        "estimated_calls": 290,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "absolute"
+      },
+      "macs": 342349728,
+      "estimated_total_flops": 695675632,
+      "coverage": {
+        "supported_calls": 502,
+        "contraction_calls": 204,
+        "estimated_calls": 298,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "relative"
+      },
+      "macs": 342349728,
+      "estimated_total_flops": 695740912,
+      "coverage": {
+        "supported_calls": 598,
+        "contraction_calls": 204,
+        "estimated_calls": 394,
+        "non_arithmetic_calls": 360,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "normalized"
+      },
+      "macs": 342349728,
+      "estimated_total_flops": 695695692,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 204,
+        "estimated_calls": 326,
+        "non_arithmetic_calls": 372,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "adjacent"
+      },
+      "macs": 342349728,
+      "estimated_total_flops": 695670192,
+      "coverage": {
+        "supported_calls": 494,
+        "contraction_calls": 204,
+        "estimated_calls": 290,
+        "non_arithmetic_calls": 352,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 342461248,
+      "estimated_total_flops": 695975024,
+      "coverage": {
+        "supported_calls": 554,
+        "contraction_calls": 216,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "bifpn"
+      },
+      "macs": 342306208,
+      "estimated_total_flops": 695588628,
+      "coverage": {
+        "supported_calls": 502,
+        "contraction_calls": 200,
+        "estimated_calls": 302,
+        "non_arithmetic_calls": 364,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "sk"
+      },
+      "macs": 342307232,
+      "estimated_total_flops": 695599440,
+      "coverage": {
+        "supported_calls": 510,
+        "contraction_calls": 208,
+        "estimated_calls": 302,
+        "non_arithmetic_calls": 360,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "asff"
+      },
+      "macs": 342485728,
+      "estimated_total_flops": 696116952,
+      "coverage": {
+        "supported_calls": 530,
+        "contraction_calls": 216,
+        "estimated_calls": 314,
+        "non_arithmetic_calls": 360,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "aff"
+      },
+      "macs": 342328224,
+      "estimated_total_flops": 695757840,
+      "coverage": {
+        "supported_calls": 618,
+        "contraction_calls": 232,
+        "estimated_calls": 386,
+        "non_arithmetic_calls": 356,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "carafe",
+        "utilizer": "mhsiu"
+      },
+      "macs": 342404128,
+      "estimated_total_flops": 695863312,
+      "coverage": {
+        "supported_calls": 510,
+        "contraction_calls": 212,
+        "estimated_calls": 298,
+        "non_arithmetic_calls": 388,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "mean"
+      },
+      "macs": 322363168,
+      "estimated_total_flops": 655602128,
+      "coverage": {
+        "supported_calls": 514,
+        "contraction_calls": 192,
+        "estimated_calls": 322,
+        "non_arithmetic_calls": 388,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "concat"
+      },
+      "macs": 322428448,
+      "estimated_total_flops": 655724528,
+      "coverage": {
+        "supported_calls": 514,
+        "contraction_calls": 196,
+        "estimated_calls": 318,
+        "non_arithmetic_calls": 388,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "signed"
+      },
+      "macs": 322406688,
+      "estimated_total_flops": 655689168,
+      "coverage": {
+        "supported_calls": 526,
+        "contraction_calls": 196,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 388,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "absolute"
+      },
+      "macs": 322406688,
+      "estimated_total_flops": 655694608,
+      "coverage": {
+        "supported_calls": 534,
+        "contraction_calls": 196,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 388,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "relative"
+      },
+      "macs": 322406688,
+      "estimated_total_flops": 655759888,
+      "coverage": {
+        "supported_calls": 630,
+        "contraction_calls": 196,
+        "estimated_calls": 434,
+        "non_arithmetic_calls": 396,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "normalized"
+      },
+      "macs": 322406688,
+      "estimated_total_flops": 655714668,
+      "coverage": {
+        "supported_calls": 562,
+        "contraction_calls": 196,
+        "estimated_calls": 366,
+        "non_arithmetic_calls": 408,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "adjacent"
+      },
+      "macs": 322406688,
+      "estimated_total_flops": 655689168,
+      "coverage": {
+        "supported_calls": 526,
+        "contraction_calls": 196,
+        "estimated_calls": 330,
+        "non_arithmetic_calls": 388,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "legacy_gated"
+      },
+      "macs": 322518208,
+      "estimated_total_flops": 655994000,
+      "coverage": {
+        "supported_calls": 586,
+        "contraction_calls": 208,
+        "estimated_calls": 378,
+        "non_arithmetic_calls": 400,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "bifpn"
+      },
+      "macs": 322363168,
+      "estimated_total_flops": 655607604,
+      "coverage": {
+        "supported_calls": 534,
+        "contraction_calls": 192,
+        "estimated_calls": 342,
+        "non_arithmetic_calls": 400,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "sk"
+      },
+      "macs": 322364192,
+      "estimated_total_flops": 655618416,
+      "coverage": {
+        "supported_calls": 542,
+        "contraction_calls": 200,
+        "estimated_calls": 342,
+        "non_arithmetic_calls": 396,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "asff"
+      },
+      "macs": 322542688,
+      "estimated_total_flops": 656135928,
+      "coverage": {
+        "supported_calls": 562,
+        "contraction_calls": 208,
+        "estimated_calls": 354,
+        "non_arithmetic_calls": 396,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "aff"
+      },
+      "macs": 322385184,
+      "estimated_total_flops": 655776816,
+      "coverage": {
+        "supported_calls": 650,
+        "contraction_calls": 224,
+        "estimated_calls": 426,
+        "non_arithmetic_calls": 392,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "generator": "dysample",
+        "utilizer": "mhsiu"
+      },
+      "macs": 322461088,
+      "estimated_total_flops": 655882288,
+      "coverage": {
+        "supported_calls": 542,
+        "contraction_calls": 204,
+        "estimated_calls": 338,
+        "non_arithmetic_calls": 424,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "baseline": true
+      },
+      "macs": 322276128,
+      "estimated_total_flops": 655248272,
+      "coverage": {
+        "supported_calls": 450,
+        "contraction_calls": 188,
+        "estimated_calls": 262,
+        "non_arithmetic_calls": 328,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    },
+    {
+      "config": {
+        "legacy_reference": true
+      },
+      "macs": 323127488,
+      "estimated_total_flops": 657561076,
+      "coverage": {
+        "supported_calls": 874,
+        "contraction_calls": 300,
+        "estimated_calls": 574,
+        "non_arithmetic_calls": 365,
+        "unsupported_calls": 0,
+        "all_observed_ops_classified": true,
+        "unsupported_operators": [],
+        "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+      }
+    }
+  ]
+}
