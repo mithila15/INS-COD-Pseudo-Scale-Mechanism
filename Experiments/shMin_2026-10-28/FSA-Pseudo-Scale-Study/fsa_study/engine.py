@@ -20,7 +20,7 @@ import torch.nn.functional as F
 from PIL import Image
 from torch.utils.data import DataLoader
 
-from .data import CODDataset, load_manifest, sha256_file
+from .data import CODDataset, audit_geometry, geometry_protocol, load_manifest, sha256_file
 
 
 def seed_everything(seed, determinism="warn"):
@@ -330,6 +330,10 @@ def evaluate(args):
     manifest, root = load_manifest(args.manifest, verify_files=True, data_root=args.data_root)
     if not any(record["split"] == args.split for record in manifest["records"]):
         raise ValueError(f"Manifest has no samples for requested split {args.split}")
+    policy = getattr(args, "test_geometry", "strict")
+    geometry = audit_geometry(manifest, root, args.split, policy)
+    print(json.dumps({"geometry_preflight": {key: geometry[key] for key in
+                                            ("policy", "split", "checked_pairs", "dataset_counts", "mismatch_count")}}), flush=True)
     if args.split == "test":
         _official_metrics()
     checkpoint_path = Path(args.checkpoint).expanduser().resolve(strict=True)
@@ -342,16 +346,21 @@ def evaluate(args):
     model.load_state_dict(checkpoint["model"], strict=True)
     model.to(args.device)
     size = checkpoint["run_config"]["size"]
-    dataset = CODDataset(manifest, root, args.split, size, checkpoint["model_config"]["seed"])
+    dataset = CODDataset(manifest, root, args.split, size, checkpoint["model_config"]["seed"], geometry_policy=policy)
     loader = _loader(dataset, args.batch_size, args.workers, checkpoint["model_config"]["seed"])
     output = Path(args.output).expanduser().resolve()
     output.mkdir(parents=True, exist_ok=False)
+    _json_write(output / "geometry_audit.json", geometry)
     results = evaluate_model(model, loader, args.device, official=args.split == "test", output=output,
                              save_predictions=not getattr(args, "no_save_predictions", False))
     results.update({"split": args.split, "checkpoint": str(checkpoint_path),
                     "checkpoint_sha256": sha256_file(checkpoint_path), "epoch": checkpoint["epoch"],
                     "model_config": checkpoint["model_config"], "manifest_sha256": manifest["content_sha256"],
                     "environment": _environment(), "source_sha256": _source_hashes()})
+    results.update({"geometry_protocol": geometry_protocol(policy), "geometry_audit": geometry})
+    if "artifacts" in results:
+        results["artifacts"]["geometry_audit"] = "geometry_audit.json"
+        results["artifacts"]["sha256"]["geometry_audit.json"] = sha256_file(output / "geometry_audit.json")
     _json_write(output / "metrics.json", results)
     print(json.dumps(results, indent=2, allow_nan=False))
     return output

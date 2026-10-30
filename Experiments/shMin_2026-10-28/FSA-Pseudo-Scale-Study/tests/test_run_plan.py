@@ -100,6 +100,11 @@ def test_skip_completed_checks_matching_plan_and_checkpoint(tmp_path):
                "metric_protocol": METRIC_PROTOCOL, "metric_protocol_details": protocol_details()}
     (run / "test/metrics.json").write_text(json.dumps(metrics))
     assert completed(job, "evaluate")
+    # An old strict evaluation must not be silently reused for an opt-in policy.
+    job["evaluate"].extend(["--test-geometry", "resize-prediction-to-gt"])
+    with pytest.raises(ValueError, match="different geometry policy"):
+        completed(job, "evaluate")
+    del job["evaluate"][-2:]
     calls = []
     assert execute_plan(path, actions=["train", "evaluate"], skip_completed=True,
                         run_command=lambda command, **k: calls.append(command) or SimpleNamespace(returncode=0)) == 0
@@ -118,6 +123,20 @@ def test_skip_rejects_changed_training_configuration(tmp_path):
     path.write_text(json.dumps(config))
     with pytest.raises(ValueError, match="configuration disagrees"):
         completed(job, "train")
+
+
+def test_opt_in_completion_requires_saved_geometry_audit(tmp_path):
+    from fsa_study.data import geometry_protocol
+    _, job = plan_fixture(tmp_path)
+    run = completed_train(job)
+    job["evaluate"].extend(["--test-geometry", "resize-prediction-to-gt"])
+    (run / "test").mkdir()
+    metrics = {"checkpoint_sha256": sha256_file(run / "best.pth"), "split": "test",
+               "manifest_sha256": "fixture", "model_config": {"seed": 7},
+               "geometry_protocol": geometry_protocol("resize-prediction-to-gt")}
+    (run / "test/metrics.json").write_text(json.dumps(metrics))
+    with pytest.raises(ValueError, match="missing its geometry audit"):
+        completed(job, "evaluate")
 
 
 def test_plan_rejects_duplicate_run_destinations(tmp_path):

@@ -1,4 +1,4 @@
-# 2026-10-29 · Pseudo-Scale Study — 방법별 비교 기준과 실험 조건
+# 2026-10-30 · Pseudo-Scale Study — 방법별 비교 기준·실험 조건·평가 복구
 
 [English](README.md) | **한국어** | [실행 안내](../../../README.ko.md) | [환경 설정](environment/README.ko.md)
 
@@ -106,6 +106,38 @@ flowchart LR
 
 테스트 평가는 21개 수치, 이미지별 CSV, 원본 크기 확률 PNG, PR/Fβ/E 곡선 CSV+SVG+PNG를 저장한다. 비용 측정에는 MACs·행렬/합성곱 FLOPs·별도 비행렬 추정량·연산 커버리지를 추가했다. [지표 정의·근거·보고 규칙](docs/EVALUATION.ko.md)과 [대표 실행 안내](../../../README.ko.md)를 참고한다. 과거 결과는 보존하며 확장 평가에 별도 프로토콜을 부여한다.
 
+## 테스트 이미지·마스크 크기 불일치 복구
+
+사용자가 제공한 우선 실험 로그에서 `single`은 150 epoch 학습을 완료했고, 이후 `chameleon_test/animal-62` 평가에서 멈췄다. 이미지가 1000×628, 마스크가 998×628(가로×세로)이어서 이전 로더의 크기 검사를 통과하지 못했다. 완료된 학습을 재사용할 수 있으므로 이 오류 때문에 `single`을 다시 학습할 필요는 없다.
+
+`run_study.py evaluate`의 기본값은 계속 `--test-geometry strict`다. 테스트 평가에서 `--test-geometry resize-prediction-to-gt`를 명시하면 원본 이미지와 마스크의 크기가 달라도 평가한다. 이미지는 기존 모델 입력 크기로 변환하고, **예측만 원본 GT 크기로 bilinear 보간**한 뒤 지표를 계산한다. 원본 이미지·마스크·manifest를 수정하거나 표본을 제외·자르지 않는다. 학습 및 validation의 크기 일치 검사는 유지하므로 `best.pth` 선택 조건도 유지된다.
+
+평가는 모델 추론 전에 선택된 모든 쌍을 검사하고 정책과 크기를 `geometry_audit.json` 및 평가 메타데이터에 기록한다. 이 크기 처리 방식은 GT 크기로 예측을 복원하는 [SINet 공식 테스트 코드](https://github.com/DengPingFan/SINet/blob/master/MyTest.py#L24-L45)와 원본 GT 해상도를 유지하는 [테스트 로더](https://github.com/DengPingFan/SINet/blob/master/Src/utils/Dataloader.py#L66-L89)를 근거로 한다(확인일 2026-10-30). 크기 처리 규약을 참고한 것이며 이 실험의 기존 정규화·보간 설정은 유지한다. 크기 검사는 이미지와 마스크의 의미적 정합을 입증하지 않는다. 실제 서버의 `animal-62` 원본 쌍은 로컬에서 확인하지 못했으므로 정합 여부는 미검증이다.
+
+수정본으로 저장소를 업데이트한 뒤 아래 명령을 해당 서버에서 실행한다. 첫 블록은 **복구 계획만 생성**한다. 기존 manifest·backbone 가중치·run 폴더·체크포인트를 재사용하고, 완료된 학습을 건너뛸 수 있는지 확인하며, 평가는 새 하위 폴더로 보낸다. 이전 평가가 남긴 `test/`와 원래 plan·로그는 보존한다.
+
+```bash
+REPO="/home/master/mithila/INS_COD"
+STUDY="$REPO/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+PY="$REPO/.venv/fsa-study-clean/bin/python"
+RUN="$STUDY/results/priority8-seed3407-20261030_114816"
+STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
+RECOVERY="$RUN/plans/geometry-recovery-$STAMP"
+"$PY" "$STUDY/recover_evaluation.py" \
+  --plan "$RUN/plans/priority8/plan.json" \
+  --output "$RECOVERY" \
+  --evaluation-subdir "test-geometry-v1-$STAMP"
+```
+
+**같은 터미널**에서 다음 명령을 실행하면 검증된 완료 학습은 건너뛰고, 기존 baseline 평가·profiling → 나머지 예정 모델의 학습·평가·profiling을 진행한다. 중단된 optimizer 상태를 이어 학습하는 기능은 아니며, 미완료 학습 폴더가 있으면 오류를 유지하고 확인을 요구한다.
+
+```bash
+set -o pipefail
+PYTHONUNBUFFERED=1 bash "$RECOVERY/run_all.sh" 2>&1 | tee "$RECOVERY/run.log"
+```
+
+각 실험의 21개 테스트 지표는 `$RUN` 아래 `runs/priority8/<variant>__seed3407/test-geometry-v1-<timestamp>/metrics.json`에 저장하고, 같은 폴더에 크기 검사 기록을 둔다. 새 리더보드는 `$RECOVERY/leaderboard/leaderboard.html`이며 터미널용 `leaderboard.md`도 있다. 기존 학습 소스 해시를 보존하므로 이전 baseline과 수정 코드로 학습한 모델은 서로 다른 비교 그룹에 표시될 수 있다. 하나의 순위를 만들기 위해 출처 정보를 지우지 말고, 기록된 코드 차이를 확인해 그룹을 해석한다. Epoch 로그에는 validation MAE가 나오며 전체 21개 지표는 각 테스트 평가가 끝난 뒤 생성된다.
+
 ## 참고 논문
 
 확인일 **2026-10-28**. 한국어 제목은 이해를 위한 번역이다. 전체 논문의 재현이 아닌 아이디어 적용 실험이다. 공식 출처·발표처·수식·수정 범위는 [GENERATION](docs/GENERATION.md)과 [UTILIZATION](docs/UTILIZATION.md)에 보존한다.
@@ -129,4 +161,6 @@ flowchart LR
 
 [기존 검증 기록](results/verification-2026-10-28/README.md)은 281 tests + 67 subtests 통과이며 전체 156개 모듈 조합, 공통 초기화, 원본 연산 일치, 데이터·체크포인트, CPU/GPU 추론을 포함한다. Optimizer step, 실제 데이터 학습, 데이터 다운로드는 실행하지 않았다. 실제 사전학습 파일 로딩·수렴·정확도 순위는 미검증이다. [연구 기록](../../../Progress/2026-10-28/Pseudo-Scale-Study/README.md)에서 코드 관측과 가설을 구분한다.
 
-최신 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](results/verification-2026-10-29-metrics/README.md).
+2026-10-29 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](results/verification-2026-10-29-metrics/README.md).
+
+2026-10-30 크기 불일치 복구 검증: **557 tests + 67 subtests 통과**. 이미지 1000×628 / GT 998×628을 합성 데이터로 재현하여 21개 유한 지표, 입력·checkpoint 바이트 보존, train/val 엄격 검사와 기존 모델을 재사용하는 복구 순서를 확인했다. 학습·다운로드는 실행하지 않았고 실제 서버 원본 쌍은 미검증이다. [검증 산출물](results/verification-2026-10-30-geometry/README.md) · [변경 기록](../../../Progress/2026-10-30/Geometry-Recovery/README.md).

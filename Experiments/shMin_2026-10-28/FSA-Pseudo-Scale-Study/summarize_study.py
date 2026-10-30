@@ -8,7 +8,7 @@ import math
 from pathlib import Path
 import statistics
 import tempfile
-from fsa_study.data import sha256_file
+from fsa_study.data import geometry_protocol, sha256_file
 from fsa_study.leaderboard import build_leaderboard, write_leaderboard
 
 
@@ -100,6 +100,7 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
             if not (run / "best.pth").exists() or metrics.get("checkpoint_sha256") != sha256_file(run / "best.pth"):
                 raise ValueError(f"Evaluation did not use this run's selected best checkpoint: {metric_path}")
             test_protocol = {**protocol, "metric_protocol": metrics.get("metric_protocol"),
+                             "geometry_protocol": metrics.get("geometry_protocol", geometry_protocol("strict")),
                              "metric_protocol_details": metrics.get("metric_protocol_details"),
                              "prediction_protocol": metrics.get("prediction_protocol"),
                              "evaluation_source_sha256": metrics.get("source_sha256"),

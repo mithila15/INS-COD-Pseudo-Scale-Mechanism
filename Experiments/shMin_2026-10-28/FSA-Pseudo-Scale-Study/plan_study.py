@@ -47,6 +47,7 @@ def main():
     parser.add_argument("--channels", type=int, default=48)
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--evaluation-subdir", default="test", help="New relative evaluation folder inside each run")
+    parser.add_argument("--test-geometry", choices=["strict", "resize-prediction-to-gt"], default="strict")
     parser.add_argument("--profile-name", default="profile.json", help="New relative profile filename inside each run")
     init = parser.add_mutually_exclusive_group(required=True)
     init.add_argument("--backbone-weights")
@@ -79,7 +80,8 @@ def main():
             train += ["--backbone-weights", args.backbone_weights] if args.backbone_weights else ["--random-init"]
             evaluate = base + ["evaluate", "--manifest", args.manifest, "--checkpoint", str(run / "best.pth"),
                                "--split", "test", "--output", str(run / args.evaluation_subdir), "--device", args.device,
-                               "--batch-size", str(args.batch_size), "--workers", str(args.workers)]
+                               "--batch-size", str(args.batch_size), "--workers", str(args.workers),
+                               "--test-geometry", args.test_geometry]
             profile = [args.python, str(HERE / "profile_study.py"), "--checkpoint", str(run / "best.pth"),
                        "--output", str(run / args.profile_name), "--device", args.device,
                        "--size", str(args.size), "--batch-size", "1"]

@@ -109,6 +109,16 @@ def completed(job, action):
             or artifact.get("model_config") != config.get("model_config")):
         raise ValueError(f"Existing evaluation metadata disagrees with plan: {path}")
     if action == "evaluate":
+        from fsa_study.data import geometry_protocol
+        requested_geometry = build_parser().parse_args(command[2:]).test_geometry
+        recorded_geometry = artifact.get("geometry_protocol", geometry_protocol("strict"))
+        if recorded_geometry != geometry_protocol(requested_geometry):
+            raise ValueError(f"Existing evaluation uses a different geometry policy; use a new evaluation subdirectory: {path}")
+        if requested_geometry != "strict" and (
+                artifact.get("geometry_audit", {}).get("policy") != requested_geometry
+                or artifact.get("artifacts", {}).get("geometry_audit") != "geometry_audit.json"
+                or "geometry_audit.json" not in artifact.get("artifacts", {}).get("sha256", {})):
+            raise ValueError(f"Existing evaluation is missing its geometry audit; use a new evaluation subdirectory: {path}")
         from fsa_study.metrics import METRIC_PROTOCOL, METRIC_KEYS, protocol_details
         if (artifact.get("metric_protocol") != METRIC_PROTOCOL
                 or artifact.get("metric_protocol_details") != protocol_details()

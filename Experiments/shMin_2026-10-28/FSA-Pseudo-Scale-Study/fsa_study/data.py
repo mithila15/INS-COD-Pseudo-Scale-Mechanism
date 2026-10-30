@@ -8,6 +8,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff"}
+GEOMETRY_POLICIES = ("strict", "resize-prediction-to-gt")
 SOURCES = {
     "cod10k_train": ("cod10k", "train", "COD10K-v3/Train/Image", "COD10K-v3/Train/GT_Object", 3040),
     "camo_train": ("camo", "train", "CAMO-V.1.0-CVIU2019/Images/Train", "CAMO-V.1.0-CVIU2019/GT", 1000),
@@ -208,15 +209,74 @@ def load_manifest(path, verify_files=True, data_root=None):
     return manifest, root
 
 
+def geometry_protocol(policy="strict"):
+    if policy not in GEOMETRY_POLICIES:
+        raise ValueError(f"Unknown geometry policy: {policy}")
+    return {"version": 1, "policy": policy, "prediction_grid": "original GT mask height/width",
+            "prediction_resize": "bilinear; align_corners=False; after model-resolution min-max",
+            "ground_truth": "original bytes and resolution; no crop, resize or sample exclusion",
+            "alignment": "full-image normalized coordinates; registration is not verified"}
+
+
+def _validate_geometry_policy(split, policy):
+    geometry_protocol(policy)
+    if split not in {"train", "val", "test"}:
+        raise ValueError(f"Unknown split: {split}")
+    if policy != "strict" and split != "test":
+        raise ValueError("resize-prediction-to-gt is allowed only for test; train/val remain strict")
+
+
+def audit_geometry(manifest, root, split="test", policy="strict"):
+    """Inspect every selected pair before inference; never modify input files.
+
+    A size difference is recorded, not interpreted as a verified registration.
+    The opt-in policy uses the evaluator's existing prediction-to-GT mapping.
+    """
+    from PIL import Image
+
+    _validate_geometry_policy(split, policy)
+    root = Path(root)
+    counts, mismatches = Counter(), []
+    for record in manifest["records"]:
+        if record["split"] != split:
+            continue
+        sizes = {}
+        for kind in ("image", "mask"):
+            with Image.open(root / record[kind]) as handle:
+                sizes[kind] = list(handle.size)
+                handle.verify()
+        counts[record["dataset"]] += 1
+        if sizes["image"] != sizes["mask"]:
+            mismatches.append({key: record[key] for key in ("id", "dataset", "image", "mask")}
+                              | {"image_size": sizes["image"], "mask_size": sizes["mask"]})
+    if not counts:
+        raise ValueError(f"No samples for split {split}")
+    report = {"policy": policy, "split": split, "checked_pairs": sum(counts.values()),
+              "dataset_counts": dict(sorted(counts.items())), "mismatch_count": len(mismatches),
+              "mismatches": mismatches, "manifest_sha256": manifest.get("content_sha256"),
+              "protocol": geometry_protocol(policy)}
+    if mismatches and policy == "strict":
+        first = mismatches[0]
+        hint = (" For test-only prediction-to-original-GT evaluation, explicitly select "
+                "--test-geometry resize-prediction-to-gt and use a fresh output directory."
+                if split == "test" else "")
+        raise ValueError(f"Image/mask geometry mismatch for {first['id']}: "
+                         f"{tuple(first['image_size'])} != {tuple(first['mask_size'])}; "
+                         f"{len(mismatches)} mismatched {split} pairs.{hint}")
+    return report
+
+
 class CODDataset:
     """Lazy-import dataset: deterministic augmentation keyed by seed/epoch/sample ID."""
 
-    def __init__(self, manifest, root, split, size=384, seed=0):
+    def __init__(self, manifest, root, split, size=384, seed=0, geometry_policy="strict"):
+        _validate_geometry_policy(split, geometry_policy)
         self.records = [record for record in manifest["records"] if record["split"] == split]
         if not self.records:
             raise ValueError(f"No samples for split {split}")
         self.root, self.split = Path(root), split
         self.size, self.seed, self.epoch = int(size), int(seed), 0
+        self.geometry_policy = geometry_policy
 
     def __len__(self):
         return len(self.records)
@@ -232,7 +292,7 @@ class CODDataset:
             image = handle.convert("RGB")
         with Image.open(self.root / record["mask"]) as handle:
             mask = handle.convert("L")
-        if image.size != mask.size:
+        if image.size != mask.size and self.geometry_policy == "strict":
             raise ValueError(f"Image/mask geometry mismatch for {record['id']}: {image.size} != {mask.size}")
         if self.split == "train":
             rng = random.Random(f"{self.seed}:{self.epoch}:{record['id']}")

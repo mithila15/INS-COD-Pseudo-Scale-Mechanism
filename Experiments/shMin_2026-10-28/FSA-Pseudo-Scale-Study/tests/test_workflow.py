@@ -112,6 +112,21 @@ def test_summary_duplicate_seed_rejected(tmp_path):
         aggregate(tmp_path)
 
 
+def test_summary_separates_geometry_policies_without_changing_training_cohort(tmp_path):
+    from fsa_study.data import geometry_protocol
+    _fake_run(tmp_path, "strict", seed=1)
+    run = _fake_run(tmp_path, "opt-in", seed=2)
+    path = run / "test/metrics.json"
+    metrics = json.loads(path.read_text())
+    metrics["geometry_protocol"] = geometry_protocol("resize-prediction-to-gt")
+    _write(path, metrics)
+    report = aggregate(tmp_path)
+    test_rows = [r for r in report["rows"] if r["dataset"] == "cod10k" and r["metric"] == "MAE"]
+    validation_rows = [r for r in report["rows"] if r["dataset"] == "validation"]
+    assert len(test_rows) == 2 and all(r["n"] == 1 for r in test_rows)
+    assert len(validation_rows) == 1 and validation_rows[0]["n"] == 2
+
+
 @pytest.mark.parametrize("corruption,message", [
     ("manifest", "Mismatched test metadata"),
     ("variant", "Mismatched test metadata"),

@@ -1,4 +1,4 @@
-# 2026-10-29 · Pseudo-Scale Study — Methods and comparison protocol
+# 2026-10-30 · Pseudo-Scale Study — Methods, comparison protocol and evaluation recovery
 
 **English** | [한국어](README.ko.md) | [Execution guide](../../../README.md) | [Environment setup](environment/README.md)
 
@@ -106,6 +106,38 @@ The planned `run_all.sh` executes training, test evaluation and profiling per ru
 
 Test evaluation now exports 21 scalar scores, per-image CSV, original-size probability PNGs and PR/Fβ/E curves as CSV+SVG+PNG. Profiling adds MACs, contraction FLOPs, a separate noncontraction estimate and operator coverage. See [metric definitions, references and reporting rules](docs/EVALUATION.md) and the [main execution guide](../../../README.md). Historical results are preserved; expanded evaluations have their own metric protocol.
 
+## Recover a test image/mask size mismatch
+
+The reported priority run finished `single` training at epoch 150, then stopped while evaluating `chameleon_test/animal-62`: the image is 1000×628 and its mask is 998×628 (width×height). The previous loader rejected this pair before prediction. Completed training can be reused; this failure does not require retraining `single`.
+
+`run_study.py evaluate` keeps `--test-geometry strict` as its default. For test evaluation, explicitly select `--test-geometry resize-prediction-to-gt` to allow different source dimensions. The image is resized to the existing model input size, and the prediction is bilinearly resized to the **original GT grid** before scoring. Raw images, masks and the manifest remain unchanged; no sample is dropped or cropped. Train and validation pairs still require matching dimensions, including validation used to select `best.pth`.
+
+Evaluation audits every selected pair before model inference and records the policy and dimensions in `geometry_audit.json` and evaluation metadata. The size convention is supported by [SINet's official test script](https://github.com/DengPingFan/SINet/blob/master/MyTest.py#L24-L45), which restores predictions using GT dimensions, and its [test loader](https://github.com/DengPingFan/SINet/blob/master/Src/utils/Dataloader.py#L66-L89), which leaves GT resolution intact (checked 2026-10-30). This follows only the dimension convention; the study retains its existing normalization/interpolation settings. Dimension checks cannot prove image/mask semantic alignment. The actual remote `animal-62` pair has not been inspected locally, so its registration remains unverified.
+
+After updating this checkout to the fix, use the following on the reported server. The first block **only prepares a recovery plan**. It reuses the original manifest, backbone weights, run folders and checkpoints; verifies completed training for skipping; and redirects evaluations into a fresh subdirectory. The old partial `test/`, original plan and log remain available.
+
+```bash
+REPO="/home/master/mithila/INS_COD"
+STUDY="$REPO/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+PY="$REPO/.venv/fsa-study-clean/bin/python"
+RUN="$STUDY/results/priority8-seed3407-20261030_114816"
+STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
+RECOVERY="$RUN/plans/geometry-recovery-$STAMP"
+"$PY" "$STUDY/recover_evaluation.py" \
+  --plan "$RUN/plans/priority8/plan.json" \
+  --output "$RECOVERY" \
+  --evaluation-subdir "test-geometry-v1-$STAMP"
+```
+
+In the **same terminal**, the next command starts execution: skip verified completed training, evaluate/profile the existing baseline, and train/evaluate/profile the remaining planned variants. It does not resume an interrupted optimizer state; an incomplete training directory remains an error to inspect.
+
+```bash
+set -o pipefail
+PYTHONUNBUFFERED=1 bash "$RECOVERY/run_all.sh" 2>&1 | tee "$RECOVERY/run.log"
+```
+
+Each run saves 21 test scores to `runs/priority8/<variant>__seed3407/test-geometry-v1-<timestamp>/metrics.json` under `$RUN`, with the geometry audit beside them. The new leaderboard is `$RECOVERY/leaderboard/leaderboard.html` (or `leaderboard.md` for terminal reading). Existing training-source hashes are preserved: the old baseline and variants trained with updated code may appear in separate comparison groups. Do not erase provenance to force one ranking; inspect the recorded code change when interpreting those groups. Epoch logs still report validation MAE; the full 21 metrics appear after each completed test evaluation.
+
 ## Referenced papers
 
 Checked on **2026-10-28**. Korean title translations are provided in the [Korean version](README.ko.md). These are adaptations, not full-paper reproductions. The original source, venue, formulas and precise changes are retained in [GENERATION](docs/GENERATION.md) and [UTILIZATION](docs/UTILIZATION.md).
@@ -129,4 +161,6 @@ Checked on **2026-10-28**. Korean title translations are provided in the [Korean
 
 [Recorded verification](results/verification-2026-10-28/README.md): 281 tests and 67 subtests passed, including all 156 module pairings, common initialization, original-operator agreement, data/checkpoint checks and CPU/GPU inference. No optimizer steps, real-data training or dataset downloads were run. Actual pretrained-file loading, convergence and accuracy rankings remain unverified. The [research record](../../../Progress/2026-10-28/Pseudo-Scale-Study/README.md) separates code observations from hypotheses.
 
-Latest metric/leaderboard verification: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](results/verification-2026-10-29-metrics/README.md).
+Metric/leaderboard verification on 2026-10-29: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](results/verification-2026-10-29-metrics/README.md).
+
+Geometry recovery verification on 2026-10-30: **557 tests + 67 subtests passed**, including the reported 1000×628 image / 998×628 GT dimensions with synthetic inputs, all 21 finite test metrics, unchanged input/checkpoint bytes, strict train/val checks and checkpoint-preserving recovery order. No training or downloads were run; the actual remote pair remains uninspected. [Verification artifacts](results/verification-2026-10-30-geometry/README.md) · [Change record](../../../Progress/2026-10-30/Geometry-Recovery/README.md).
