@@ -12,7 +12,7 @@ from numbers import Integral
 from pathlib import Path
 
 from .data import SOURCES, _scan, load_manifest, manifest_digest, sha256_file, validate_manifest
-from .overlap import ACKNOWLEDGED_POLICY, acknowledge_cod10k_overlap, acknowledged_test_duplicate, overlap_metadata
+from .overlap import acknowledge_cod10k_overlap, acknowledged_test_duplicate, overlap_metadata
 
 
 EXPECTED_TEST_COUNTS = {"camo": 250, "chameleon": 76, "cod10k": 2026, "nc4k": 4121}
@@ -129,8 +129,7 @@ def _validate_snapshot(manifest, root):
                 raise ValueError(f"Invalid {kind} byte hash: {record['id']}")
             if kind == "image":
                 paths.setdefault(str(path), []).append(record["split"])
-    if any(len(set(splits)) > 1 or (len(splits) > 1 and manifest.get("overlap_policy") == ACKNOWLEDGED_POLICY)
-           for splits in paths.values()):
+    if any(len(set(splits)) > 1 for splits in paths.values()):
         raise ValueError("Identical image paths cross train/val/test splits")
     overlap_metadata(manifest)
     from .training_protocol import validate_training_protocol

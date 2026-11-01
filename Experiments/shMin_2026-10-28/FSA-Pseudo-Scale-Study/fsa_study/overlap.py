@@ -44,21 +44,24 @@ def _computed_metadata(manifest):
         path = (Path(manifest.get("data_root", "/")) / record["image"]).resolve()
         paths[str(path)].append(record)
     for path, records in paths.items():
-        if len(records) > 1 and (policy == ACKNOWLEDGED_POLICY or len({r["split"] for r in records}) > 1):
-            raise ValueError(f"Same image path crosses splits or aliases acknowledged records: {path}")
+        if len({r["split"] for r in records}) > 1:
+            raise ValueError(f"Same image path crosses splits: {path}")
     groups = []
     for digest, records in sorted(hashes.items()):
         splits = {record["split"] for record in records}
-        if len(splits) < 2 and not (policy == ACKNOWLEDGED_POLICY and len(records) > 1 and "test" in splits):
-            # Retain historical same-split semantics. Added evaluation records
-            # are additionally checked against every original image below.
+        if len(splits) < 2:
+            # This audit concerns cross-split exposure, not uniqueness within
+            # a benchmark. Preserve historical same-split records and counts.
+            # The extension separately checks new tests against original data.
             continue
         if policy == "strict":
             raise ValueError("Identical image byte hashes cross train/val/test splits; "
                              "strict policy refuses overlap. Audit the input files first.")
         expected = known.get(digest)
         if expected is None or len(records) != 2:
-            raise ValueError("Unacknowledged image overlap: unknown hash or a group with more than two records")
+            samples = ", ".join(f"{r['id']} [{r['split']}]" for r in records[:8])
+            raise ValueError("Unacknowledged image overlap: unknown hash or a group with more than two records; "
+                             f"sha256={digest}, count={len(records)}, samples={samples}")
         train_stem, test_stem = expected
         train_id, test_id = f"cod10k_train/{train_stem}", f"cod10k_test/{test_stem}"
         indexed = {record["id"]: record for record in records}

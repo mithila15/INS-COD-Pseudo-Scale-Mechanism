@@ -130,7 +130,7 @@ PYTHONUNBUFFERED=1 bash "$COMPLETE/run_evaluation.sh" 2>&1 | tee "$COMPLETE/eval
 - COD10K/SINet-V2 저자는 [2021-10-09 공식 안내](https://github.com/GewelsJI/SINet-V2/blob/5b9844c94d10a03b815c7c7039c194166a9a8ba3/README.md#L44)에서 **Crab-32**와 **Cat-1506**의 train/test 중복을 명시했다.
 - 7쌍 모두 독립적인 COD-TDQ 배포 자료의 고정 버전 `c4e97371fa835cd0a778ba67c071f24ca5deaf11`에서도 이름·SHA256이 서버 기록과 같았다. 작은 Git-LFS 포인터만 읽었으며 이미지 본체를 다운로드하지 않았다. 나머지 5쌍도 외부에 배포된 복사본에서 확인했지만, **COD10K 원저자가 7쌍 전체를 인정한 공지라는 뜻은 아니다.** [고정 URL·해시 근거](../results/verification-2026-11-01-overlap/upstream-evidence.json), [서버 진단 요약](../results/verification-2026-11-01-overlap/server-audit-summary.json).
 
-명시적인 `--acknowledge-cod10k-overlap` 옵션은 목록에 기록한 COD10K **ID 쌍과 이미지 SHA256**이 일치하는 7쌍만 허용한다. 다른 쌍·해시, 동일한 실제 경로, 다른 데이터셋 중복, train/validation 중복은 계속 오류다. 모든 중복을 무시하는 옵션이 아니다. 파일 해시·이미지/GT 대응·개수·크기·manifest·체크포인트 검사는 유지한다. 입력 이미지·GT·이전 manifest·체크포인트·과거 보고서를 변경하지 않는다.
+명시적인 `--acknowledge-cod10k-overlap` 옵션은 학습 원본과 테스트 split 사이에서 목록에 기록한 COD10K **ID 쌍과 이미지 SHA256**이 일치하는 7쌍만 허용한다. 다른 split 사이의 미확인 쌍·해시, 서로 다른 split이 공유하는 실제 경로, 서로 다른 split에 걸쳐 3개 이상인 동일 해시 그룹, train/validation 중복은 계속 오류다. 모든 중복을 무시하는 옵션이 아니다. 기존 records 안에서 같은 split에만 있는 이미지 중복은 원래 엄격 정책의 동작을 유지하며, COD10K 인정 옵션 때문에 제거하거나 오류로 바꾸지 않는다. 별도의 테스트 추가 검사는 새 test 이미지가 원본 이미지 경로 또는 인정되지 않은 원본 이미지 해시를 재사용하면 계속 거부한다. 파일 해시·이미지/GT 대응·개수·크기·manifest·체크포인트 검사는 유지한다. 입력 이미지·GT·이전 manifest·체크포인트·과거 보고서를 변경하지 않는다.
 
 진단한 서버 복사본에서는 수정 코드를 `shMin` 아래에 설치한 뒤 위의 엄격 검사 준비 명령 대신 다음을 **Ubuntu Bash**에서 실행한다. 새 평가 계획만 생성한다. 이후 명령도 **같은 터미널**에서 실행한다.
 
@@ -149,7 +149,7 @@ COMPLETE="$RUN/plans/four-benchmarks-ack-$STAMP"
   --acknowledge-cod10k-overlap
 ```
 
-새 manifest의 `overlap_policy="acknowledged-cod10k-v1"`과 `overlap_audit`를 확인한다. 기록된 분할에서는 `disjoint=false`, `train_test_count=6`, `val_test_count=1`, `affected_test_count=7`과 정확한 쌍 목록이 나와야 한다. 평가 metadata와 새 보고서에도 이 조건이 전달된다. 표준 개수 충족·실행 완료와 데이터의 독립성은 다른 판단이다.
+새 manifest의 `overlap_policy="acknowledged-cod10k-v1"`과 `overlap_audit`를 확인한다. 기록된 분할에서는 `disjoint=false`, `train_test_count=6`, `val_test_count=1`, `affected_test_count=7`과 정확한 쌍 목록이 나와야 한다. 평가 metadata와 새 보고서에도 이 조건이 전달된다. 이 audit는 서로 다른 split 사이의 동일성을 검사하며 같은 split 내 이미지가 모두 고유하거나 테스트 데이터셋끼리 독립적이라는 뜻은 아니다. 표준 개수 충족·실행 완료와 데이터의 독립성은 다른 판단이다.
 
 아래 별도 명령은 기존 학습 체크포인트로 **평가만 실행**한다.
 
@@ -163,6 +163,12 @@ PYTHONUNBUFFERED=1 bash "$COMPLETE/run_evaluation.sh" 2>&1 | tee "$COMPLETE/eval
 이 옵션은 배포 기준의 4,040/2,026장을 유지한다. **중복 노출을 없애거나 COD10K-test를 독립 평가셋으로 바꾸는 기능이 아니다.** 기존 모델은 6장의 중복 이미지를 최적화에, 1장을 validation·체크포인트 선택에 이미 사용했다. 인정 표시로 이 이력을 되돌릴 수 없다. 이번 COD10K 중복만으로 기존 CAMO·CHAMELEON·NC4K 점수가 무효가 되지는 않지만, 이 바이트 검사가 모든 시각적 유사 이미지 누출까지 보장하는 것도 아니다. 공식 공지의 2장에 대한 대략적인 지표 영향은 이번 7장이나 이 모델에 일반화하지 않는다.
 
 독립 분할을 사용하려면 별도 이름의 조건과 비교가 필요하다. 테스트에서 7장을 제외하면 **2,019장 부분집합**, 새 학습 전에 대응하는 학습 원본 7장을 제외하면 전체 테스트셋에 대해 **4,033장 학습**이다. 둘 다 표준 4,040/2,026 조건과 다르며 이번 옵션이 몰래 수행하는 동작이 아니다. [판단·근거 기록](../../../../Progress/2026-11-01/COD10K-Overlap/README.md).
+
+### 설치 성공 후 준비 단계에서 중단되는 경우
+
+`8f08f4ff6b61`의 중복 인정 구현에는 기존 test split 내부의 동일 해시 그룹도 7쌍의 교차 split 허용 목록과 대조하는 회귀 오류가 있었다. 따라서 test records만 있는 그룹도 `Unacknowledged image overlap: unknown hash or a group with more than two records` 오류를 낼 수 있었다. 같은 split 내 경로 공유 검사도 원래 엄격 검사보다 강화되는 문제가 있었다. [동일 split 회귀 수정](../results/verification-2026-11-01-same-split/README.ko.md)은 원래 동작을 복구하고 위의 교차 split 검사·새 test 추가 검사는 유지한다. 합성 입력으로 오류를 재현했으며, 사용자 서버에서 정확히 어떤 그룹이 이번 오류를 냈는지는 아직 직접 확인하지 않았다. 이 메시지가 나오는 모든 경우를 무해한 중복으로 판단하지 않는다.
+
+준비 명령이 실패하면 새 plan과 `run_evaluation.sh`가 생성되지 않는다. 뒤이어 Bash나 `tee`에서 나오는 `No such file or directory`는 그 결과이며, 리더보드 경로를 출력하는 것만으로 보고서가 생기지 않는다. 수정 소스를 설치하고 새 출력 경로로 준비를 다시 실행한다. 준비 성공과 plan 생성을 확인한 뒤 평가 또는 새 학습을 시작한다. 재학습으로 manifest 준비 코드의 오류가 해결되지는 않는다. 수정 후에도 교차 split 그룹이 거부된다면 검사를 끄는 대신 해당 records를 확인해야 한다.
 
 ## 별도 전체 데이터 학습 비교
 
@@ -180,7 +186,7 @@ FULL="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-S
   --rebind-entrypoints
 ```
 
-`$FULL/plans/priority8/plan.json`의 학습 개수와 설정 변경 기록을 확인한다. **같은 Ubuntu 터미널**에서 아래 명령을 실행하면 8개 실험의 **새 학습 → 테스트 평가 → profiling을 시작**한다. 이전 3,636장 모델에서 이어 학습하는 것이 아니라 새 전체 학습 시간이 필요하다.
+`$FULL/plans/priority8/plan.json`의 학습 개수와 설정 변경 기록을 확인한다. 바로 전체 데이터 새 학습을 하려면 앞의 `run_evaluation.sh` 실행은 생략해도 된다. manifest·plan 준비 성공만 필요하다. **같은 Ubuntu 터미널**에서 아래 명령을 실행하면 8개 실험의 **새 학습 → 테스트 평가 → profiling을 시작**한다. 이전 3,636장 모델에서 이어 학습하는 것이 아니라 새 전체 학습 시간이 필요하다.
 
 ```bash
 set -o pipefail

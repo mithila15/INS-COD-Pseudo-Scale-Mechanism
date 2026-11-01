@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "tests": 747,
+  "subtests": 74,
+  "seconds": 15.53,
+  "base_commit": "8f08f4ff6b61017f466c833355e5c8b545ba1698",
+  "source_sha256": {
+    "fsa_study/overlap.py": "5a0657eebe40a2a728a6c29445286b143c0f4b8926d44a292a433b328075d755",
+    "fsa_study/data.py": "0ba206079a0fd29be0f4512d726a1ea349752d990ce961f92ab7e095edbda129",
+    "fsa_study/benchmark.py": "9108567b5057744a0ff888f6c9c1db87d7c1d2f71dc01444f708a9fa777c0836",
+    "tests/test_cod10k_overlap.py": "1b58e9469e000debc335e9b89f83856278afacdde194e5bcc1933b91e8df23e6"
+  },
+  "regression": "Acknowledged policy incorrectly applied the train/test allowlist to same-test-split hash groups and tightened same-split path guards. A synthetic fixture reproduced the exact reported error.",
+  "server_group_identity": "Not observed: no direct server dataset access. The code regression is independently reproduced.",
+  "preserved": "Exact seven cross-split ID/hash allowance; unknown cross-split and third-record rejection; additive test guards; original manifest/checkpoint/report files; audit schema and values.",
+  "tested": "Metadata, file/snapshot validation, existing-test duplicates, newly-added test-only duplicates, full-training manifest preparation, and the full study test suite.",
+  "execution": "Synthetic inference/autograd and plan preparation only; no optimizer updates, real training, server evaluation, dataset or weight downloads.",
+  "historical_priority8_report": "byte-for-byte unchanged",
+  "documentation_checks": {
+    "local_links": 55,
+    "bash_blocks_syntax_only": 14,
+    "commands_executed": false
+  }
+}

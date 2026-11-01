@@ -8,7 +8,7 @@ import pytest
 
 from fsa_study import benchmark, overlap
 from fsa_study.benchmark import extend_test_manifest, validate_test_extension
-from fsa_study.data import SOURCES, load_manifest, manifest_digest, prepare_manifest, sha256_file
+from fsa_study.data import SOURCES, load_manifest, manifest_digest, prepare_manifest, sha256_file, validate_manifest
 from fsa_study.overlap import (ACKNOWLEDGED_POLICY, KNOWN_COD10K_OVERLAPS,
                                acknowledge_cod10k_overlap, overlap_metadata)
 from fsa_study.training_protocol import prepare_full_training_manifest
@@ -59,7 +59,7 @@ def test_strict_disjoint_metadata_is_computed_without_mutating_manifest():
 
 
 @pytest.mark.parametrize("mutation", ["hash", "id", "source", "dataset", "image_stem", "mask_stem",
-                                     "third_record", "train_val", "test_test", "same_path"])
+                                     "third_record", "train_val", "same_path"])
 def test_acknowledgement_cannot_exempt_other_overlaps(mutation):
     manifest = observed_records()
     train, test = manifest["records"][:2]
@@ -80,8 +80,6 @@ def test_acknowledgement_cannot_exempt_other_overlaps(mutation):
         manifest["records"].append(third)
     elif mutation == "train_val":
         test["split"] = "val"
-    elif mutation == "test_test":
-        train["split"] = "test"
     else:
         test["image"] = train["image"]
     with pytest.raises(ValueError, match="Unacknowledged|Same image path"):
@@ -153,6 +151,102 @@ def files(tmp_path, monkeypatch):
     original["content_sha256"] = manifest_digest(original)
     source.write_text(json.dumps(original))
     return root, source, original, tmp_path / "extended.json"
+
+
+def _write_manifest(path, manifest):
+    manifest["source_counts"] = dict(sorted(Counter(r["source"] for r in manifest["records"]).items()))
+    manifest["split_counts"] = dict(sorted(Counter(f"{r['dataset']}/{r['split']}" for r in manifest["records"]).items()))
+    manifest["content_sha256"] = manifest_digest(manifest)
+    path.write_text(json.dumps(manifest))
+
+
+@pytest.mark.parametrize("acknowledged", [False, True])
+@pytest.mark.parametrize("same_path", [False, True])
+@pytest.mark.parametrize("count", [2, 3])
+def test_same_split_test_duplicates_preserve_historical_metadata(acknowledged, same_path, count):
+    records = []
+    for index, dataset in enumerate(("camo", "chameleon", "nc4k")[:count]):
+        records.append({"id": f"{dataset}_test/{index}", "source": f"{dataset}_test",
+                        "dataset": dataset, "split": "test",
+                        "image": "shared.jpg" if same_path else f"{dataset}/{index}.jpg",
+                        "mask": f"{dataset}/{index}.png", "image_sha256": "f" * 64,
+                        "mask_sha256": "0" * 64})
+    manifest = {"data_root": "/unmounted/same-split-fixture", "records": records}
+    if acknowledged:
+        acknowledge_cod10k_overlap(manifest)
+    before = copy.deepcopy(manifest)
+    audit = overlap_metadata(manifest)
+    assert manifest == before
+    assert audit == {"schema_version": 1,
+                     "policy": ACKNOWLEDGED_POLICY if acknowledged else "strict",
+                     "disjoint": True, "train_test_count": 0, "val_test_count": 0,
+                     "affected_test_count": 0, "groups": []}
+
+
+@pytest.mark.parametrize("same_path", [False, True])
+def test_extension_preserves_existing_same_split_duplicates(files, same_path):
+    root, source, original, output = files
+    camo = next(r for r in original["records"] if r["source"] == "camo_test")
+    nc4k = next(r for r in original["records"] if r["source"] == "nc4k_test")
+    if same_path:
+        camo["image"] = nc4k["image"]
+    else:
+        (root / camo["image"]).write_bytes((root / nc4k["image"]).read_bytes())
+    camo["image_sha256"] = nc4k["image_sha256"]
+    _write_manifest(source, original)
+    source_bytes = source.read_bytes()
+    file_hashes = {p: sha256_file(p) for p in root.rglob("*") if p.is_file()}
+
+    assert load_manifest(source)[0] == original
+    benchmark._validate_snapshot(original, root)
+    extended = extend_test_manifest(source, output, acknowledge_cod10k=True)
+    assert load_manifest(output)[0] == extended
+    benchmark._validate_snapshot(extended, root)
+    proof = validate_test_extension(original, root, extended, root, verify_files=False)
+    assert proof["overlap_audit"]["affected_test_count"] == 7
+    assert (proof["overlap_audit"]["train_test_count"], proof["overlap_audit"]["val_test_count"]) == (6, 1)
+    assert extended["records"][:len(original["records"])] == original["records"]
+    full_path = output.with_name("full-with-test-duplicates.json")
+    full = prepare_full_training_manifest(output, full_path)
+    assert load_manifest(full_path)[0] == full
+    benchmark._validate_snapshot(full, root)
+    assert full["full_training_source"]["source_overlap_audit"] == extended["overlap_audit"]
+    assert (full["overlap_audit"]["train_test_count"], full["overlap_audit"]["val_test_count"]) == (7, 0)
+    assert [r for r in full["records"] if r["split"] == "test"] == [
+        r for r in extended["records"] if r["split"] == "test"]
+    assert source.read_bytes() == source_bytes
+    assert {p: sha256_file(p) for p in file_hashes} == file_hashes
+
+
+def test_extension_accepts_internal_new_cod10k_test_duplicates(files, monkeypatch):
+    root, source, original, output = files
+    _, _, images, masks, _ = SOURCES["cod10k_test"]
+    for index in range(2):
+        stem = f"COD10K-CAM-test-only-duplicate-{index}"
+        (root / images / f"{stem}.jpg").write_text("new-test-only-shared-image")
+        (root / masks / f"{stem}.png").write_text(f"new-test-only-mask-{index}")
+    monkeypatch.setattr(benchmark, "EXPECTED_TEST_COUNTS", {"camo": 1, "chameleon": 1, "cod10k": 9, "nc4k": 1})
+    source_bytes = source.read_bytes()
+    extended = extend_test_manifest(source, output, acknowledge_cod10k=True)
+    assert load_manifest(output)[0] == extended
+    proof = validate_test_extension(original, root, extended, root, verify_files=False)
+    assert proof["benchmark_coverage"]["complete"]
+    assert proof["overlap_audit"]["affected_test_count"] == 7
+    assert extended["source_counts"]["cod10k_test"] == 9
+    assert source.read_bytes() == source_bytes
+
+
+def test_train_source_relabelled_test_still_fails_source_split_validation(files):
+    root, source, _, output = files
+    extended = extend_test_manifest(source, output, acknowledge_cod10k=True)
+    train = next(r for r in extended["records"] if r["source"] == "cod10k_train")
+    train["split"] = "test"
+    acknowledge_cod10k_overlap(extended)
+    _write_manifest(output, extended)
+    with pytest.raises(ValueError, match="source separation"):
+        validate_manifest(extended)
+    with pytest.raises(ValueError, match="source/split separation"):
+        benchmark._validate_snapshot(extended, root)
 
 
 def test_default_extension_refuses_known_copies_without_writing(files):

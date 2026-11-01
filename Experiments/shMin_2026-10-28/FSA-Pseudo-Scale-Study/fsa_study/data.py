@@ -8,7 +8,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from .training_protocol import resolve_val_fraction, validate_training_protocol
-from .overlap import ACKNOWLEDGED_POLICY, acknowledge_cod10k_overlap, overlap_metadata
+from .overlap import acknowledge_cod10k_overlap, overlap_metadata
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff"}
 GEOMETRY_POLICIES = ("strict", "resize-prediction-to-gt")
@@ -186,7 +186,7 @@ def validate_manifest(manifest, verify_files=True, data_root=None):
                 raise ValueError(f"Changed {kind} content: {path}")
             if kind == "image":
                 previous = image_paths.get(str(path))
-                if previous is not None and (previous != record["split"] or manifest.get("overlap_policy") == ACKNOWLEDGED_POLICY):
+                if previous is not None and previous != record["split"]:
                     raise ValueError(f"Same image path crosses splits: {path}")
                 image_paths[str(path)] = record["split"]
     for exclusions in manifest.get("excluded_files", {}).values():

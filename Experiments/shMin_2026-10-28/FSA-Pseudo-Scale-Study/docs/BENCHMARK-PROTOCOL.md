@@ -130,7 +130,7 @@ Two evidence levels must stay separate:
 - The COD10K/SINet-V2 authors explicitly acknowledge **Crab-32** and **Cat-1506** in their [2021-10-09 notice](https://github.com/GewelsJI/SINet-V2/blob/5b9844c94d10a03b815c7c7039c194166a9a8ba3/README.md#L44).
 - All seven exact name/hash pairs also appear in the independent COD-TDQ dataset bundle at pinned revision `c4e97371fa835cd0a778ba67c071f24ca5deaf11`. Only its small Git-LFS metadata pointers were fetched. This corroborates published copies of the remaining five pairs; it is **not an official COD10K acknowledgment of all seven**. [Pinned URLs and hash evidence](../results/verification-2026-11-01-overlap/upstream-evidence.json), [server audit summary](../results/verification-2026-11-01-overlap/server-audit-summary.json).
 
-The explicit `--acknowledge-cod10k-overlap` option permits only the seven catalogued COD10K **ID pairs and image SHA256 values**. Different pairs/hashes, shared resolved paths, other dataset overlap and train/validation overlap remain errors. This is not a general `ignore-overlap` switch. Normal file-hash, pairing, count, geometry, manifest and checkpoint checks remain active. No input image, mask, old manifest, checkpoint or historical report is changed.
+The explicit `--acknowledge-cod10k-overlap` option permits only the seven catalogued COD10K **ID pairs and image SHA256 values** across training-source and test splits. Other cross-split pairs/hashes, resolved paths shared across splits, cross-split groups with more than two records, and train/validation overlap remain errors. This is not a general `ignore-overlap` switch. Existing records that repeat an image within one split retain the strict policy's original behavior; acknowledging COD10K overlap does not deduplicate or invalidate those records. The separate additive-test checks still reject a newly added test image that reuses an original image path or has an unacknowledged original-image hash. Normal file-hash, pairing, count, geometry, manifest and checkpoint checks remain active. No input image, mask, old manifest, checkpoint or historical report is changed.
 
 For the audited server copy, after installing the corrected source under `shMin`, use this **Ubuntu Bash** block instead of the strict preparation block above. It creates a fresh evaluation plan only. Run the subsequent blocks in the **same terminal**.
 
@@ -149,7 +149,7 @@ COMPLETE="$RUN/plans/four-benchmarks-ack-$STAMP"
   --acknowledge-cod10k-overlap
 ```
 
-Inspect the new manifest's `overlap_policy="acknowledged-cod10k-v1"` and `overlap_audit`. For the recorded split, expect `disjoint=false`, `train_test_count=6`, `val_test_count=1`, `affected_test_count=7`, and the exact groups. Evaluation metadata and refreshed reports carry this disclosure. Standard dataset counts and completed execution do **not** establish disjoint data.
+Inspect the new manifest's `overlap_policy="acknowledged-cod10k-v1"` and `overlap_audit`. For the recorded split, expect `disjoint=false`, `train_test_count=6`, `val_test_count=1`, `affected_test_count=7`, and the exact groups. Evaluation metadata and refreshed reports carry this disclosure. This audit measures cross-split equality, not uniqueness within a split or independence between test datasets. Standard dataset counts and completed execution do **not** establish disjoint data.
 
 This separate block starts **evaluation only**, using the existing trained checkpoints:
 
@@ -163,6 +163,12 @@ Metrics go to `$RUN/runs/priority8/<variant>__seed3407/test-four-benchmarks-ack-
 This option retains the published 4,040/2,026 counts; it does **not** remove exposure or make COD10K-test independent. Existing models already used six duplicate images for optimization and one for validation/checkpoint selection. Acknowledgment cannot undo that history. The earlier CAMO/CHAMELEON/NC4K scores are not invalidated by this specific COD10K finding, but this audit is not a guarantee against every form of near-duplicate leakage. The upstream notice's approximate metric effect for two images must not be extrapolated to all seven or to this study.
 
 A different, disjoint protocol would need separately named outputs and comparisons: removing seven test records yields a **2,019-image subset**, while removing their seven training-source counterparts before fresh training yields **4,033 training images** with the full test set. Neither is the standard 4,040/2,026 setting, and neither is silently performed by this option. [Decision and evidence record](../../../../Progress/2026-11-01/COD10K-Overlap/README.md).
+
+### Preparation fails after successful installation
+
+The `8f08f4ff6b61` overlap implementation also checked pre-existing same-test-split hash groups against the seven-pair cross-split allowlist. That regression can raise `Unacknowledged image overlap: unknown hash or a group with more than two records` even when a group contains only test records. It also applied stricter path-alias checks to same-split records than the original strict validator did. The [same-split regression repair](../results/verification-2026-11-01-same-split/README.md) restores the original same-split behavior while keeping the cross-split and additive-test checks above. Synthetic inputs reproduce the error; the user's exact offending server group has not been inspected, so this is not a claim that every occurrence of that error is harmless.
+
+If preparation fails, the new plan and `run_evaluation.sh` are not created. A later `No such file or directory` from Bash or `tee` is a consequence of that failure; printing a leaderboard pathname does not create a report. Install the corrected source and rerun preparation with fresh output paths. Start evaluation or new training only after its plan exists and preparation succeeds. Retraining cannot repair a manifest-preparation bug. If the corrected code still rejects a cross-split group, inspect the reported records rather than disabling the checks.
 
 ## Train a separate full-data comparison
 
@@ -180,7 +186,7 @@ FULL="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-S
   --rebind-entrypoints
 ```
 
-Review `$FULL/plans/priority8/plan.json`, including the recorded sample counts and settings audit. In the **same Ubuntu terminal**, the following **starts fresh training → test evaluation → profiling** for those eight jobs. It will take a full new training schedule; it does not resume the previous 3,636-image models.
+Review `$FULL/plans/priority8/plan.json`, including the recorded sample counts and settings audit. If the immediate goal is fresh full-data training, skip the earlier `run_evaluation.sh` execution: only successful manifest/plan preparation is required. In the **same Ubuntu terminal**, the following **starts fresh training → test evaluation → profiling** for those eight jobs. It will take a full new training schedule; it does not resume the previous 3,636-image models.
 
 ```bash
 set -o pipefail
