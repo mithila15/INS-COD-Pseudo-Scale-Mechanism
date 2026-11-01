@@ -9,6 +9,7 @@ and rejected rather than retrained or overwritten.
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 from pathlib import Path
 import shlex
@@ -22,7 +23,7 @@ HERE = Path(__file__).resolve().parent
 ACTIONS = ("train", "evaluate", "profile")
 
 
-def read_plan(path):
+def read_plan(path, *, rebind_entrypoints=False):
     plan = json.loads(Path(path).read_text())
     jobs = plan.get("jobs", [])
     if not jobs or len(jobs) != plan.get("run_count"):
@@ -35,6 +36,23 @@ def read_plan(path):
             command = job.get(action)
             if not isinstance(command, list) or not command or not all(isinstance(v, str) for v in command):
                 raise ValueError(f"Invalid {action} command in plan")
+    if rebind_entrypoints:
+        parents = set()
+        for job in jobs:
+            for action in ACTIONS:
+                command = job[action]
+                expected_name = "profile_study.py" if action == "profile" else "run_study.py"
+                if (len(command) < 3 or not Path(command[1]).is_absolute()
+                        or Path(command[1]).name != expected_name):
+                    raise ValueError("Entrypoint rebinding requires absolute original scripts with the expected study filenames")
+                parents.add(Path(command[1]).parent.resolve())
+        if len(parents) != 1:
+            raise ValueError("Entrypoint rebinding requires one shared original study directory")
+        plan = copy.deepcopy(plan)
+        jobs = plan["jobs"]
+        for job in jobs:
+            for action in ACTIONS:
+                job[action][1] = str(HERE / ("profile_study.py" if action == "profile" else "run_study.py"))
     results = Path(plan.get("results", runs[0].parent))
     if not results.is_absolute() or any(run.parent != results for run in runs):
         raise ValueError("Plan runs must share one absolute results directory")
@@ -69,8 +87,18 @@ def read_plan(path):
         variant = "single" if train.baseline else "legacy_full" if train.legacy_reference else f"{train.generator}__{train.utilizer}"
         if variant != job["variant"] or train.seed != job["seed"]:
             raise ValueError("Plan variant/seed disagrees with training command")
-        if evaluate.split != "test" or Path(evaluate.manifest).resolve() != Path(train.manifest).resolve():
-            raise ValueError("Plan evaluation must use test split and the training manifest")
+        if evaluate.split != "test":
+            raise ValueError("Plan evaluation must use test split")
+        training_manifest = getattr(evaluate, "training_manifest", None)
+        if training_manifest:
+            if Path(training_manifest).resolve() != Path(train.manifest).resolve():
+                raise ValueError("Plan evaluation extension must reference the original training manifest")
+            training_root = getattr(evaluate, "training_data_root", None)
+            if train.data_root and (not training_root or Path(training_root).resolve() != Path(train.data_root).resolve()):
+                raise ValueError("Plan evaluation extension must retain the original training data root")
+        elif (Path(evaluate.manifest).resolve() != Path(train.manifest).resolve()
+              or getattr(evaluate, "training_data_root", None)):
+            raise ValueError("Plan evaluation must use the training manifest or an explicit audited test extension")
     plan["results"] = str(results)
     return plan
 
@@ -87,7 +115,10 @@ def completed(job, action):
     arguments = vars(build_parser().parse_args(job["train"][2:]))
     # Ignore only filesystem/loader choices that do not alter the trained model.
     ignore = {"output", "manifest", "data_root", "workers", "device", "backbone_weights"}
-    if any(config.get(k) != v for k, v in arguments.items() if k not in ignore):
+    def recorded_argument(key):
+        # Before full-training support, every run used the holdout protocol.
+        return config.get(key, "holdout" if key == "training_protocol" else None)
+    if any(recorded_argument(k) != v for k, v in arguments.items() if k not in ignore):
         raise ValueError(f"Existing training configuration disagrees with plan: {run}")
     manifest = json.loads(Path(arguments["manifest"]).read_text())
     if config.get("manifest_sha256") != manifest.get("content_sha256"):
@@ -104,13 +135,36 @@ def completed(job, action):
     artifact = json.loads(path.read_text())
     if artifact.get("checkpoint_sha256") != sha256_file(run / "best.pth"):
         raise ValueError(f"Existing {action} artifact belongs to a different checkpoint: {path}")
-    if action == "evaluate" and (artifact.get("split") != "test"
-            or artifact.get("manifest_sha256") != config.get("manifest_sha256")
-            or artifact.get("model_config") != config.get("model_config")):
-        raise ValueError(f"Existing evaluation metadata disagrees with plan: {path}")
     if action == "evaluate":
+        requested = build_parser().parse_args(command[2:])
+        requested_manifest = json.loads(Path(requested.manifest).read_text())
+        if (artifact.get("split") != "test"
+                or artifact.get("manifest_sha256") != requested_manifest.get("content_sha256")
+                or artifact.get("model_config") != config.get("model_config")):
+            raise ValueError(f"Existing evaluation metadata disagrees with plan: {path}")
+        if getattr(requested, "training_manifest", None):
+            from fsa_study.benchmark import benchmark_coverage, validate_test_extension
+            if Path(requested.training_manifest).resolve() != Path(arguments["manifest"]).resolve():
+                raise ValueError("Evaluation extension references a different training manifest")
+            proof = validate_test_extension(
+                manifest, requested.training_data_root or manifest["data_root"],
+                requested_manifest, requested.data_root or requested_manifest["data_root"], verify_files=False)
+            if (artifact.get("training_manifest_sha256") != config.get("manifest_sha256")
+                    or artifact.get("manifest_extension") != proof):
+                raise ValueError(f"Existing evaluation has invalid test extension provenance: {path}")
+            for name, expected in (("manifest.json", requested_manifest), ("training_manifest.json", manifest)):
+                snapshot = target / name
+                if (not snapshot.is_file()
+                        or artifact.get("artifacts", {}).get("sha256", {}).get(name) != sha256_file(snapshot)
+                        or json.loads(snapshot.read_text()) != expected):
+                    raise ValueError(f"Existing evaluation is missing or changed its manifest snapshot: {name}")
+            coverage = benchmark_coverage({name: values["count"] for name, values in artifact.get("datasets", {}).items()})
+            if coverage != proof["benchmark_coverage"] or artifact.get("benchmark_coverage") != coverage:
+                raise ValueError(f"Existing evaluation does not contain the complete audited benchmark: {path}")
+        elif artifact.get("manifest_sha256") != config.get("manifest_sha256"):
+            raise ValueError(f"Existing evaluation metadata disagrees with training manifest: {path}")
         from fsa_study.data import geometry_protocol
-        requested_geometry = build_parser().parse_args(command[2:]).test_geometry
+        requested_geometry = requested.test_geometry
         recorded_geometry = artifact.get("geometry_protocol", geometry_protocol("strict"))
         if recorded_geometry != geometry_protocol(requested_geometry):
             raise ValueError(f"Existing evaluation uses a different geometry policy; use a new evaluation subdirectory: {path}")
@@ -160,6 +214,8 @@ def execute_plan(plan_path, actions=ACTIONS, report_dir=None, skip_completed=Fal
     run_command = subprocess.run if run_command is None else run_command
     plan_path = Path(plan_path).expanduser().resolve(strict=True)
     plan = read_plan(plan_path)
+    if plan.get("evaluation_only") and tuple(actions) != ("evaluate",):
+        raise ValueError("This is an evaluation-only recovery plan; use --actions evaluate. Training and profiling are disabled.")
     report_dir = Path(report_dir).expanduser().resolve() if report_dir else plan_path.parent / "leaderboard"
     summary = [plan["jobs"][0]["train"][0], str(HERE / "summarize_study.py"),
                "--results", plan["results"], "--output", str(report_dir),

@@ -1,10 +1,12 @@
-# 2026-10-29 · INS_COD — Pseudo-scale experiment guide
+# 2026-11-01 · INS_COD — Pseudo-scale experiment guide
 
 **English** | [한국어](README.ko.md)
 
 Compare **how to generate pseudo-scale features** and **how to use them** in a single-encoder camouflaged object detector. Utilization includes subtraction, direct fusion, and channel/spatial attention. The study provides **12 generators × 13 utilizers**, plus a no-pseudo baseline and the archived full FSA reference: **158 configurations, 474 runs with three seeds**.
 
-This README is the execution guide. See the [method catalog and comparison rationale](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md) for what each variant tests. Referenced papers and adaptations are retained below. Accuracy rankings have not been measured yet.
+This README is the execution guide. See the [method catalog and comparison rationale](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md) for what each variant tests. Referenced papers and adaptations are retained below. The uploaded [priority8 results](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-report-20261101_172449/README.md) cover eight runs with one seed and **three test datasets; COD10K-test is missing**.
+
+For existing results, use the [four-dataset recovery and full-data training guide](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md). Existing training uses **3,636 images + 404 validation**, while official ZoomNeXt uses **4,040 training images**. The new `full_train` option uses all 4,040 and a fixed final-epoch checkpoint; other architecture/training differences remain. [Windows pull and SCP transfer](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows) preserves the existing server checkout and results.
 
 ## 1. Set up the environment
 
@@ -61,9 +63,9 @@ COD-Data/
   NC4K/{Imgs,GT}/
 ```
 
-`prepare` checks image/mask pairing and hashes, selects COD10K foreground files with the `COD10K-CAM-` prefix, and creates one fixed split. CAMO and COD10K training data are required. Available test datasets are included; missing CHAMELEON/NC4K is recorded. Keep the **same manifest for every compared run**. Test evaluation requires at least one test dataset in it.
+`prepare` checks image/mask pairing and hashes, selects COD10K foreground files with the `COD10K-CAM-` prefix, and creates one fixed split. CAMO and COD10K training data are required. The CLI now requires **all four test datasets by default**: CAMO 250, CHAMELEON 76, COD10K 2,026 and NC4K 4,121. An intentional subset must be explicit with `--test-datasets`; `none` prepares training/validation only. Partial test coverage remains visibly incomplete in the leaderboard. Keep the **same manifest for every compared run**. Test evaluation requires at least one test dataset in it.
 
-The default 10% holdout gives **3,636 training images and 404 validation images** from the original 4,040 training images. This differs from papers training on all 4,040 images. Renamed data, explicit test selection and the full evaluation protocol are described in [advanced execution details](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md).
+The default 10% holdout gives **3,636 training images and 404 validation images** from the original 4,040 training images. The commands below use this default `holdout` protocol. For fresh full-data training, set `--training-protocol full_train` in both preparation and planning, and omit `--val-fraction` or use `0`; [migration of existing priority8 plans](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#train-a-separate-full-data-comparison) preserves old results. Renamed data, explicit test selection and the full evaluation protocol are described in [advanced execution details](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md).
 
 ## 3. Choose the experiment scope and generate commands
 
@@ -74,8 +76,9 @@ Use **`cross` for the complete study**. It already contains the fixed-utilizer a
 | `generation` | All 12 generators | `--utilizer mean` by default | 14 | 42 |
 | `utilization` | All 13 utilizers | `--generator legacy` or a generator selected on validation | 15 | 45 |
 | `cross` | Every generator/utilizer pairing | Neither | 158 | 474 |
+| `priority8` | The fixed eight-job screening sequence | Prespecified variants | 8 | 24; use `--seeds 3407` for 8 |
 
-Every phase includes `single` and `legacy_full`. For a staged study, compare generation with mean fusion, inspect validation results, then manually choose the generator for utilization. Use separate phase output roots. The script does not select a winner automatically. In `cross`, `GENERATOR`/`UTILIZER` below do not restrict the grid.
+The three matrix phases include `single` and `legacy_full`. `priority8` includes `single` and seven prespecified variants, without `legacy_full`. For a staged study, compare generation with mean fusion, inspect validation results, then manually choose the generator for utilization. Use separate phase output roots. The script does not select a winner automatically. In `cross`, `GENERATOR`/`UTILIZER` below do not restrict the grid.
 
 ```bash
 PHASE=cross
@@ -96,7 +99,7 @@ This writes `plan.json`, `train.sh`, `evaluate.sh`, `profile.sh`, and `run_all.s
 
 ## 4. Start training with automatic evaluation and leaderboards
 
-The following starts each planned run's **training → test evaluation → inference profiling**, sequentially, and refreshes the leaderboard after every stage. Each `best.pth` is selected using **validation MAE only**. The full comparison is specified in the plan before execution; test rankings are descriptive and never select checkpoints.
+The following starts each planned run's **training → test evaluation → inference profiling**, sequentially, and refreshes the leaderboard after every stage. Under the default holdout protocol, `best.pth` is selected using **validation MAE only**. Under `full_train`, it is the **fixed final-epoch model**, with null validation MAE and no validation ranking. The full comparison is specified in the plan before execution; test rankings are descriptive and never select checkpoints.
 
 ```bash
 bash "$PLAN/run_all.sh"
@@ -172,8 +175,10 @@ Checked on **2026-10-28**. Korean title translations are provided in the [Korean
 
 ## Verification and existing experiments
 
-The recorded code verification passed **281 tests and 67 subtests**, with CPU/GPU inference checks and zero optimizer steps. Real-data training, convergence and method rankings remain unverified. See the [verification artifacts](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md).
+The recorded code verification passed **281 tests and 67 subtests**, with CPU/GPU inference checks and zero optimizer steps. That initial check did not measure real-data convergence or rankings. The later uploaded priority8 report supplies three-dataset results; four-dataset completion and full-data retraining still require execution. See the [verification artifacts](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md).
 
 The original BRG main experiment remains in [COD](https://github.com/sh-min/COD); CoCoNet was excluded from this upload. Archived sources and their licenses remain intact. Historical organization details are in the [migration record](docs/MIGRATION.md), [experiment index](Experiments/README.md), [benchmark index](Benchmarks/README.md), and [research decisions](Progress/README.md).
 
-Latest metric/leaderboard verification: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md).
+Metric/leaderboard verification on 2026-10-29: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md).
+
+The [2026-11-01 change record](Progress/2026-11-01/Benchmark-Completion/README.md) distinguishes code validation, uploaded historical results and pending server execution.

@@ -11,6 +11,7 @@ import csv
 import hashlib
 import json
 from pathlib import Path
+from .benchmark import EXPECTED_TEST_COUNTS, benchmark_coverage
 
 
 LOWER_IS_BETTER = frozenset({
@@ -46,6 +47,32 @@ def _digest(value):
 
 def _direction(metric):
     return "lower" if metric in LOWER_IS_BETTER else "higher" if metric in HIGHER_IS_BETTER else None
+
+
+def summarize_benchmark_coverage(runs):
+    """Do not mistake execution against a subset for the standard four tests."""
+    coverages = [run.get("benchmark_coverage", benchmark_coverage({})) for run in runs]
+    datasets = {}
+    for dataset, expected in EXPECTED_TEST_COUNTS.items():
+        counts = [coverage["observed_counts"][dataset] for coverage in coverages
+                  if coverage["observed_counts"].get(dataset, 0) > 0]
+        datasets[dataset] = {"expected_count": expected, "observed_counts": sorted(set(counts)),
+                             "evaluated_runs": len(counts), "standard_count_runs": counts.count(expected),
+                             "missing_runs": len(runs) - len(counts)}
+    complete_runs = sum(coverage["complete"] for coverage in coverages)
+    return {"expected_datasets": list(EXPECTED_TEST_COUNTS), "expected_counts": dict(EXPECTED_TEST_COUNTS),
+            "datasets": datasets, "total_runs": len(runs), "complete_runs": complete_runs,
+            "incomplete_runs": len(runs) - complete_runs,
+            "missing_datasets": [name for name, values in datasets.items()
+                                 if values["missing_runs"] or not runs],
+            "unexpected_datasets": sorted({name for coverage in coverages
+                                           for name in coverage["unexpected_datasets"]}),
+            "nonstandard_counts": [
+                {"run": run["run"], "variant": run["variant"], "seed": run["seed"],
+                 "counts": coverage["nonstandard_counts"]}
+                for run, coverage in zip(runs, coverages) if coverage["nonstandard_counts"]],
+            "complete": bool(runs) and complete_runs == len(runs),
+            "note": "Execution completion only covers the configured datasets. Benchmark completion requires all four standard test image counts for every run; counts alone do not prove image identities or metric correctness."}
 
 
 def build_leaderboard(summary, test_metric="S"):
@@ -101,20 +128,22 @@ def build_leaderboard(summary, test_metric="S"):
                                    board["dataset"], board["metric"], board["cohort_id"]))
     runs = summary.get("runs", [])
     counts = Counter(run["status"] for run in runs)
+    coverage = summarize_benchmark_coverage(runs)
     progress = {"total_runs": len(runs), "planned_runs": sum(run["planned"] for run in runs),
                 "training_complete": sum(run["training_complete"] for run in runs),
                 "evaluation_complete": sum(run["evaluation_complete"] for run in runs),
                 "profile_complete": sum(run["profile_complete"] for run in runs),
                 "not_started": counts["not_started"], "training_incomplete": counts["training_incomplete"],
-                "all_stages_complete": counts["complete"]}
+                "all_stages_complete": counts["complete"], "execution_complete": counts["complete"],
+                "benchmark_complete": coverage["complete_runs"]}
     return {"schema_version": 1, "default_test_metric": test_metric,
-            "selection_rule": "Lowest mean validation MAE among variants with identical training protocol and seed set. Test results never select a checkpoint or winner.",
+            "selection_rule": "Holdout runs: lowest mean validation MAE among variants with identical training protocol and seed set. Full-train runs: fixed final epoch checkpoint, without validation selection or fabricated validation scores. Test results never select a checkpoint or winner.",
             "ranking_rule": "Separate ranks for every dataset, metric, protocol and observed seed set; exact ties share a competition rank. No composite accuracy score and no mixing hardware for inference costs.",
             "uncertainty": "Descriptive seed mean and sample standard deviation; not a significance test. A single seed is provisional. Without a plan, target seed completeness is unknown.",
             "cost_note": "Contraction FLOPs = 2 x MACs. Estimated total FLOPs additionally approximate supported noncontraction operators; consult each profile's coverage. Different hardware/input/timing protocols have separate ranks.",
             "plan": summary.get("plan"), "evaluation_subdir": summary.get("evaluation_subdir", "test"),
             "profile_name": summary.get("profile_name", "profile.json"),
-            "progress": progress, "runs": runs, "boards": boards}
+            "progress": progress, "benchmark_coverage": coverage, "runs": runs, "boards": boards}
 
 
 def _format(value):
@@ -126,6 +155,17 @@ def _markdown(report):
              report["uncertainty"], "", report["cost_note"], "",
              "The standalone `leaderboard.html` includes every metric and protocol. This Markdown view shows validation MAE, the selected test metric, and principal inference costs.", "",
              "## Progress", "", " | ".join(f"{key}: {value}" for key, value in report["progress"].items()), ""]
+    coverage = report["benchmark_coverage"]
+    lines += ["## Test benchmark coverage", "", coverage["note"], "",
+              f"**Standard four-dataset coverage: {coverage['complete_runs']}/{coverage['total_runs']} runs complete.**", "",
+              "| Dataset | Expected images | Observed counts per run | Evaluated runs | Runs with standard count |",
+              "| --- | ---: | --- | ---: | ---: |"]
+    for dataset, values in coverage["datasets"].items():
+        observed = ", ".join(str(value) for value in values["observed_counts"]) or "not evaluated"
+        lines.append(f"| {dataset} | {values['expected_count']} | {observed} | {values['evaluated_runs']}/{coverage['total_runs']} | {values['standard_count_runs']}/{coverage['total_runs']} |")
+    lines += ["", "Missing in one or more runs: " + (", ".join(coverage["missing_datasets"]) or "none") + ".", ""]
+    if coverage["unexpected_datasets"]:
+        lines += ["Additional datasets: " + ", ".join(coverage["unexpected_datasets"]) + ".", ""]
     costs = {"parameters", "latency_median_ms", "images_per_second", "cuda_peak_allocated_bytes",
              "macs_per_image", "flops_per_image", "estimated_total_flops_per_image"}
     visible = [board for board in report["boards"] if board["dataset"] == "validation" or
@@ -148,6 +188,14 @@ def _markdown(report):
         for run in pending:
             lines.append(f"| {run['variant']} | {run['seed']} | {run['status']} | `{run['run']}` |")
         lines.append("")
+    missing_tests = [run for run in report["runs"] if not run.get("benchmark_coverage", {}).get("complete", False)]
+    if missing_tests:
+        lines += ["## Runs missing standard benchmark coverage", "",
+                  "| Experiment | Seed | Missing datasets | Nonstandard counts |", "| --- | ---: | --- | --- |"]
+        for run in missing_tests:
+            item = run.get("benchmark_coverage", benchmark_coverage({}))
+            lines.append(f"| {run['variant']} | {run['seed']} | {', '.join(item['missing_datasets']) or 'none'} | `{json.dumps(item['nonstandard_counts'], sort_keys=True)}` |")
+        lines.append("")
     if not report["boards"]:
         lines += ["No completed scores are available yet. No training or evaluation was started by generating this report.", ""]
     return "\n".join(lines)
@@ -166,6 +214,7 @@ def _html(report):
 <h1>Pseudo-scale experiment leaderboard</h1>
 <p id="selection"></p><p id="ranking" class="muted"></p><p id="uncertainty" class="muted"></p>
 <div id="progress" class="progress"></div>
+<section id="coverage" class="card"><h2>Test benchmark coverage</h2><p id="coveragesummary"></p><p id="coveragenote" class="muted"></p><div id="coveragetable"></div><p id="coveragemissing"></p></section>
 <div class="controls"><button id="validation">Validation selection</button><button id="test">Test results</button><button id="cost">Inference cost</button></div>
 <div class="controls"><label>Dataset <select id="dataset"></select></label><label>Metric <select id="metric"></select></label><label>Experiment <input id="search" type="search" placeholder="Filter variant name"></label></div>
 <p class="muted">Each card is an independent comparison cohort. Click column headings to sort within a cohort. Rank always follows the stated metric direction. Scores are descriptive, not significance claims.</p>
@@ -180,6 +229,12 @@ const $=id=>document.getElementById(id);
 const element=(tag,text,cls)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(cls)node.className=cls;return node;};
 for(const [id,key] of [['selection','selection_rule'],['ranking','ranking_rule'],['uncertainty','uncertainty'],['costnote','cost_note']])$(id).textContent=data[key];
 $('progress').textContent=Object.entries(data.progress).map(([k,v])=>k.replaceAll('_',' ')+': '+v).join(' · ');
+const coverage=data.benchmark_coverage;
+$('coveragesummary').textContent='Standard four-dataset coverage: '+coverage.complete_runs+'/'+coverage.total_runs+' runs complete.';
+$('coveragenote').textContent=coverage.note;
+$('coveragemissing').textContent='Missing in one or more runs: '+(coverage.missing_datasets.join(', ')||'none')+'.';
+const coverageTable=element('table'),coverageHead=element('tr');for(const title of ['Dataset','Expected images','Observed counts per run','Evaluated runs','Runs with standard count'])coverageHead.append(element('th',title));coverageTable.append(coverageHead);
+for(const [dataset,values] of Object.entries(coverage.datasets)){const tr=element('tr');for(const value of [dataset,values.expected_count,values.observed_counts.join(', ')||'not evaluated',values.evaluated_runs+'/'+coverage.total_runs,values.standard_count_runs+'/'+coverage.total_runs])tr.append(element('td',String(value)));coverageTable.append(tr);}$('coveragetable').append(coverageTable);
 const datasets=[...new Set(data.boards.map(b=>b.dataset))];
 function options(node,values){node.replaceChildren();for(const value of values)node.append(element('option',value));}
 options($('dataset'),datasets);if(datasets.includes('validation'))$('dataset').value='validation';
@@ -203,7 +258,7 @@ $('dataset').onchange=()=>metrics();$('metric').onchange=render;$('search').onin
 $('validation').onclick=()=>{if(datasets.includes('validation')){$('dataset').value='validation';metrics('MAE');}};
 $('test').onclick=()=>{const target=datasets.find(value=>value!=='validation'&&value!=='inference');if(target){$('dataset').value=target;metrics(data.default_test_metric);}};
 $('cost').onclick=()=>{if(datasets.includes('inference')){$('dataset').value='inference';metrics('flops_per_image');}};
-const runTable=element('table'),runHead=element('tr');for(const title of ['Experiment','Seed','Status','Run'])runHead.append(element('th',title));runTable.append(runHead);for(const run of data.runs){const tr=element('tr');for(const key of ['variant','seed','status','run'])tr.append(element('td',String(run[key])));runTable.append(tr);}$('runlist').append(runTable);metrics();
+const runTable=element('table'),runHead=element('tr');for(const title of ['Experiment','Seed','Execution status','Standard benchmark coverage','Run'])runHead.append(element('th',title));runTable.append(runHead);for(const run of data.runs){const tr=element('tr'),c=run.benchmark_coverage;const state=c?.complete?'complete':'missing: '+(c?.missing_datasets.join(', ')||'none')+'; nonstandard counts: '+JSON.stringify(c?.nonstandard_counts||{});for(const value of [run.variant,run.seed,run.status,state,run.run])tr.append(element('td',String(value)));runTable.append(tr);}$('runlist').append(runTable);metrics();
 </script></html>
 """
 

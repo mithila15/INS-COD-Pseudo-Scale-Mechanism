@@ -1,8 +1,14 @@
-# 2026-10-30 · Pseudo-Scale Study — Methods, comparison protocol and evaluation recovery
+# 2026-11-01 · Pseudo-Scale Study — Methods, comparison protocol and evaluation recovery
 
 **English** | [한국어](README.ko.md) | [Execution guide](../../../README.md) | [Environment setup](environment/README.md)
 
 Use the [repository README](../../../README.md) for environment → data → plan → training → validation/cost → test commands. This document explains **what to compare and how to interpret it**. There are 12 generators × 13 utilizers plus two controls: 158 configurations, or 474 runs with three seeds. Fusion is supported throughout; the decoder does not require a residual representation.
+
+## 2026-11-01 results and protocol update
+
+The uploaded [priority8 report](results/priority8-report-20261101_172449/README.md) contains eight seed-3407 runs evaluated on **CAMO, CHAMELEON and NC4K only**. A new evaluation plan adds COD10K-test, reuses the existing `best.pth` files and re-evaluates all four datasets in fresh output directories. The `prepare` CLI now requires all four tests by default; leaderboards distinguish completed execution from complete benchmark coverage.
+
+Official ZoomNeXt trains on 4,040 images, while the existing study uses 3,636 training + 404 validation images. The new `full_train` protocol **trains fresh models on all 4,040 and fixes selection to the final epoch**. Existing results, splits and checkpoints are preserved. Architecture, loss, augmentation and precision still differ. [Official-source comparison, recovery and training commands](docs/BENCHMARK-PROTOCOL.md) · [Windows pull and SCP transfer](docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows).
 
 ## Decide which question each comparison answers
 
@@ -19,6 +25,8 @@ Use the [repository README](../../../README.md) for environment → data → pla
 For the complete study, generate `cross` once and analyze these subsets. A staged alternative uses `generation --utilizer mean` (42 runs), chooses a generator from validation, then `utilization --generator <choice>` (45 runs). These phases include repeated controls, so keep their result roots and summaries separate. A cross plan has 474 runs; running all three plans is optional, not required.
 
 ## Keep the comparison conditions fixed
+
+This table describes the existing development `holdout` protocol. `full_train` changes training to 4,040 images, removes validation, and selects the fixed final epoch; the other common settings remain unchanged.
 
 | Setting | Common protocol |
 | --- | --- |
@@ -102,11 +110,13 @@ Outputs, resumption limitations, strict checkpoint loading, metric conventions a
 
 ## Expanded evaluation and automatic leaderboards
 
-The planned `run_all.sh` executes training, test evaluation and profiling per run and refreshes `plans/<phase>/leaderboard/leaderboard.html` after every stage. Use `train.sh` for training and validation ranking only. Validation MAE determines the overall selection ranking; dataset-specific test rankings and cost tables are separate. All tables retain protocol and completed-seed groups, mean/sample SD and missing-run status.
+The planned `run_all.sh` executes training, test evaluation and profiling per run and refreshes `plans/<phase>/leaderboard/leaderboard.html` after every stage. Use `train.sh` for training and validation ranking only. Under default holdout training, validation MAE determines the overall selection ranking; dataset-specific test rankings and cost tables are separate. All tables retain protocol and completed-seed groups, mean/sample SD and missing-run status.
 
 Test evaluation now exports 21 scalar scores, per-image CSV, original-size probability PNGs and PR/Fβ/E curves as CSV+SVG+PNG. Profiling adds MACs, contraction FLOPs, a separate noncontraction estimate and operator coverage. See [metric definitions, references and reporting rules](docs/EVALUATION.md) and the [main execution guide](../../../README.md). Historical results are preserved; expanded evaluations have their own metric protocol.
 
 ## Recover a test image/mask size mismatch
+
+This is the historical recovery procedure for the interruption on 2026-10-30. With all eight runs now complete and results separated under `shMin`, use the [four-dataset recovery guide](docs/BENCHMARK-PROTOCOL.md#re-evaluate-completed-priority8-checkpoints) for the current task.
 
 The reported priority run finished `single` training at epoch 150, then stopped while evaluating `chameleon_test/animal-62`: the image is 1000×628 and its mask is 998×628 (width×height). The previous loader rejected this pair before prediction. Completed training can be reused; this failure does not require retraining `single`.
 
@@ -164,3 +174,5 @@ Checked on **2026-10-28**. Korean title translations are provided in the [Korean
 Metric/leaderboard verification on 2026-10-29: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](results/verification-2026-10-29-metrics/README.md).
 
 Geometry recovery verification on 2026-10-30: **557 tests + 67 subtests passed**, including the reported 1000×628 image / 998×628 GT dimensions with synthetic inputs, all 21 finite test metrics, unchanged input/checkpoint bytes, strict train/val checks and checkpoint-preserving recovery order. No training or downloads were run; the actual remote pair remains uninspected. [Verification artifacts](results/verification-2026-10-30-geometry/README.md) · [Change record](../../../Progress/2026-10-30/Geometry-Recovery/README.md).
+
+The 2026-11-01 data-protocol and benchmark-completion changes are documented in the [change record](../../../Progress/2026-11-01/Benchmark-Completion/README.md). New real-data training and four-benchmark evaluation are pending execution, separate from the historical verification counts.

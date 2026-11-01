@@ -212,14 +212,41 @@ def validate_checkpoint(checkpoint, manifest):
         raise ValueError("Checkpoint was created from a different dataset manifest")
 
 
+def checkpoint_model_kwargs(model_config, model_class):
+    """Preserve old server metadata while supporting its explicit common tag.
+
+    Some server checkpoints recorded architecture='common' in a local wrapper.
+    Only this known tag can be omitted for the canonical common-only constructor;
+    non-common architectures still require their exact implementation.
+    """
+    import inspect
+    options = dict(model_config)
+    if "architecture" in options and "architecture" not in inspect.signature(model_class.__init__).parameters:
+        if options["architecture"] != "common":
+            raise ValueError("This checkpoint requires its original architecture implementation")
+        options.pop("architecture")
+    return options
+
+
+def _validation_due(protocol, epoch, epochs, interval):
+    return protocol == "holdout" and (epoch % interval == 0 or epoch == epochs)
+
+
+def _select_checkpoint(protocol, epoch, epochs, improved):
+    return epoch == epochs if protocol == "full_train" else improved
+
+
 def train(args):
     """Only called by explicit `train`; no other command performs optimizer steps."""
     _validate_args(args)
     if args.epochs < 1 or args.lr <= 0 or args.eval_interval < 1:
         raise ValueError("--epochs, --lr and --eval-interval must be positive")
     manifest, root = load_manifest(args.manifest, verify_files=True, data_root=args.data_root)
+    from .training_protocol import training_metadata
+    protocol = getattr(args, "training_protocol", "holdout")
+    training_info = training_metadata(manifest, protocol)
     train_data = CODDataset(manifest, root, "train", args.size, args.seed)
-    val_data = CODDataset(manifest, root, "val", args.size, args.seed)
+    val_data = CODDataset(manifest, root, "val", args.size, args.seed) if protocol == "holdout" else None
     if len(train_data) < args.batch_size:
         raise ValueError("Training split is smaller than --batch-size")
     # Decode one complete pass before allocating a model: catches corrupt/geometry inputs.
@@ -255,14 +282,17 @@ def train(args):
                    "augmentation": "stateless seeded horizontal flip p=.5, vertical flip p=.2; resized RGB/mask",
                    "edge_protocol": "5x5 morphological gradient after nearest mask resize",
                    "model_metadata": model.metadata, "source_sha256": _source_hashes(), "environment": _environment()})
+    config.update(training_info)
+    config.update({"steps_per_epoch": len(train_data) // args.batch_size,
+                   "planned_optimizer_steps": args.epochs * (len(train_data) // args.batch_size)})
     _json_write(output / "config.json", config)
     _json_write(output / "manifest.json", manifest)
     training_loader = _loader(train_data, args.batch_size, args.workers, args.seed, shuffle=True, drop_last=True)
-    validation_loader = _loader(val_data, args.batch_size, args.workers, args.seed)
+    validation_loader = _loader(val_data, args.batch_size, args.workers, args.seed) if val_data is not None else None
     _freeze_encoder_bn(model)
     optimizer = _optimizer(model, args.lr)
     scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[max(1, int(args.epochs * 2 / 3))], gamma=.1)
-    best_mae = float("inf")
+    best_mae = float("inf") if protocol == "holdout" else None
     total_steps = args.epochs * len(training_loader)
     step = 0
     start = time.perf_counter()
@@ -288,7 +318,7 @@ def train(args):
         scheduler.step()
         validation = None
         improved = False
-        if epoch % args.eval_interval == 0 or epoch == args.epochs:
+        if _validation_due(protocol, epoch, args.epochs, args.eval_interval):
             validation = evaluate_model(model, validation_loader, args.device, official=False)
             value = validation["sample_weighted_MAE"]
             if not math.isfinite(value):
@@ -305,16 +335,19 @@ def train(args):
         temporary = output / "last.tmp.pth"
         torch.save(checkpoint, temporary)
         temporary.replace(output / "last.pth")
-        if improved:
+        if _select_checkpoint(protocol, epoch, args.epochs, improved):
             torch.save(checkpoint, output / "best.pth")
         row = {"epoch": epoch, "step": step, "seconds_elapsed": time.perf_counter() - start,
                "train_losses": {key: value / len(training_loader) for key, value in loss_totals.items()},
-               "validation": validation, "best_val_mae": best_mae if math.isfinite(best_mae) else None}
+               "validation": validation, "best_val_mae": best_mae if best_mae is not None and math.isfinite(best_mae) else None,
+               "training_protocol": protocol, "checkpoint_selection": training_info["checkpoint_selection"]}
         with (output / "history.jsonl").open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(row, allow_nan=False) + "\n")
         print(json.dumps(row, allow_nan=False), flush=True)
     _json_write(output / "status.json", {"status": "training_complete", "epochs": args.epochs,
                                         "optimizer_steps": step, "best_val_mae": best_mae,
+                                        "training_protocol": protocol,
+                                        "checkpoint_selection": training_info["checkpoint_selection"],
                                         "test_evaluation": "not_run"})
     return output
 
@@ -328,6 +361,21 @@ def evaluate(args):
         raise RuntimeError("CUDA unavailable; choose --device cpu explicitly")
     # Full input checks precede model allocation; test metric dependency is mandatory.
     manifest, root = load_manifest(args.manifest, verify_files=True, data_root=args.data_root)
+    training_manifest = None
+    extension = None
+    training_path = getattr(args, "training_manifest", None)
+    if getattr(args, "training_data_root", None) and not training_path:
+        raise ValueError("--training-data-root requires --training-manifest")
+    if training_path:
+        if args.split != "test":
+            raise ValueError("--training-manifest extensions are only for test evaluation")
+        from .benchmark import validate_test_extension
+        training_manifest, training_root = load_manifest(
+            training_path, verify_files=True, data_root=getattr(args, "training_data_root", None))
+        recorded_root = manifest.get("test_extension", {}).get("training_data_root")
+        if recorded_root is None or training_root != Path(recorded_root).resolve() or root != Path(manifest["data_root"]).resolve():
+            raise ValueError("Extension data roots differ from the audited manifest; rebuild the extension for relocated data")
+        extension = validate_test_extension(training_manifest, training_root, manifest, root, verify_files=False)
     if not any(record["split"] == args.split for record in manifest["records"]):
         raise ValueError(f"Manifest has no samples for requested split {args.split}")
     policy = getattr(args, "test_geometry", "strict")
@@ -338,11 +386,11 @@ def evaluate(args):
         _official_metrics()
     checkpoint_path = Path(args.checkpoint).expanduser().resolve(strict=True)
     checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
-    validate_checkpoint(checkpoint, manifest)
+    validate_checkpoint(checkpoint, training_manifest if training_manifest is not None else manifest)
     os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     seed_everything(checkpoint["model_config"]["seed"], checkpoint["run_config"].get("determinism", "warn"))
     from .model import StudyModel
-    model = StudyModel(**checkpoint["model_config"], backbone_weights=None)
+    model = StudyModel(**checkpoint_model_kwargs(checkpoint["model_config"], StudyModel), backbone_weights=None)
     model.load_state_dict(checkpoint["model"], strict=True)
     model.to(args.device)
     size = checkpoint["run_config"]["size"]
@@ -351,6 +399,9 @@ def evaluate(args):
     output = Path(args.output).expanduser().resolve()
     output.mkdir(parents=True, exist_ok=False)
     _json_write(output / "geometry_audit.json", geometry)
+    if extension is not None:
+        _json_write(output / "manifest.json", manifest)
+        _json_write(output / "training_manifest.json", training_manifest)
     results = evaluate_model(model, loader, args.device, official=args.split == "test", output=output,
                              save_predictions=not getattr(args, "no_save_predictions", False))
     results.update({"split": args.split, "checkpoint": str(checkpoint_path),
@@ -358,9 +409,18 @@ def evaluate(args):
                     "model_config": checkpoint["model_config"], "manifest_sha256": manifest["content_sha256"],
                     "environment": _environment(), "source_sha256": _source_hashes()})
     results.update({"geometry_protocol": geometry_protocol(policy), "geometry_audit": geometry})
+    from .benchmark import benchmark_coverage
+    if args.split == "test":
+        results["benchmark_coverage"] = benchmark_coverage({name: values["count"] for name, values in results["datasets"].items()})
+    if extension is not None:
+        results.update({"training_manifest_sha256": training_manifest["content_sha256"],
+                        "manifest_extension": extension})
     if "artifacts" in results:
         results["artifacts"]["geometry_audit"] = "geometry_audit.json"
         results["artifacts"]["sha256"]["geometry_audit.json"] = sha256_file(output / "geometry_audit.json")
+        if extension is not None:
+            for name in ("manifest.json", "training_manifest.json"):
+                results["artifacts"]["sha256"][name] = sha256_file(output / name)
     _json_write(output / "metrics.json", results)
     print(json.dumps(results, indent=2, allow_nan=False))
     return output

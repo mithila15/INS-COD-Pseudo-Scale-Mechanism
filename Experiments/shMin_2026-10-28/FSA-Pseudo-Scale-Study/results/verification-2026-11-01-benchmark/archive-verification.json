@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "zip_entries": 191,
+  "zip_bytes": 806541,
+  "archived_paths": [
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study",
+    "Experiments/FSA-ZoomNeXt",
+    "docs/MIGRATION.md"
+  ],
+  "isolated_release_cli_help": 4,
+  "cold_model_import_and_cpu_inference": "passed; random baseline, channels8, RGB64x64; no optimizer updates",
+  "training": "not_run",
+  "remote_transfer": "not_run",
+  "git_tree": "3578b65a5ceb4e3729881c65ebe842800b6c7ece"
+}

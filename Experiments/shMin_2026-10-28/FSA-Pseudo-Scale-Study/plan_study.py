@@ -24,6 +24,11 @@ def variants(phase, generator, utilizer):
     utilizers = names("utilizers", "UTILIZER_NAMES")
     if generator not in generators or utilizer not in utilizers:
         raise ValueError(f"Unknown generator/utilizer; choose {generators} / {utilizers}")
+    if phase == "priority8":
+        pairs = [("native_conv", "asff"), ("native_conv", "sk"), ("native_conv", "mean"),
+                 ("projection", "mean"), ("dysample", "asff"), ("dysample", "sk"), ("dysample", "mean")]
+        return [("single", ["--baseline"])] + [
+            (f"{g}__{u}", ["--generator", g, "--utilizer", u]) for g, u in pairs]
     pairs = itertools.product(generators, utilizers) if phase == "cross" else (
         ((g, utilizer) for g in generators) if phase == "generation" else ((generator, u) for u in utilizers))
     return [("single", ["--baseline"]), ("legacy_full", ["--legacy-reference"])] + [
@@ -32,7 +37,8 @@ def variants(phase, generator, utilizer):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--phase", choices=["generation", "utilization", "cross"], default="cross")
+    parser.add_argument("--phase", choices=["generation", "utilization", "cross", "priority8"], default="cross")
+    parser.add_argument("--training-protocol", choices=["holdout", "full_train"], default="holdout")
     parser.add_argument("--generator", default="legacy", help="Fixed generator for utilization phase")
     parser.add_argument("--utilizer", default="mean", help="Fixed utilizer for generation phase")
     parser.add_argument("--seeds", nargs="+", type=int, default=[3407, 3408, 3409])
@@ -76,7 +82,8 @@ def main():
             train = base + ["train", "--manifest", args.manifest, "--output", str(run), "--seed", str(seed),
                             "--epochs", str(args.epochs), "--batch-size", str(args.batch_size),
                             "--size", str(args.size), "--channels", str(args.channels),
-                            "--workers", str(args.workers), "--device", args.device] + flags
+                            "--workers", str(args.workers), "--device", args.device,
+                            "--training-protocol", args.training_protocol] + flags
             train += ["--backbone-weights", args.backbone_weights] if args.backbone_weights else ["--random-init"]
             evaluate = base + ["evaluate", "--manifest", args.manifest, "--checkpoint", str(run / "best.pth"),
                                "--split", "test", "--output", str(run / args.evaluation_subdir), "--device", args.device,
@@ -88,6 +95,7 @@ def main():
             jobs.append({"variant": name, "seed": seed, "run": str(run),
                          "train": train, "evaluate": evaluate, "profile": profile})
     payload = {"schema_version": 2, "phase": args.phase, "variant_count": len(variants_list),
+               "training_protocol": args.training_protocol,
                "results": args.results, "evaluation_subdir": args.evaluation_subdir, "profile_name": args.profile_name,
                "run_count": len(jobs), "seeds": args.seeds, "status": "commands_only_not_executed", "jobs": jobs}
     (output / "plan.json").write_text(json.dumps(payload, indent=2) + "\n")

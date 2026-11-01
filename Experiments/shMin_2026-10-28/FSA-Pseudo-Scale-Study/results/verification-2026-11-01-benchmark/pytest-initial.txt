@@ -1,0 +1,37 @@
+........................................................................ [ 10%]
+........................................................................ [ 20%]
+........................................................................ [ 31%]
+...................................F.................................... [ 41%]
+........................................................................ [ 51%]
+........................................................................ [ 62%]
+........................................................................ [ 72%]
+........................................................................ [ 82%]
+......................................................................................................................                         [100%]
+=================================== FAILURES ===================================
+___________ test_cuda_and_cpu_accounting_match_for_dynamic_sampling ____________
+
+    @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
+    def test_cuda_and_cpu_accounting_match_for_dynamic_sampling():
+        model = nn.Sequential(build_generator("dysample", 8), build_utilizer("sk", 8)).eval()
+        x = torch.rand(1, 8, 8, 8)
+        cpu = measure_complexity(model, x)
+        cuda = measure_complexity(model.cuda(), x.cuda())
+        assert cpu["macs"] == cuda["macs"]
+>       assert cpu["estimated_total_flops"] == cuda["estimated_total_flops"]
+E       assert 69860 == None
+
+Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_complexity.py:159: AssertionError
+=============================== warnings summary ===============================
+Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_benchmark_engine.py::test_old_checkpoint_evaluates_all_four_without_modifying_training
+  /home/robin/shMin/INS_COD/.venv/fsa-study/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+    warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+
+Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_complexity.py: 4 warnings
+Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_model.py: 7 warnings
+  /home/robin/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/contextlib.py:105: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+    self.gen = func(*args, **kwds)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_complexity.py::test_cuda_and_cpu_accounting_match_for_dynamic_sampling
+1 failed, 693 passed, 12 warnings, 74 subtests passed in 14.14s

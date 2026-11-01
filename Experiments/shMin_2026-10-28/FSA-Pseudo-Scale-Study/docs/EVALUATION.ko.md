@@ -1,4 +1,4 @@
-# 2026-10-29 · 평가 — 평가지표·추론 비용·리더보드
+# 2026-11-01 · 평가 — 평가지표·추론 비용·리더보드
 
 [English](EVALUATION.md) | **한국어** | [실행 안내](../../../../README.ko.md)
 
@@ -34,7 +34,7 @@ Dice와 F1을 별개의 개선 근거로 세지 않는다. 이진 overlap은 **�
 4. PySODMetrics가 uint8을 255로 나누고, 상수가 아닌 맵에는 다시 min–max 정규화를 적용한다. 상수 맵은 255로 나눈 값을 유지한다. 정답 전경은 원본 mask > 0이다.
 5. 모든 테스트 지표는 이 준비된 맵을 사용한다. 고정 이진 지표는 **예측 ≥ 0.5**이다. E/Fβ 적응 임계값은 `min(2 × 평균 예측, 1)`이며 곡선은 라이브러리의 256개 임계값을 uint8 0–255 오름차순으로 내보낸다.
 
-저장 PNG는 이진 마스크가 아닌 지표 라이브러리의 입력이다. 이를 재평가할 때도 동일한 정규화가 필요하다. Validation은 기존 **uint8·라이브러리 정규화 전 float MAE**를 유지하며 학습 holdout의 이미지 수로 가중 평균한다. `best.pth`는 이 값만으로 선택하므로 validation/test MAE의 처리 규약이 다르다.
+저장 PNG는 이진 마스크가 아닌 지표 라이브러리의 입력이다. 이를 재평가할 때도 동일한 정규화가 필요하다. Validation은 기존 **uint8·라이브러리 정규화 전 float MAE**를 유지하며 학습 holdout의 이미지 수로 가중 평균한다. 기본 `holdout`의 `best.pth`는 이 값만으로 선택하므로 validation/test MAE의 처리 규약이 다르다.
 
 E/Fβ mean/max는 이미지별 곡선을 먼저 평균하고 그 곡선에서 평균·최댓값을 취한다. 이미지별 최댓값을 평균하면 다른 값이다. `per_image_metrics.csv`의 이미지별 max는 진단용이다. 아주 작은 합성 입력에서는 원래 라이브러리 분모 규약 때문에 E가 1을 조금 넘을 수 있으며 임의로 잘라내지 않는다.
 
@@ -81,7 +81,7 @@ Grouped convolution은 실제 그룹 weight 차원을, transposed convolution은
 - `leaderboard.csv` / `.json`: 전체 지표·순위·좋은 방향·프로토콜·seed·누락 seed·run 위치.
 - `summary.csv` / `.json`: 기존 평균·표본 표준편차 집계 형식에 새 지표를 추가한 결과.
 
-전체 선택 기준은 **평균 validation MAE가 낮은 순서**다. 테스트는 데이터셋·지표별 보고용 순위, 비용은 각 측정값별 순위로 구분한다. 이질적인 지표를 임의로 가중 합산하지 않고 테스트로 체크포인트를 고르지 않으며 유의성을 주장하지 않는다. 정확히 같은 값이면 같은 경쟁 순위(1,1,3)를 부여한다.
+기본 `holdout`의 전체 선택 기준은 **평균 validation MAE가 낮은 순서**다. `full_train`은 validation 없이 최종 epoch를 고정 선택하므로 validation 순위가 없고 `best_val_mae`가 null이다. 테스트는 데이터셋·지표별 보고용 순위, 비용은 각 측정값별 순위로 구분한다. 이질적인 지표를 임의로 가중 합산하지 않고 테스트로 체크포인트를 고르지 않으며 유의성을 주장하지 않는다. 정확히 같은 값이면 같은 경쟁 순위(1,1,3)를 부여한다.
 
 학습·평가 규약과 **실제로 완료된 seed 집합이 모두 같은 경우만** 같은 순위표에 둔다. 생성기·활용기 option은 비교할 변형의 일부로 보존한다. 장비·입력·dtype·측정 조건이 다르면 비용 표도 분리한다. Seed 하나의 결과는 provisional이며 `--plan`으로 목표 seed·미시작 실험을 표시한다. Plan이 없으면 목표 시행 수는 미확인이다. 한 행뿐인 그룹의 1위는 다른 그룹보다 우수하다는 뜻이 아니다.
 
@@ -100,4 +100,8 @@ Grouped convolution은 실제 그룹 weight 차원을, transposed convolution은
 | [PySODMetrics](https://github.com/lartpang/PySODMetrics)<br>회색조·이진 분할 지표 구현 | 공식 구현 저장소; 설치 package 1.6.2 | S/wF/MAE/E/Fβ·임계값 PR 곡선. 개별 지표 논문 링크는 `metric_protocol_details.sources`에 기록 |
 | [PyTorch 2.11 FLOP counter](https://github.com/pytorch/pytorch/blob/v2.11.0/torch/utils/flop_counter.py)<br>PyTorch 연산량 카운터 | 공식 소프트웨어 소스 | Dense contraction 계산 규약. 독립 카운터와 값 비교 |
 
-현재 검증은 합성 이미지·체크포인트 또는 초기화 추론이다. 실제 벤치마크 정확도·학습 수렴·학습 후 seed 통계·최종 방법 순위는 아직 측정하지 않았다. [검증 기록](../results/verification-2026-10-29-metrics/README.md).
+현재 검증은 합성 이미지·체크포인트 또는 초기화 추론이다. 해당 과거 검사는 실제 벤치마크 정확도나 수렴을 측정하지 않았다. 이후 업로드된 priority8 보고서에는 seed 1개의 3개 테스트셋 결과가 있지만 COD10K-test가 없으므로 전체 벤치마크 결과가 아니다. [검증 기록](../results/verification-2026-10-29-metrics/README.md).
+
+## 벤치마크 전체 완료 판정
+
+`benchmark_coverage`는 CAMO 250·CHAMELEON 76·COD10K 2,026·NC4K 4,121을 모두 포함하는지 기록한다. 리더보드의 `execution_complete`는 계획된 단계 완료, `benchmark_complete`는 표준 테스트셋 전체 평가 완료를 뜻한다. 누락·비표준 개수를 별도로 표시하고 일부 테스트셋의 완료를 전체 완료로 바꾸지 않는다. [복구 명령과 manifest 출처 검증](BENCHMARK-PROTOCOL.ko.md)을 참고한다. 기존 manifest로 학습한 체크포인트를 확장된 테스트 manifest에서 평가할 때는 원 학습 manifest와 확장 증명을 함께 보존하며, 다른 학습 조건으로 만든 모델과 같은 그룹에 넣지 않는다.

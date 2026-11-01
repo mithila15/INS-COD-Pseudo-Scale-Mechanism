@@ -41,9 +41,9 @@ def main():
     torch.manual_seed(args.seed)
     if args.checkpoint:
         checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
-        from fsa_study.engine import validate_checkpoint
+        from fsa_study.engine import validate_checkpoint, checkpoint_model_kwargs
         validate_checkpoint(checkpoint, {"content_sha256": checkpoint.get("manifest_sha256")})
-        model = StudyModel(**checkpoint["model_config"])
+        model = StudyModel(**checkpoint_model_kwargs(checkpoint["model_config"], StudyModel))
         model.load_state_dict(checkpoint["model"], strict=True)
     else:
         model = StudyModel(generator=args.generator, utilizer=args.utilizer, channels=args.channels,

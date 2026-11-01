@@ -34,14 +34,20 @@ def build_parser():
     prepare.add_argument("--data-root", required=True)
     prepare.add_argument("--manifest", required=True)
     prepare.add_argument("--split-seed", type=int, default=1729)
-    prepare.add_argument("--val-fraction", type=float, default=.1)
+    prepare.add_argument("--val-fraction", type=float, default=None,
+                         help="Default .1 for holdout, 0 for full_train")
+    prepare.add_argument("--training-protocol", choices=["holdout", "full_train"], default="holdout",
+                         help="holdout: fixed training validation; full_train: all official training samples, no holdout")
     prepare.add_argument("--cod10k-prefix", default="COD10K-CAM-", help="Explicit COD10K foreground prefix; exclusions and hashes recorded. Empty string requires an audited foreground-only renamed copy")
     prepare.add_argument("--allow-nonstandard-counts", action="store_true", help="Explicit custom-data/fixture override; record actual counts")
     prepare.add_argument("--test-datasets", nargs="+", choices=["cod10k", "camo", "chameleon", "nc4k", "none"],
-                         default=None, help="Default: all available test datasets, recording missing ones; explicit names must exist")
+                         default=["cod10k", "camo", "chameleon", "nc4k"],
+                         help="Default: require all four benchmarks. Explicit subsets/none remain available for documented partial studies")
 
-    train = subparsers.add_parser("train", help="Run explicitly requested optimization; select only on training holdout")
+    train = subparsers.add_parser("train", help="Run explicit optimization with holdout or fixed-final-epoch selection")
     _common_input(train)
+    train.add_argument("--training-protocol", choices=["holdout", "full_train"], default="holdout",
+                       help="holdout selects minimum validation MAE; full_train uses the predeclared final epoch, never test scores")
     train.add_argument("--generator", default="legacy")
     train.add_argument("--utilizer", default="mean")
     train.add_argument("--generator-options", type=json_object, default={})
@@ -64,6 +70,8 @@ def build_parser():
     evaluate = subparsers.add_parser("evaluate", help="Evaluate one exact study checkpoint without optimizer updates")
     _common_input(evaluate)
     evaluate.add_argument("--checkpoint", required=True)
+    evaluate.add_argument("--training-manifest", help="Original checkpoint manifest; permits only an audited test-set extension, never changed train/validation data")
+    evaluate.add_argument("--training-data-root", help="Explicit relocation of the original training manifest's data root for extension verification")
     evaluate.add_argument("--split", choices=["val", "test"], required=True)
     evaluate.add_argument("--test-geometry", choices=["strict", "resize-prediction-to-gt"], default="strict",
                           help="Test only: opt into prediction resizing to untouched original GT; mismatches are audited")
@@ -78,13 +86,20 @@ def main(argv=None):
     try:
         if args.command == "prepare":
             from fsa_study.data import prepare_manifest
-            manifest = prepare_manifest(args.data_root, args.manifest, args.split_seed, args.val_fraction,
-                                        args.allow_nonstandard_counts, args.test_datasets, args.cod10k_prefix)
+            from fsa_study.benchmark import benchmark_coverage
+            from fsa_study.training_protocol import resolve_val_fraction, training_metadata
+            fraction = resolve_val_fraction(args.training_protocol, args.val_fraction)
+            manifest = prepare_manifest(args.data_root, args.manifest, args.split_seed, fraction,
+                                        args.allow_nonstandard_counts, args.test_datasets, args.cod10k_prefix,
+                                        training_protocol=args.training_protocol)
             print(json.dumps({"manifest": str(Path(args.manifest).expanduser().resolve()),
                               "content_sha256": manifest["content_sha256"],
                               "source_counts": manifest["source_counts"], "split_counts": manifest["split_counts"],
                               "test_datasets_selected": manifest["test_datasets_selected"],
-                              "test_datasets_missing": manifest["test_datasets_missing"]}, indent=2))
+                              "test_datasets_missing": manifest["test_datasets_missing"],
+                              "training": training_metadata(manifest, args.training_protocol),
+                              "benchmark_coverage": benchmark_coverage({name: manifest["split_counts"].get(f"{name}/test", 0)
+                                                                        for name in manifest["test_datasets_selected"]})}, indent=2))
         else:
             # Must precede torch import / CUDA initialization.
             os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")

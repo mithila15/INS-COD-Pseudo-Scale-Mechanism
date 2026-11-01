@@ -201,3 +201,91 @@ def test_generated_scripts_include_automatic_reporting_runner(tmp_path):
         assert subprocess.run(["bash", "-n", str(script)]).returncode == 0
     assert "--actions train evaluate profile" in (output / "run_all.sh").read_text()
     assert not (tmp_path / "runs").exists()
+
+
+def test_changed_evaluation_manifest_requires_explicit_original_manifest(tmp_path):
+    path, job = plan_fixture(tmp_path)
+    original = job["train"][job["train"].index("--manifest") + 1]
+    job["evaluate"][job["evaluate"].index("--manifest") + 1] = str(tmp_path / "evaluation.json")
+    path.write_text(json.dumps({"jobs": [job], "run_count": 1}))
+    with pytest.raises(ValueError, match="explicit audited test extension"):
+        read_plan(path)
+    job["evaluate"].extend(["--training-manifest", original])
+    path.write_text(json.dumps({"jobs": [job], "run_count": 1}))
+    assert read_plan(path)["jobs"] == [job]
+    job["evaluate"][-1] = str(tmp_path / "wrong-training.json")
+    path.write_text(json.dumps({"jobs": [job], "run_count": 1}))
+    with pytest.raises(ValueError, match="original training manifest"):
+        read_plan(path)
+
+
+def test_extension_must_preserve_explicit_training_root(tmp_path):
+    path, job = plan_fixture(tmp_path)
+    original = job["train"][job["train"].index("--manifest") + 1]
+    job["train"].extend(["--data-root", str(tmp_path / "data")])
+    job["evaluate"].extend(["--training-manifest", original, "--training-data-root", str(tmp_path / "wrong")])
+    path.write_text(json.dumps({"jobs": [job], "run_count": 1}))
+    with pytest.raises(ValueError, match="original training data root"):
+        read_plan(path)
+    job["evaluate"][-1] = str(tmp_path / "data")
+    path.write_text(json.dumps({"jobs": [job], "run_count": 1}))
+    assert read_plan(path)["jobs"] == [job]
+
+
+def test_extension_training_root_cannot_be_used_without_training_manifest(tmp_path):
+    path, job = plan_fixture(tmp_path)
+    job["evaluate"].extend(["--training-data-root", str(tmp_path / "data")])
+    path.write_text(json.dumps({"jobs": [job], "run_count": 1}))
+    with pytest.raises(ValueError, match="explicit audited test extension"):
+        read_plan(path)
+
+
+def test_missing_historical_training_protocol_means_holdout_only(tmp_path):
+    _, job = plan_fixture(tmp_path)
+    run = completed_train(job)
+    path = run / "config.json"
+    config = json.loads(path.read_text())
+    config.pop("training_protocol", None)
+    path.write_text(json.dumps(config))
+    assert completed(job, "train")
+    if "training_protocol" in vars(build_parser().parse_args(job["train"][2:])):
+        job["train"].extend(["--training-protocol", "full_train"])
+        with pytest.raises(ValueError, match="configuration disagrees"):
+            completed(job, "train")
+
+
+def test_entrypoint_rebinding_is_explicit_and_preserves_original_plan_bytes(tmp_path):
+    path, job = plan_fixture(tmp_path)
+    old_study = tmp_path / "different-checkout"
+    for action in ("train", "evaluate", "profile"):
+        job[action][1] = str(old_study / Path(job[action][1]).name)
+    path.write_text(json.dumps({"jobs": [job], "run_count": 1}))
+    before = path.read_bytes()
+    with pytest.raises(ValueError, match="intended study entrypoint"):
+        read_plan(path)
+    rebound = read_plan(path, rebind_entrypoints=True)
+    assert path.read_bytes() == before
+    for action in ("train", "evaluate", "profile"):
+        command = rebound["jobs"][0][action]
+        assert command[0] == job[action][0]
+        assert command[2:] == job[action][2:]
+        assert Path(command[1]).parent == HERE
+        assert Path(command[1]).name == Path(job[action][1]).name
+
+
+@pytest.mark.parametrize("corruption", ["relative", "unexpected_name", "mixed_directories", "swapped_role"])
+def test_rebinding_rejects_malformed_or_mixed_source_entrypoints(tmp_path, corruption):
+    path, job = plan_fixture(tmp_path)
+    for action in ("train", "evaluate", "profile"):
+        job[action][1] = str(tmp_path / "old-code" / Path(job[action][1]).name)
+    if corruption == "relative":
+        job["train"][1] = "run_study.py"
+    elif corruption == "unexpected_name":
+        job["evaluate"][1] = str(tmp_path / "old-code/not-study.py")
+    elif corruption == "mixed_directories":
+        job["profile"][1] = str(tmp_path / "other-code/profile_study.py")
+    else:
+        job["profile"][1] = str(tmp_path / "old-code/run_study.py")
+    path.write_text(json.dumps({"jobs": [job], "run_count": 1}))
+    with pytest.raises(ValueError, match="Entrypoint rebinding"):
+        read_plan(path, rebind_entrypoints=True)

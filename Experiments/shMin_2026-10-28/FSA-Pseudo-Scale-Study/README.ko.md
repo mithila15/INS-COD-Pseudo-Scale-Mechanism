@@ -1,8 +1,14 @@
-# 2026-10-30 · Pseudo-Scale Study — 방법별 비교 기준·실험 조건·평가 복구
+# 2026-11-01 · Pseudo-Scale Study — 방법별 비교 기준·실험 조건·평가 복구
 
 [English](README.md) | **한국어** | [실행 안내](../../../README.ko.md) | [환경 설정](environment/README.ko.md)
 
 환경 → 데이터 → 계획 생성 → 학습 → validation/비용 → 테스트 명령은 [저장소 README](../../../README.ko.md)에 있다. 이 문서는 **무엇을 비교하고 결과를 어떻게 해석할지** 설명한다. 생성 12종 × 활용 13종과 대조군 2개로 158개 구성, seed 3개 기준 474회다. Fusion을 지원하며 공통 decoder에 residual 표현을 강제하지 않는다.
+
+## 2026-11-01 결과와 실험 조건 수정
+
+[업로드된 priority8 보고서](results/priority8-report-20261101_172449/README.ko.md)는 seed 3407의 8개 실험을 **CAMO·CHAMELEON·NC4K에서만** 평가했다. COD10K-test를 추가하는 새 평가 plan은 기존 `best.pth`를 재사용하고 4개 테스트셋을 새 경로에서 다시 평가한다. `prepare` CLI는 이제 4개 테스트셋을 기본으로 요구하며, 리더보드는 실행 완료와 표준 벤치마크 전체 완료를 구분한다.
+
+공식 ZoomNeXt는 학습 4,040장을 쓰지만 기존 비교는 학습 3,636장 + validation 404장이다. 새 `full_train`은 **4,040장 전체로 새로 학습하고 최종 epoch를 고정 선택**한다. 기존 결과·분할·체크포인트는 그대로 보존한다. 구조·손실·증강·정밀도 차이까지 같아진 것은 아니다. [공식 코드·논문 대조, 복구 및 새 학습 명령](docs/BENCHMARK-PROTOCOL.ko.md) · [Windows pull·SCP 전송](docs/BENCHMARK-PROTOCOL.ko.md#windows에서-수정-코드-전송).
 
 ## 비교별 질문 정하기
 
@@ -19,6 +25,8 @@
 전체 실험은 `cross`를 한 번 생성한 뒤 위 부분집합으로 분석한다. 단계별 대안은 `generation --utilizer mean` 42회 → validation으로 생성기 선택 → `utilization --generator <선택값>` 45회다. phase 간 대조군이 중복되므로 결과 root와 집계를 분리한다. 전체 cross는 474회이며 세 계획을 모두 실행하는 것이 필수는 아니다.
 
 ## 공통 조건 고정
+
+다음 표는 기존 개발용 `holdout` 프로토콜이다. `full_train`에서는 학습 4,040장·validation 없음·최종 epoch 고정 선택으로 바뀌며 나머지 공통 설정은 유지한다.
 
 | 항목 | 공통 조건 |
 | --- | --- |
@@ -102,11 +110,13 @@ flowchart LR
 
 ## 확장 평가와 자동 리더보드
 
-계획의 `run_all.sh`는 각 run의 학습·테스트 평가·profiling을 실행하고 단계마다 `plans/<phase>/leaderboard/leaderboard.html`을 갱신한다. 학습과 validation 순위만 필요하면 `train.sh`를 쓴다. 전체 선택 순위는 validation MAE, 테스트는 데이터셋별 순위, 비용은 별도 표로 나눈다. 프로토콜·완료 seed 집합별 그룹, 평균·표본 표준편차·미완료 상태를 함께 표시한다.
+계획의 `run_all.sh`는 각 run의 학습·테스트 평가·profiling을 실행하고 단계마다 `plans/<phase>/leaderboard/leaderboard.html`을 갱신한다. 학습과 validation 순위만 필요하면 `train.sh`를 쓴다. 기본 holdout의 전체 선택 순위는 validation MAE, 테스트는 데이터셋별 순위, 비용은 별도 표로 나눈다. 프로토콜·완료 seed 집합별 그룹, 평균·표본 표준편차·미완료 상태를 함께 표시한다.
 
 테스트 평가는 21개 수치, 이미지별 CSV, 원본 크기 확률 PNG, PR/Fβ/E 곡선 CSV+SVG+PNG를 저장한다. 비용 측정에는 MACs·행렬/합성곱 FLOPs·별도 비행렬 추정량·연산 커버리지를 추가했다. [지표 정의·근거·보고 규칙](docs/EVALUATION.ko.md)과 [대표 실행 안내](../../../README.ko.md)를 참고한다. 과거 결과는 보존하며 확장 평가에 별도 프로토콜을 부여한다.
 
 ## 테스트 이미지·마스크 크기 불일치 복구
+
+아래는 2026-10-30 중단 당시의 복구 절차다. 이후 8개 학습이 완료되고 결과가 `shMin`으로 분리된 현재 작업에는 [4개 데이터셋 복구 안내](docs/BENCHMARK-PROTOCOL.ko.md#완료된-priority8-체크포인트-재평가)를 사용한다.
 
 사용자가 제공한 우선 실험 로그에서 `single`은 150 epoch 학습을 완료했고, 이후 `chameleon_test/animal-62` 평가에서 멈췄다. 이미지가 1000×628, 마스크가 998×628(가로×세로)이어서 이전 로더의 크기 검사를 통과하지 못했다. 완료된 학습을 재사용할 수 있으므로 이 오류 때문에 `single`을 다시 학습할 필요는 없다.
 
@@ -164,3 +174,5 @@ PYTHONUNBUFFERED=1 bash "$RECOVERY/run_all.sh" 2>&1 | tee "$RECOVERY/run.log"
 2026-10-29 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](results/verification-2026-10-29-metrics/README.md).
 
 2026-10-30 크기 불일치 복구 검증: **557 tests + 67 subtests 통과**. 이미지 1000×628 / GT 998×628을 합성 데이터로 재현하여 21개 유한 지표, 입력·checkpoint 바이트 보존, train/val 엄격 검사와 기존 모델을 재사용하는 복구 순서를 확인했다. 학습·다운로드는 실행하지 않았고 실제 서버 원본 쌍은 미검증이다. [검증 산출물](results/verification-2026-10-30-geometry/README.md) · [변경 기록](../../../Progress/2026-10-30/Geometry-Recovery/README.md).
+
+2026-11-01의 새 데이터 프로토콜과 벤치마크 완성 기능은 [변경 기록](../../../Progress/2026-11-01/Benchmark-Completion/README.md)에 정리했다. 새 실제 데이터 학습·4개 벤치마크 평가 결과는 아직 실행 전이며 과거 검증 수치와 구분한다.

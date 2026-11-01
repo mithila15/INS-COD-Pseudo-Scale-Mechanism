@@ -1,4 +1,4 @@
-# 2026-10-29 · Evaluation — Metrics, inference cost and leaderboards
+# 2026-11-01 · Evaluation — Metrics, inference cost and leaderboards
 
 **English** | [한국어](EVALUATION.ko.md) | [Execution guide](../../../../README.md)
 
@@ -34,7 +34,7 @@ Do not count Dice and F1 as independent evidence. Binary overlap metrics are for
 4. PySODMetrics prepares the uint8 map: divide by 255, then min–max normalize nonconstant maps. Constant maps remain divided by 255. Ground truth is the source mask greater than zero.
 5. Compute all test metrics on that prepared map. Fixed binary fields use **prediction ≥ 0.5**. Adaptive E/Fβ uses `min(2 × mean(prediction), 1)`. Curves contain 256 library thresholds and are exported in ascending uint8 order 0–255.
 
-The saved PNG is the input to the metric library, not a thresholded mask. Reproducing scores from it must apply the same preparation. Validation remains the original **float MAE before uint8/library preparation**, weighted by image count across the training holdout; only that score selects `best.pth`. Validation/test MAE therefore use distinct documented conventions.
+The saved PNG is the input to the metric library, not a thresholded mask. Reproducing scores from it must apply the same preparation. Validation remains the original **float MAE before uint8/library preparation**, weighted by image count across the training holdout; only that score selects `best.pth` under the default `holdout` protocol. Validation/test MAE therefore use distinct documented conventions.
 
 For E/Fβ mean/max, first average the curves across images, then take the mean/max across thresholds. Averaging per-image maxima would produce a different score. `per_image_metrics.csv` includes per-image maxima only as diagnostics. Tiny fixtures can give E slightly above 1 because the original library uses its published denominator convention; values are not silently clipped.
 
@@ -81,7 +81,7 @@ The generated `run_all.sh` explicitly executes training → evaluation → profi
 - `leaderboard.csv` / `.json`: all metrics/ranks, directions, protocols, seed sets, missing seeds and run locations.
 - `summary.csv` / `.json`: original mean/sample-SD summary format, extended with the new fields.
 
-Overall selection uses **lowest mean validation MAE**. Each test dataset/metric and each inference-cost measure has a separate descriptive ranking. No weighted combination across unlike metrics, no automatic checkpoint selection from tests, and no statistical-significance claim. Exact ties share competition ranks (1,1,3).
+Under default `holdout`, overall selection uses **lowest mean validation MAE**. `full_train` fixes selection to the final epoch, has null `best_val_mae` and has no validation ranking. Each test dataset/metric and each inference-cost measure has a separate descriptive ranking. No weighted combination across unlike metrics, no automatic checkpoint selection from tests, and no statistical-significance claim. Exact ties share competition ranks (1,1,3).
 
 Only identical training/evaluation protocols **and identical observed seed sets** share a ranking. Generator/utilizer options identify the compared variant; their values are retained. Hardware, input, dtype and measurement differences separate cost tables. Single-seed results are provisional; `--plan` records expected seeds and not-started jobs. Without a plan, the target seed count is unknown. A one-row cohort's rank 1 is not evidence of outperforming other cohorts.
 
@@ -100,4 +100,8 @@ Checked **2026-10-29**. The [method catalog](../README.md#referenced-papers) ret
 | [PySODMetrics](https://github.com/lartpang/PySODMetrics) | Official implementation repository; installed package 1.6.2 | S/wF/MAE/E/Fβ and threshold PR curves; individual metric-paper links are stored in `metric_protocol_details.sources` |
 | [PyTorch 2.11 FLOP counter](https://github.com/pytorch/pytorch/blob/v2.11.0/torch/utils/flop_counter.py) | Official software source | Dense contraction counting convention, checked independently against our counter |
 
-All current verification uses synthetic images/checkpoints or initialization-only inference. Real benchmark accuracy, convergence, seed statistics after training, and final rankings remain unmeasured. [Verification records](../results/verification-2026-10-29-metrics/README.md).
+The recorded 2026-10-29 verification used synthetic images/checkpoints or initialization-only inference. The later uploaded priority8 report contains real three-dataset scores for one seed, with COD10K-test absent; it is not a complete four-benchmark result. [Verification records](../results/verification-2026-10-29-metrics/README.md).
+
+## Complete benchmark coverage
+
+`benchmark_coverage` checks for CAMO 250, CHAMELEON 76, COD10K 2,026 and NC4K 4,121. Leaderboard `execution_complete` means the planned stages completed; `benchmark_complete` means all four standard benchmarks were evaluated. Missing datasets and nonstandard counts remain explicit. See [recovery commands and manifest provenance checks](BENCHMARK-PROTOCOL.md). Evaluating a checkpoint against an extended test manifest preserves both the original training manifest and the extension proof; it does not merge models trained under different conditions into one cohort.

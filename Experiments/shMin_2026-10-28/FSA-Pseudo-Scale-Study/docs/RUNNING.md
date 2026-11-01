@@ -1,4 +1,4 @@
-# 2026-10-28 · Pseudo-Scale Study — 실행과 재현 / Running and Reproduction
+# 2026-11-01 · Pseudo-Scale Study — 실행과 재현 / Running and Reproduction
 
 이 문서의 명령은 **입력 준비, 명령 생성, 학습, 평가, 추론 측정, 결과 집계**를 구분한다. `prepare`와 `plan_study.py`는 학습하지 않는다. `train` 또는 생성된 `train.sh`/`run_all.sh`를 사용자가 실행해야 파라미터 업데이트가 시작된다. 데이터셋과 backbone 가중치는 자동 다운로드하지 않는다.
 
@@ -30,9 +30,9 @@ export STUDY_DEVICE="cuda:0"
 
 데이터와 평가 도구 출처: [SINet 저자 저장소](https://github.com/DengPingFan/SINet), [PySODMetrics](https://github.com/lartpang/PySODMetrics). SINet의 testing set 안내에는 COD10K-test, CAMO-test, CHAMELEON이 포함된다. 이번 작업에서 해당 데이터 다운로드는 실행하지 않았다. / Author-provided data/tool pointers; no dataset download was started.
 
-지원하는 원본 배치는 다음과 같다. 학습 원본은 COD10K+CAMO가 필수이고 테스트셋은 기본적으로 실제 존재하는 것만 선택한다. CHAMELEON이 없으면 missing 목록에 남으며 학습 준비를 막지 않는다. `--test-datasets cod10k camo nc4k`처럼 이름을 명시하면 지정한 데이터가 없을 때 중단한다. `--test-datasets none`은 테스트 데이터를 manifest에 넣지 않는다.
+지원하는 원본 배치는 다음과 같다. 학습 원본은 COD10K+CAMO가 필수이고 CLI는 기본적으로 CAMO·CHAMELEON·COD10K·NC4K 테스트셋 4개를 모두 요구한다. 하나라도 없으면 준비를 중단한다. `--test-datasets cod10k camo nc4k`처럼 이름을 명시하면 지정한 데이터가 없을 때 중단한다. `--test-datasets none`은 테스트 데이터를 manifest에 넣지 않는다.
 
-COD10K and CAMO training inputs are required. By default, preparation selects available test datasets and records missing datasets, including unavailable CHAMELEON. An explicit list requires every named dataset to exist; `--test-datasets none` prepares training/validation only.
+COD10K and CAMO training inputs are required. By default, the preparation CLI requires all four test datasets: CAMO, CHAMELEON, COD10K and NC4K. Missing any of them stops preparation. An explicit list requires every named dataset to exist; `--test-datasets none` prepares training/validation only.
 
 ```text
 STUDY_DATA_ROOT/
@@ -85,9 +85,9 @@ The following command **starts optimization**. It reuses a local PVTv2-B2 backbo
 
 Use `--random-init` instead of `--backbone-weights` only for an intentional random-initialization study, consistently across comparison arms. `--baseline` disables pseudo generation/use with the common decoder; `--legacy-reference` selects the complete original FSA architecture. They are mutually exclusive. Optional generator/utilizer parameters accept JSON objects, for example `--utilizer relative --utilizer-options '{"eps":1e-6}'`.
 
-기본값은 Adam, lr 1e-4, encoder lr 0.1배, weight decay 0, patch_embed1 고정, encoder BN 통계·affine 고정, 150 epochs 중 약 2/3 시점 lr 0.1배 감소이다. 모든 조합에 같은 segmentation/deep/region/edge/UAL 가중치 1/0.25/0.5/1/1을 적용한다. 매 epoch **학습 원본에서 분리한 검증셋의 이미지 수 가중 평균 MAE**만으로 `best.pth`를 선택한다. `last.pth`, `config.json`, `manifest.json`, `history.jsonl`, 완료 시 `status.json`도 저장한다. 테스트 평가를 자동으로 실행하지 않는다.
+기본값은 Adam, lr 1e-4, encoder lr 0.1배, weight decay 0, patch_embed1 고정, encoder BN 통계·affine 고정, 150 epochs 중 약 2/3 시점 lr 0.1배 감소이다. 모든 조합에 같은 segmentation/deep/region/edge/UAL 가중치 1/0.25/0.5/1/1을 적용한다. 기본 `holdout`에서는 매 epoch **학습 원본에서 분리한 검증셋의 이미지 수 가중 평균 MAE**만으로 `best.pth`를 선택한다. `last.pth`, `config.json`, `manifest.json`, `history.jsonl`, 완료 시 `status.json`도 저장한다. 테스트 평가를 자동으로 실행하지 않는다.
 
-Defaults use Adam, lr 1e-4, encoder lr factor 0.1, zero weight decay, frozen patch_embed1 and encoder BN statistics/affine, and a 0.1 lr step at approximately two thirds of 150 epochs. All variants share segmentation/deep/region/edge/UAL weights 1/0.25/0.5/1/1. Only sample-weighted validation MAE selects `best.pth`; `last.pth` and complete configuration/history are also saved. Training never invokes test evaluation.
+Defaults use Adam, lr 1e-4, encoder lr factor 0.1, zero weight decay, frozen patch_embed1 and encoder BN statistics/affine, and a 0.1 lr step at approximately two thirds of 150 epochs. All variants share segmentation/deep/region/edge/UAL weights 1/0.25/0.5/1/1. In the default `holdout` protocol, only sample-weighted validation MAE selects `best.pth`; `last.pth` and complete configuration/history are also saved. Training never invokes test evaluation.
 
 `--determinism warn`이 기본이며 deterministic 연산을 요청하되 CUDA `grid_sample` backward 등 미지원 연산은 경고한다. 엄격한 실패가 필요하면 `--determinism strict`를 사용한다. seed를 고정해도 하드웨어·버전 간 bitwise 동일성을 주장하지 않는다. 체크포인트에 optimizer/scheduler 상태가 있지만 현재 CLI는 중간 재개 기능을 제공하지 않는다.
 
@@ -173,10 +173,18 @@ For an **inference-only** initialization check before training, use a separate o
 
 이 명령은 완료된 run의 검증·테스트 지표를 조건별로 분리하고 seed 간 평균·표본 표준편차를 JSON/CSV로 기록하고 HTML/Markdown/CSV/JSON 리더보드를 생성한다. Validation MAE 순위, 데이터셋별 테스트 순위, 비용 표를 분리한다. 같은 조건의 동일 seed가 중복되면 중단하며, 미완료 run은 따로 나열한다. 동일 프로토콜·동일 완료 seed 집합끼리만 순위를 계산한다. 테스트 점수는 보고용이며 체크포인트를 선택하지 않고 통계적 유의성을 주장하지 않는다. 전체 행렬을 탐색한 뒤 최종 조합은 검증 결과로 정하고 독립 테스트로 보고한다. 같은 테스트 결과를 보고 반복 수정했다면 독립 최종 검증이라고 해석하지 않는다.
 
-Aggregation separates comparison conditions and reports seed means/sample standard deviations in JSON/CSV, plus HTML/Markdown/CSV/JSON leaderboards. Validation MAE supplies the selection ranking; test and cost ranks are separate. Duplicate seeds fail; incomplete runs are listed. Only matching protocols and completed seed sets share a rank. Test ranks are descriptive and do not select checkpoints or establish significance. Choose final variants using validation evidence before interpreting independent test results; repeated redesign after inspecting those tests breaks that interpretation.
+Aggregation separates comparison conditions and reports seed means/sample standard deviations in JSON/CSV, plus HTML/Markdown/CSV/JSON leaderboards. Under the `holdout` protocol, validation MAE supplies the selection ranking; test and cost ranks are separate. Duplicate seeds fail; incomplete runs are listed. Only matching protocols and completed seed sets share a rank. Test ranks are descriptive and do not select checkpoints or establish significance. Choose final variants using validation evidence before interpreting independent test results; repeated redesign after inspecting those tests breaks that interpretation.
 
 현재 준비된 것은 실행 가능한 비교 코드, 합성 데이터 무결성 검사, 모델 초기화/연산 검증이다. 실제 데이터 전체 로딩·사전학습 원본 파일 로딩·학습 수렴·성능 순위·전체 GPU 학습 시간은 해당 단계를 실행해야 확인된다. 이 문서의 명령 제공은 학습 실행 기록이 아니다.
 
 The delivered artifacts prepare executable comparisons, synthetic data-integrity checks and initialization/operator verification. Full real-data loading, an actual pretrained backbone file, convergence, accuracy rankings and total GPU training time require their corresponding explicit runs. Providing these commands is not evidence that training occurred.
 
 Automatic reports: `$STUDY_PLAN/leaderboard/leaderboard.html`. `run_all.sh` runs every stage; `train.sh` runs training only. Both refresh the derived leaderboard after every stage. Add `--plan "$STUDY_PLAN/plan.json"` when summarizing manually to include not-started runs. / 자동 리더보드는 같은 경로에 저장하며 수동 집계에 `--plan`을 추가하면 미시작 실험도 표시한다.
+
+## 전체 데이터 학습과 빠진 테스트셋 / Full-data training and missing tests
+
+기본 `holdout` 분할은 유지한다. `--training-protocol full_train`은 준비와 plan/train 양쪽에 명시해야 하며 `--val-fraction`은 생략하거나 `0`으로 준다. 학습 4,040장·validation 없음·최종 epoch 고정 선택을 사용하고 `best_val_mae`는 null이다. 테스트 점수로 체크포인트를 선택하지 않는다. [기존 8개 실험의 평가 복구와 새 전체 학습 명령](BENCHMARK-PROTOCOL.ko.md)은 원본 결과를 보존하고 새 경로를 사용한다.
+
+The default holdout split is preserved. Explicit `--training-protocol full_train` is required in both preparation and planning/training; omit `--val-fraction` or set it to `0`. It uses 4,040 training images, no validation, fixed-final-epoch selection and null `best_val_mae`. Test scores never select checkpoints. The [existing-run recovery and fresh full-data training guide](BENCHMARK-PROTOCOL.md) preserves previous outputs and uses separate destinations.
+
+`priority8`는 고정한 8개 변형의 phase이며 `--seeds 3407`이면 8회다. 기존 `generation`·`utilization`·`cross`의 구성 수는 그대로다. `priority8` is a fixed eight-variant phase; `--seeds 3407` produces eight runs. The existing matrix phase counts remain unchanged.

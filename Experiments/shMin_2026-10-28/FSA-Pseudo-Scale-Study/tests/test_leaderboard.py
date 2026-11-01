@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
@@ -11,7 +12,8 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from fsa_study.data import sha256_file
+from fsa_study.data import manifest_digest, prepare_manifest, sha256_file
+from fsa_study.benchmark import EXPECTED_TEST_COUNTS, extend_test_manifest, validate_test_extension
 from fsa_study.leaderboard import build_leaderboard, write_leaderboard
 from summarize_study import aggregate
 
@@ -246,3 +248,221 @@ def test_output_csv_json_and_html_preserve_scores_and_inert_labels(tmp_path):
 def test_unknown_test_metric_rejected(tmp_path):
     with pytest.raises(ValueError, match="Unknown test ranking"):
         build_leaderboard(aggregate(tmp_path), "arbitrary_composite")
+
+
+def test_eight_executions_complete_does_not_hide_missing_cod10k(tmp_path):
+    variants = ["single", "mean", "signed", "absolute", "relative", "normalized", "adjacent", "concat"]
+    for variant in variants:
+        run = _run(tmp_path / "runs", variant, 3407, test={"S": .8})
+        _profile(run)
+        path = run / "test/metrics.json"
+        payload = json.loads(path.read_text())
+        payload["datasets"] = {name: {"count": count, "S": .8, "wF": .7, "MAE": .06}
+                               for name, count in EXPECTED_TEST_COUNTS.items() if name != "cod10k"}
+        _write(path, payload)
+    summary = aggregate(tmp_path / "runs")
+    report = build_leaderboard(summary)
+    assert report["progress"]["execution_complete"] == 8
+    assert report["progress"]["all_stages_complete"] == 8
+    assert report["progress"]["benchmark_complete"] == 0
+    assert summary["benchmark_coverage"] == report["benchmark_coverage"]
+    assert report["benchmark_coverage"]["missing_datasets"] == ["cod10k"]
+    assert report["benchmark_coverage"]["datasets"]["cod10k"] == {
+        "expected_count": 2026, "observed_counts": [], "evaluated_runs": 0,
+        "standard_count_runs": 0, "missing_runs": 8}
+    assert all(run["benchmark_coverage"]["missing_datasets"] == ["cod10k"] for run in report["runs"])
+    output = tmp_path / "report"
+    output.mkdir()
+    write_leaderboard(output, report)
+    markdown = (output / "leaderboard.md").read_text()
+    assert "Standard four-dataset coverage: 0/8 runs complete" in markdown
+    assert "| cod10k | 2026 | not evaluated | 0/8 | 0/8 |" in markdown
+    html = (output / "leaderboard.html").read_text()
+    assert 'id="coverage"' in html and "Execution status" in html
+    assert '"missing_datasets":["cod10k"]' in html
+
+
+def test_standard_coverage_requires_each_run_not_union_of_datasets(tmp_path):
+    first = _run(tmp_path, "single", 1, test={"S": .8})
+    second = _run(tmp_path, "mean", 1, test={"S": .9})
+    for run, omitted in [(first, "cod10k"), (second, "camo")]:
+        path = run / "test/metrics.json"
+        payload = json.loads(path.read_text())
+        payload["datasets"] = {name: {"count": count, "S": .8}
+                               for name, count in EXPECTED_TEST_COUNTS.items() if name != omitted}
+        _write(path, payload)
+    report = build_leaderboard(aggregate(tmp_path))
+    coverage = report["benchmark_coverage"]
+    assert coverage["complete_runs"] == 0 and not coverage["complete"]
+    assert set(coverage["missing_datasets"]) == {"camo", "cod10k"}
+    assert coverage["datasets"]["cod10k"]["observed_counts"] == [2026]
+    assert coverage["datasets"]["cod10k"]["missing_runs"] == 1
+
+
+@pytest.mark.parametrize("count", [0, 2025])
+def test_zero_or_nonstandard_count_does_not_complete_benchmark(tmp_path, count):
+    run = _run(tmp_path, "single", 1, test={"S": .8})
+    path = run / "test/metrics.json"
+    payload = json.loads(path.read_text())
+    payload["datasets"] = {name: {"count": count if name == "cod10k" else expected, "S": .8}
+                           for name, expected in EXPECTED_TEST_COUNTS.items()}
+    _write(path, payload)
+    report = build_leaderboard(aggregate(tmp_path))
+    assert report["progress"]["evaluation_complete"] == 1
+    assert report["progress"]["benchmark_complete"] == 0
+    coverage = report["benchmark_coverage"]
+    if count == 0:
+        assert coverage["missing_datasets"] == ["cod10k"]
+    else:
+        assert coverage["missing_datasets"] == []
+        assert coverage["nonstandard_counts"][0]["counts"] == {"cod10k": {"expected": 2026, "observed": 2025}}
+
+
+def test_four_standard_counts_complete_and_all_metric_rows_retained(tmp_path):
+    from fsa_study.metrics import METRIC_KEYS
+    run = _run(tmp_path, "single", 1, test={"S": .8})
+    path = run / "test/metrics.json"
+    payload = json.loads(path.read_text())
+    payload["datasets"] = {name: {"count": count, **{key: .5 for key in METRIC_KEYS}}
+                           for name, count in EXPECTED_TEST_COUNTS.items()}
+    _write(path, payload)
+    report = build_leaderboard(aggregate(tmp_path))
+    assert report["progress"]["benchmark_complete"] == 1
+    assert report["benchmark_coverage"]["complete"]
+    assert len([board for board in report["boards"] if board["kind"] == "descriptive_test"]) == 4 * len(METRIC_KEYS)
+
+
+@pytest.fixture
+def extension_report(tmp_path, monkeypatch):
+    from test_data import fixture
+    root = tmp_path / "data"
+    fixture(root, tests=tuple(EXPECTED_TEST_COUNTS))
+    for dataset in EXPECTED_TEST_COUNTS:
+        monkeypatch.setitem(EXPECTED_TEST_COUNTS, dataset, 2)
+    original_path = tmp_path / "original.json"
+    original = prepare_manifest(root, original_path, allow_nonstandard_counts=True,
+                                test_datasets=["camo", "chameleon", "nc4k"])
+    extended = extend_test_manifest(original_path, tmp_path / "extended.json")
+    run = _run(tmp_path / "runs", "single", 1, data=original["content_sha256"], test={"S": .8})
+    _write(run / "manifest.json", original)
+    folder = run / "test"
+    _write(folder / "training_manifest.json", original)
+    _write(folder / "manifest.json", extended)
+    path = folder / "metrics.json"
+    metrics = json.loads(path.read_text())
+    metrics.update({"manifest_sha256": extended["content_sha256"],
+                    "training_manifest_sha256": original["content_sha256"],
+                    "manifest_extension": validate_test_extension(original, root, extended, root),
+                    "datasets": {name: {"count": 2, "S": .8} for name in EXPECTED_TEST_COUNTS},
+                    "artifacts": {"sha256": {name: sha256_file(folder / name)
+                                             for name in ("manifest.json", "training_manifest.json")}}})
+    _write(path, metrics)
+    return run, path, metrics, root
+
+
+def test_verified_extension_report_is_portable_and_uses_actual_test_manifest(extension_report):
+    run, path, metrics, root = extension_report
+    before = {file: sha256_file(file) for file in run.rglob("*") if file.is_file()}
+    shutil.rmtree(root)  # Reporting needs saved proof, not the remote dataset disk.
+    summary = aggregate(run.parent)
+    board, = _boards(build_leaderboard(summary), "cod10k", "S")
+    assert board["protocol"]["manifest_sha256"] == metrics["training_manifest_sha256"]
+    assert board["protocol"]["evaluation_manifest_sha256"] == metrics["manifest_sha256"]
+    assert summary["benchmark_coverage"]["complete_runs"] == 1
+    assert {file: sha256_file(file) for file in before} == before
+
+
+@pytest.mark.parametrize("tamper", ["missing_proof", "wrong_training_hash", "missing_snapshot", "snapshot_bytes",
+                                   "forged_proof", "changed_training_records", "wrong_metric_count"])
+def test_manifest_extension_metadata_is_not_accepted_without_proof(extension_report, tamper):
+    run, path, metrics, _ = extension_report
+    if tamper == "missing_proof":
+        metrics.pop("manifest_extension")
+    elif tamper == "wrong_training_hash":
+        metrics["training_manifest_sha256"] = "wrong"
+    elif tamper == "missing_snapshot":
+        (path.parent / "training_manifest.json").unlink()
+    elif tamper == "snapshot_bytes":
+        snapshot = path.parent / "manifest.json"
+        snapshot.write_text(snapshot.read_text() + "\n")
+    elif tamper == "forged_proof":
+        metrics["manifest_extension"]["added_records"] += 1
+    elif tamper == "changed_training_records":
+        snapshot = path.parent / "manifest.json"
+        payload = json.loads(snapshot.read_text())
+        payload["records"][0]["mask_sha256"] = "0" * 64
+        payload["content_sha256"] = manifest_digest(payload)
+        _write(snapshot, payload)
+        metrics["manifest_sha256"] = payload["content_sha256"]
+        metrics["manifest_extension"]["evaluation_manifest_sha256"] = payload["content_sha256"]
+        metrics["artifacts"]["sha256"]["manifest.json"] = sha256_file(snapshot)
+    elif tamper == "wrong_metric_count":
+        metrics["datasets"]["cod10k"]["count"] = 1
+    _write(path, metrics)
+    with pytest.raises(ValueError):
+        aggregate(run.parent)
+
+
+def _set_full_train(run):
+    path = run / "config.json"
+    config = json.loads(path.read_text())
+    config.update({"training_protocol": "full_train",
+                   "training_split_counts": {"train": {"camo": 1000, "cod10k": 3040}, "val": {}},
+                   "training_sample_count": 4040, "validation_sample_count": 0,
+                   "checkpoint_selection": "fixed final epoch; no validation or test selection"})
+    _write(path, config)
+    status_path = run / "status.json"
+    status = json.loads(status_path.read_text())
+    status["best_val_mae"] = None
+    _write(status_path, status)
+
+
+def test_full_train_four_dataset_report_has_test_and_cost_ranks_without_validation(tmp_path):
+    variants = ["single", "mean", "signed", "absolute", "relative", "normalized", "adjacent", "concat"]
+    for variant in variants:
+        run = _run(tmp_path, variant, 3407, test={"S": .8})
+        _set_full_train(run)
+        _profile(run)
+        path = run / "test/metrics.json"
+        payload = json.loads(path.read_text())
+        payload["datasets"] = {name: {"count": count, "S": .8, "wF": .7, "MAE": .06}
+                               for name, count in EXPECTED_TEST_COUNTS.items()}
+        _write(path, payload)
+    report = build_leaderboard(aggregate(tmp_path))
+    assert not _boards(report, "validation", "MAE")
+    assert all(board["kind"] != "selection" for board in report["boards"])
+    assert len(_boards(report, "cod10k", "S")[0]["rows"]) == 8
+    assert len(_boards(report, "inference", "latency_median_ms")[0]["rows"]) == 8
+    assert report["progress"]["execution_complete"] == report["progress"]["benchmark_complete"] == 8
+    assert all(run["training_protocol"] == "full_train" for run in report["runs"])
+    assert all(board["protocol"]["training_sample_count"] == 4040 for board in report["boards"])
+    assert "fixed final epoch" in report["selection_rule"]
+
+
+def test_holdout_and_full_train_test_scores_never_share_cohort(tmp_path):
+    _run(tmp_path, "single", 1, test={"S": .8})
+    full = _run(tmp_path, "mean", 1, test={"S": .9})
+    _set_full_train(full)
+    report = build_leaderboard(aggregate(tmp_path))
+    assert len(_boards(report, "cod10k", "S")) == 2
+    assert [row["variant"] for row in _boards(report)[0]["rows"]] == ["single"]
+
+
+@pytest.mark.parametrize("tamper", ["selection", "validation_mae", "unknown_protocol"])
+def test_invalid_full_train_selection_cannot_produce_ranks(tmp_path, tamper):
+    run = _run(tmp_path, "single", 1, test={"S": .8})
+    _set_full_train(run)
+    if tamper == "validation_mae":
+        path = run / "status.json"
+        payload = json.loads(path.read_text())
+        payload["best_val_mae"] = .1
+    else:
+        path = run / "config.json"
+        payload = json.loads(path.read_text())
+        if tamper == "selection":
+            payload["checkpoint_selection"] = "best test MAE"
+        else:
+            payload["training_protocol"] = "anything"
+    _write(path, payload)
+    with pytest.raises(ValueError):
+        aggregate(tmp_path)

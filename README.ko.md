@@ -1,10 +1,12 @@
-# 2026-10-29 · INS_COD — Pseudo-scale 비교 실험 실행 안내
+# 2026-11-01 · INS_COD — Pseudo-scale 비교 실험 실행 안내
 
 [English](README.md) | **한국어**
 
 단일 인코더 위장 객체 검출 모델에서 **pseudo-scale 특징을 생성하는 방법**과 **생성된 특징을 활용하는 방법**을 비교한다. 활용에는 차이 계산뿐 아니라 직접 fusion, 채널·공간 attention을 포함한다. **생성 12종 × 활용 13종**에 no-pseudo 기준 모델과 기존 FSA 전체 구조를 더해 **158개 구성**, seed 3개로 **474회**를 실행할 수 있다.
 
-이 README는 실험 실행 순서다. 각 변형이 무엇을 비교하는지는 [방법 목록과 비교 기준](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.ko.md)을 참고한다. 참고 논문과 적용 범위는 아래에 보존했다. 아직 실제 정확도 순위는 측정하지 않았다.
+이 README는 실험 실행 순서다. 각 변형이 무엇을 비교하는지는 [방법 목록과 비교 기준](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.ko.md)을 참고한다. 참고 논문과 적용 범위는 아래에 보존했다. 업로드된 [priority8 결과](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-report-20261101_172449/README.ko.md)는 seed 1개의 8개 실험이며 **테스트셋 3개만 포함하고 COD10K-test가 빠져 있다**.
+
+기존 결과에는 [4개 테스트셋 복구·전체 학습 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md)를 사용한다. 공식 ZoomNeXt와 비교하면 기존 학습은 **3,636장 + validation 404장**, ZoomNeXt는 **4,040장 학습**이다. 새 `full_train`은 4,040장 전체와 최종 epoch 고정 체크포인트를 사용하며 나머지 구조·학습 조건 차이는 남는다. [Windows pull·SCP 전송](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#windows에서-수정-코드-전송)은 기존 서버 checkout과 결과를 보존한다.
 
 ## 1. 환경 설정
 
@@ -61,9 +63,9 @@ COD-Data/
   NC4K/{Imgs,GT}/
 ```
 
-`prepare`는 이미지·마스크 대응과 해시를 검사하고 COD10K의 `COD10K-CAM-` prefix를 선택한 뒤 고정 분할을 만든다. CAMO와 COD10K 학습 자료는 필수다. 존재하는 테스트셋을 포함하고 CHAMELEON/NC4K가 없으면 누락을 기록한다. **비교하는 모든 run에서 같은 manifest를 사용한다.** 테스트 평가에는 manifest에 테스트셋이 하나 이상 있어야 한다.
+`prepare`는 이미지·마스크 대응과 해시를 검사하고 COD10K의 `COD10K-CAM-` prefix를 선택한 뒤 고정 분할을 만든다. CAMO와 COD10K 학습 자료는 필수다. CLI 기본값은 **테스트셋 4개 전체**를 요구한다: CAMO 250, CHAMELEON 76, COD10K 2,026, NC4K 4,121. 의도적인 일부 선택은 `--test-datasets`로 명시하고 `none`은 학습·validation만 준비한다. 일부 테스트셋만 평가한 상태는 리더보드에서도 전체 벤치마크 미완료로 표시한다. **비교하는 모든 run에서 같은 manifest를 사용한다.** 테스트 평가에는 manifest에 테스트셋이 하나 이상 있어야 한다.
 
-기본 10% holdout은 원 학습 4,040장에서 **학습 3,636장, validation 404장**을 만든다. 4,040장을 전부 학습한 논문 수치와 조건이 다르다. 파일명 변경본, 테스트셋 명시 선택, 평가 규약은 [상세 실행 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md)에 있다.
+기본 10% holdout은 원 학습 4,040장에서 **학습 3,636장, validation 404장**을 만든다. 아래 명령은 이 기본 `holdout` 프로토콜이다. 전체 학습을 새로 시작하려면 준비와 plan 양쪽에 `--training-protocol full_train`을 주고 `--val-fraction`을 생략하거나 `0`으로 지정한다. [기존 priority8 plan 변환](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#별도-전체-데이터-학습-비교)은 과거 결과를 보존한다. 파일명 변경본, 테스트셋 명시 선택, 평가 규약은 [상세 실행 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md)에 있다.
 
 ## 3. 비교 범위 선택과 명령 생성
 
@@ -74,8 +76,9 @@ COD-Data/
 | `generation` | 생성기 12개 | 기본 `--utilizer mean` | 14 | 42 |
 | `utilization` | 활용기 13개 | `--generator legacy` 또는 validation으로 선택한 생성기 | 15 | 45 |
 | `cross` | 모든 생성기·활용기 조합 | 없음 | 158 | 474 |
+| `priority8` | 고정한 우선 비교 8종 | 사전에 정한 변형 | 8 | 24; `--seeds 3407`이면 8 |
 
-각 phase에는 `single`, `legacy_full` 대조군이 포함된다. 단계별로 진행한다면 mean fusion 아래 생성기를 비교하고 validation 결과를 본 뒤, 활용 비교에 쓸 생성기를 직접 선택한다. phase마다 결과 경로를 분리한다. 자동 우승 조합 선택 기능은 없다. `cross`에서는 아래 `GENERATOR`·`UTILIZER` 값이 전체 조합을 제한하지 않는다.
+세 행렬 phase에는 `single`, `legacy_full` 대조군이 포함된다. `priority8`은 `single`과 고정한 7개 변형이며 `legacy_full`은 제외한다. 단계별로 진행한다면 mean fusion 아래 생성기를 비교하고 validation 결과를 본 뒤, 활용 비교에 쓸 생성기를 직접 선택한다. phase마다 결과 경로를 분리한다. 자동 우승 조합 선택 기능은 없다. `cross`에서는 아래 `GENERATOR`·`UTILIZER` 값이 전체 조합을 제한하지 않는다.
 
 ```bash
 PHASE=cross
@@ -96,7 +99,7 @@ RUNS="$RUN/runs/$PHASE"
 
 ## 4. 학습·평가·리더보드 자동 실행
 
-다음 명령은 각 run의 **학습 → 테스트 평가 → 추론 비용 측정**을 순차 실행하고, 단계가 끝날 때마다 리더보드를 갱신한다. `best.pth`는 **validation MAE만으로 선택**한다. 전체 비교군은 실행 전에 plan으로 확정하며, 테스트 순위는 보고용이고 체크포인트 선택에는 쓰지 않는다.
+다음 명령은 각 run의 **학습 → 테스트 평가 → 추론 비용 측정**을 순차 실행하고, 단계가 끝날 때마다 리더보드를 갱신한다. 기본 holdout의 `best.pth`는 **validation MAE만으로 선택**한다. `full_train`에서는 **최종 epoch 모델**이며 validation MAE는 null이고 validation 순위도 없다. 전체 비교군은 실행 전에 plan으로 확정하며, 테스트 순위는 보고용이고 체크포인트 선택에는 쓰지 않는다.
 
 ```bash
 bash "$PLAN/run_all.sh"
@@ -172,8 +175,10 @@ results/<run-id>/
 
 ## 검증 상태와 기존 실험
 
-기록된 코드 검증은 **281 tests + 67 subtests 통과**, CPU/GPU 추론 확인, optimizer step 0회다. 실제 데이터 학습·수렴·방법 간 정확도 순위는 미검증이다. [검증 산출물](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md)을 참고한다.
+기록된 코드 검증은 **281 tests + 67 subtests 통과**, CPU/GPU 추론 확인, optimizer step 0회다. 이 초기 검사는 실제 데이터 수렴·순위를 측정하지 않았다. 이후 업로드된 priority8 보고서에는 3개 테스트셋 결과가 있으며 4개 전체 평가와 전체 데이터 재학습은 실행이 남아 있다. [검증 산출물](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md)을 참고한다.
 
 기존 BRG main 실험은 [COD](https://github.com/sh-min/COD)에 유지하고 CoCoNet은 이번 업로드에서 제외했다. 보존 코드·라이선스는 유지한다. 이전 정리 과정은 [이관 기록](docs/MIGRATION.md), [실험 목록](Experiments/README.md), [비교 도구](Benchmarks/README.md), [연구 결정](Progress/README.md)에서 확인한다.
 
-최신 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md).
+2026-10-29 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md).
+
+[2026-11-01 변경 기록](Progress/2026-11-01/Benchmark-Completion/README.md)은 코드 검증·기존 실측 결과·아직 실행하지 않은 서버 작업을 구분한다.

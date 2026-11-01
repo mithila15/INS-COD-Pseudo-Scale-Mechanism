@@ -8,8 +8,9 @@ import math
 from pathlib import Path
 import statistics
 import tempfile
-from fsa_study.data import geometry_protocol, sha256_file
-from fsa_study.leaderboard import build_leaderboard, write_leaderboard
+from fsa_study.data import geometry_protocol, manifest_digest, sha256_file
+from fsa_study.benchmark import benchmark_coverage, validate_test_extension
+from fsa_study.leaderboard import build_leaderboard, summarize_benchmark_coverage, write_leaderboard
 
 
 def _variant(model):
@@ -20,6 +21,48 @@ def _number(value, source):
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
         raise ValueError(f"Expected finite numeric metric at {source}: {value!r}")
     return value
+
+
+def _validate_test_manifest(metrics, config, metric_path, run):
+    """An extended test manifest needs reproducible proof, not a trusted flag."""
+    proof = metrics.get("manifest_extension")
+    if proof is None:
+        if metrics["manifest_sha256"] != config["manifest_sha256"]:
+            raise ValueError(f"Mismatched test metadata: {metric_path}")
+        if metrics.get("training_manifest_sha256", config["manifest_sha256"]) != config["manifest_sha256"]:
+            raise ValueError(f"Mismatched training manifest metadata: {metric_path}")
+        return
+    if metrics.get("training_manifest_sha256") != config["manifest_sha256"]:
+        raise ValueError(f"Mismatched training manifest metadata: {metric_path}")
+    snapshots = {}
+    recorded_hashes = metrics.get("artifacts", {}).get("sha256", {})
+    for name in ("manifest.json", "training_manifest.json"):
+        path = metric_path.parent / name
+        if not path.is_file() or recorded_hashes.get(name) != sha256_file(path):
+            raise ValueError(f"Missing or mismatched test manifest snapshot: {path}")
+        snapshots[name] = json.loads(path.read_text())
+    anchor = run / "manifest.json"
+    if not anchor.is_file():
+        raise ValueError(f"Missing original training manifest snapshot: {anchor}")
+    original = json.loads(anchor.read_text())
+    training, evaluation = snapshots["training_manifest.json"], snapshots["manifest.json"]
+    for payload, expected in ((original, config["manifest_sha256"]),
+                              (training, config["manifest_sha256"]),
+                              (evaluation, metrics["manifest_sha256"])):
+        if payload.get("content_sha256") != expected or manifest_digest(payload) != expected:
+            raise ValueError(f"Mismatched manifest content digest: {metric_path}")
+    training_root = evaluation.get("test_extension", {}).get("training_data_root", training["data_root"])
+    verified = validate_test_extension(training, training_root, evaluation,
+                                       evaluation["data_root"], verify_files=False)
+    if proof != verified:
+        raise ValueError(f"Mismatched test manifest extension proof: {metric_path}")
+    expected_counts = defaultdict(int)
+    for record in evaluation["records"]:
+        if record["split"] == "test":
+            expected_counts[record["dataset"]] += 1
+    actual_counts = {dataset: values.get("count") for dataset, values in metrics["datasets"].items()}
+    if actual_counts != dict(expected_counts):
+        raise ValueError(f"Test metric counts do not match the evaluation manifest: {metric_path}")
 
 
 def _plan_jobs(plan, root):
@@ -54,7 +97,8 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
     for path, job in jobs.items():
         progress[str(path)] = {"run": str(path), "variant": job["variant"], "seed": job["seed"],
                                "status": "not_started", "training_complete": False,
-                               "evaluation_complete": False, "profile_complete": False, "planned": True}
+                               "evaluation_complete": False, "profile_complete": False, "planned": True,
+                               "benchmark_coverage": benchmark_coverage({})}
     for config_path in sorted(root.rglob("config.json")):
         run = config_path.parent
         config = json.loads(config_path.read_text())
@@ -68,7 +112,7 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
             raise ValueError(f"Mismatched plan variant/seed: {run}")
         state = {"run": str(run), "variant": variant, "seed": model["seed"], "status": "training_incomplete",
                  "training_complete": False, "evaluation_complete": False, "profile_complete": False,
-                 "planned": run in jobs}
+                 "planned": run in jobs, "benchmark_coverage": benchmark_coverage({})}
         progress[str(run)] = state
         if not (run / "status.json").exists():
             incomplete.append(str(run))
@@ -87,16 +131,30 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
         protocol["channels"] = model["channels"]
         protocol["generator_options"] = model.get("generator_options", {})
         protocol["utilizer_options"] = model.get("utilizer_options", {})
+        training_protocol = config.get("training_protocol", "holdout")
+        if training_protocol not in {"holdout", "full_train"}:
+            raise ValueError(f"Unknown training protocol: {config_path}")
+        for key in ("training_protocol", "training_split_counts", "training_sample_count", "validation_sample_count"):
+            if key in config:
+                protocol[key] = config[key]
         condition = json.dumps(protocol, sort_keys=True)
         base = {"variant": variant, "seed": model["seed"], "run": str(run)}
-        groups[(variant, condition, "validation", "MAE")].append({**base, "value": _number(status["best_val_mae"], run / "status.json")})
+        state["training_protocol"] = training_protocol
+        if training_protocol == "full_train":
+            if config.get("checkpoint_selection") != "fixed final epoch; no validation or test selection":
+                raise ValueError(f"Full-train run must record fixed final epoch checkpoint selection: {config_path}")
+            if status.get("best_val_mae") is not None:
+                raise ValueError(f"Full-train run cannot contain a validation selection MAE: {run / 'status.json'}")
+        else:
+            groups[(variant, condition, "validation", "MAE")].append({**base, "value": _number(status["best_val_mae"], run / "status.json")})
         metric_path = run / evaluation_path / "metrics.json"
         if metric_path.exists():
             metrics = json.loads(metric_path.read_text())
             if metrics.get("split") != "test":
                 raise ValueError(f"Expected test split: {metric_path}")
-            if metrics["manifest_sha256"] != config["manifest_sha256"] or metrics["model_config"] != model:
+            if metrics["model_config"] != model:
                 raise ValueError(f"Mismatched test metadata: {metric_path}")
+            _validate_test_manifest(metrics, config, metric_path, run)
             if not (run / "best.pth").exists() or metrics.get("checkpoint_sha256") != sha256_file(run / "best.pth"):
                 raise ValueError(f"Evaluation did not use this run's selected best checkpoint: {metric_path}")
             test_protocol = {**protocol, "metric_protocol": metrics.get("metric_protocol"),
@@ -105,7 +163,11 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
                              "prediction_protocol": metrics.get("prediction_protocol"),
                              "evaluation_source_sha256": metrics.get("source_sha256"),
                              "evaluation_packages": metrics.get("environment", {}).get("packages", {})}
+            if metrics.get("manifest_extension") is not None:
+                test_protocol["evaluation_manifest_sha256"] = metrics["manifest_sha256"]
             state["evaluation_complete"] = True
+            state["benchmark_coverage"] = benchmark_coverage({
+                dataset: values.get("count") for dataset, values in metrics["datasets"].items()})
             for dataset, values in metrics["datasets"].items():
                 test_condition = json.dumps({**test_protocol, "evaluation_count": values.get("count")}, sort_keys=True)
                 for metric, value in values.items():
@@ -157,6 +219,7 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
     for job in jobs.values():
         expected[job["variant"]].append(job["seed"])
     return {"rows": rows, "incomplete_runs": incomplete, "runs": list(progress.values()),
+            "benchmark_coverage": summarize_benchmark_coverage(list(progress.values())),
             "expected_seeds": {variant: sorted(seeds) for variant, seeds in expected.items()},
             "plan": {key: plan_payload.get(key) for key in ("phase", "run_count", "variant_count", "seeds")} if plan_payload is not None else None,
             "evaluation_subdir": evaluation_subdir,
@@ -197,7 +260,8 @@ def main():
         for name in filenames:
             (staging / name).replace(output / name)
     print(json.dumps({"rows": len(report["rows"]), "incomplete": len(report["incomplete_runs"]),
-                      "leaderboard": str(output / "leaderboard.html"), "progress": leaderboard["progress"]}))
+                      "leaderboard": str(output / "leaderboard.html"), "progress": leaderboard["progress"],
+                      "benchmark_coverage": leaderboard["benchmark_coverage"]}))
 
 
 if __name__ == "__main__":

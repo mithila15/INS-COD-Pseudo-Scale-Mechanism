@@ -7,6 +7,8 @@ import random
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from .training_protocol import resolve_val_fraction, validate_training_protocol
+
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff"}
 GEOMETRY_POLICIES = ("strict", "resize-prediction-to-gt")
 SOURCES = {
@@ -47,13 +49,12 @@ def _scan(folder):
     return paths
 
 
-def prepare_manifest(data_root, manifest_path, split_seed=1729, val_fraction=0.1, allow_nonstandard_counts=False, test_datasets=None, cod10k_prefix="COD10K-CAM-"):
+def prepare_manifest(data_root, manifest_path, split_seed=1729, val_fraction=0.1, allow_nonstandard_counts=False, test_datasets=None, cod10k_prefix="COD10K-CAM-", training_protocol="holdout"):
     root = Path(data_root).expanduser().resolve(strict=True)
     target = Path(manifest_path).expanduser().resolve()
     if target.exists():
         raise FileExistsError(f"Manifest already exists; choose another path: {target}")
-    if not 0 < val_fraction < 1:
-        raise ValueError("val_fraction must be between 0 and 1")
+    val_fraction = resolve_val_fraction(training_protocol, val_fraction)
     test_names = {spec[0] for spec in SOURCES.values() if spec[1] == "test"}
     missing_tests = []
     available_tests = []
@@ -112,7 +113,7 @@ def prepare_manifest(data_root, manifest_path, split_seed=1729, val_fraction=0.1
         images, masks = sources[source]
         stems = sorted(images)
         validation = set()
-        if source_split == "train":
+        if source_split == "train" and training_protocol == "holdout":
             if len(stems) < 2:
                 raise ValueError(f"{source}: at least two pairs required for train/validation split")
             # Dataset-specific seed isolates the split from iteration order and model RNG.
@@ -142,6 +143,10 @@ def prepare_manifest(data_root, manifest_path, split_seed=1729, val_fraction=0.1
         "split_counts": dict(sorted(Counter(f"{record['dataset']}/{record['split']}" for record in records).items())),
         "records": records,
     }
+    # Preserve historical holdout serialization/digests. Full training is an
+    # explicit new manifest, never an in-place relabeling of a completed run.
+    if training_protocol == "full_train":
+        manifest["training_protocol"] = training_protocol
     manifest["content_sha256"] = manifest_digest(manifest)
     validate_manifest(manifest, verify_files=False)
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -197,8 +202,7 @@ def validate_manifest(manifest, verify_files=True, data_root=None):
     split_counts = dict(sorted(Counter(f"{record['dataset']}/{record['split']}" for record in records).items()))
     if manifest["source_counts"] != source_counts or manifest["split_counts"] != split_counts:
         raise ValueError("Manifest count metadata disagrees with records")
-    if any(not any(record["split"] == split for record in records) for split in ("train", "val")):
-        raise ValueError("Manifest must retain distinct nonempty train and validation sets")
+    validate_training_protocol(manifest, manifest.get("training_protocol", "holdout"))
     return root
 
 
