@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "checks": {
+    "audit_summary_rendered": true,
+    "policy_and_counts_rendered": true,
+    "leaderboard_initial_view_rendered": true,
+    "historical_no_fabricated_disjointness": true,
+    "historical_three_set_report_preserved": true
+  },
+  "training": "not_run",
+  "inputs": "synthetic acknowledged metadata and immutable previously uploaded summary",
+  "browser_profile": "isolated temporary directories removed"
+}

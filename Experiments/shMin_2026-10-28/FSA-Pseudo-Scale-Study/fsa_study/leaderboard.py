@@ -49,6 +49,26 @@ def _direction(metric):
     return "lower" if metric in LOWER_IS_BETTER else "higher" if metric in HIGHER_IS_BETTER else None
 
 
+def overlap_fields(audit, *, applicable=True):
+    """Scalar exports; unknown historical provenance must not imply disjointness."""
+    return {"overlap_policy": audit["policy"] if audit else "unknown" if applicable else "not_applicable",
+            "split_disjoint": audit["disjoint"] if audit else None,
+            "train_test_count": audit["train_test_count"] if audit else None,
+            "val_test_count": audit["val_test_count"] if audit else None,
+            "affected_test_count": audit["affected_test_count"] if audit else None}
+
+
+def summarize_data_integrity(runs):
+    evaluated = [run for run in runs if run.get("evaluation_complete")]
+    audits = [run.get("overlap_audit") for run in evaluated]
+    return {"evaluated_runs": len(evaluated), "not_evaluated_runs": len(runs) - len(evaluated),
+            "disjoint_runs": sum(audit is not None and audit["disjoint"] for audit in audits),
+            "overlapping_runs": sum(audit is not None and not audit["disjoint"] for audit in audits),
+            "unknown_runs": sum(audit is None for audit in audits),
+            "policies": dict(Counter(audit["policy"] if audit else "unknown" for audit in audits)),
+            "note": "Image path/byte-hash split overlap is separate from benchmark image counts. Acknowledged overlap scores include the affected test images and are not disjoint-test evidence. Unknown means the historical metric artifact has no verified overlap audit; matching four dataset counts does not establish disjointness."}
+
+
 def summarize_benchmark_coverage(runs):
     """Do not mistake execution against a subset for the standard four tests."""
     coverages = [run.get("benchmark_coverage", benchmark_coverage({})) for run in runs]
@@ -72,7 +92,7 @@ def summarize_benchmark_coverage(runs):
                  "counts": coverage["nonstandard_counts"]}
                 for run, coverage in zip(runs, coverages) if coverage["nonstandard_counts"]],
             "complete": bool(runs) and complete_runs == len(runs),
-            "note": "Execution completion only covers the configured datasets. Benchmark completion requires all four standard test image counts for every run; counts alone do not prove image identities or metric correctness."}
+            "note": "Execution completion only covers the configured datasets. Benchmark completion requires all four standard test image counts for every run; counts alone do not prove image identities, split disjointness or metric correctness."}
 
 
 def build_leaderboard(summary, test_metric="S"):
@@ -102,6 +122,7 @@ def build_leaderboard(summary, test_metric="S"):
         # Protocol is stored once per cohort in the leaderboard. A 158-variant
         # cross study must not embed its full source-hash map in every row.
         values = {key: value for key, value in row.items() if key != "protocol"}
+        values.update(overlap_fields(protocol.get("overlap_audit"), applicable=row["dataset"] not in {"validation", "inference"}))
         cohorts[key].append({**values, "variant_label": row["variant"] + option_tag,
                             "variant_options": options, "expected_seeds": expected,
                             "missing_seeds": missing, "completion": completion,
@@ -143,7 +164,8 @@ def build_leaderboard(summary, test_metric="S"):
             "cost_note": "Contraction FLOPs = 2 x MACs. Estimated total FLOPs additionally approximate supported noncontraction operators; consult each profile's coverage. Different hardware/input/timing protocols have separate ranks.",
             "plan": summary.get("plan"), "evaluation_subdir": summary.get("evaluation_subdir", "test"),
             "profile_name": summary.get("profile_name", "profile.json"),
-            "progress": progress, "benchmark_coverage": coverage, "runs": runs, "boards": boards}
+            "progress": progress, "benchmark_coverage": coverage,
+            "data_integrity": summarize_data_integrity(runs), "runs": runs, "boards": boards}
 
 
 def _format(value):
@@ -166,6 +188,18 @@ def _markdown(report):
     lines += ["", "Missing in one or more runs: " + (", ".join(coverage["missing_datasets"]) or "none") + ".", ""]
     if coverage["unexpected_datasets"]:
         lines += ["Additional datasets: " + ", ".join(coverage["unexpected_datasets"]) + ".", ""]
+    integrity = report["data_integrity"]
+    lines += ["## Split overlap audit", "", integrity["note"], "",
+              f"**Evaluated runs: {integrity['disjoint_runs']} disjoint, {integrity['overlapping_runs']} overlapping, {integrity['unknown_runs']} unknown.**", "",
+              "| Experiment | Seed | Policy | Disjoint | Train–test images | Val–test images | Affected test images |",
+              "| --- | ---: | --- | --- | ---: | ---: | ---: |"]
+    for run in report["runs"]:
+        if not run.get("evaluation_complete"):
+            continue
+        audit = overlap_fields(run.get("overlap_audit"))
+        values = [run["variant"], run["seed"], *audit.values()]
+        lines.append("| " + " | ".join("unknown" if value is None else str(value) for value in values) + " |")
+    lines.append("")
     costs = {"parameters", "latency_median_ms", "images_per_second", "cuda_peak_allocated_bytes",
              "macs_per_image", "flops_per_image", "estimated_total_flops_per_image"}
     visible = [board for board in report["boards"] if board["dataset"] == "validation" or
@@ -215,6 +249,7 @@ def _html(report):
 <p id="selection"></p><p id="ranking" class="muted"></p><p id="uncertainty" class="muted"></p>
 <div id="progress" class="progress"></div>
 <section id="coverage" class="card"><h2>Test benchmark coverage</h2><p id="coveragesummary"></p><p id="coveragenote" class="muted"></p><div id="coveragetable"></div><p id="coveragemissing"></p></section>
+<section id="integrity" class="card"><h2>Split overlap audit</h2><p id="integritysummary"></p><p id="integritynote" class="muted"></p><div id="integritytable"></div></section>
 <div class="controls"><button id="validation">Validation selection</button><button id="test">Test results</button><button id="cost">Inference cost</button></div>
 <div class="controls"><label>Dataset <select id="dataset"></select></label><label>Metric <select id="metric"></select></label><label>Experiment <input id="search" type="search" placeholder="Filter variant name"></label></div>
 <p class="muted">Each card is an independent comparison cohort. Click column headings to sort within a cohort. Rank always follows the stated metric direction. Scores are descriptive, not significance claims.</p>
@@ -235,6 +270,11 @@ $('coveragenote').textContent=coverage.note;
 $('coveragemissing').textContent='Missing in one or more runs: '+(coverage.missing_datasets.join(', ')||'none')+'.';
 const coverageTable=element('table'),coverageHead=element('tr');for(const title of ['Dataset','Expected images','Observed counts per run','Evaluated runs','Runs with standard count'])coverageHead.append(element('th',title));coverageTable.append(coverageHead);
 for(const [dataset,values] of Object.entries(coverage.datasets)){const tr=element('tr');for(const value of [dataset,values.expected_count,values.observed_counts.join(', ')||'not evaluated',values.evaluated_runs+'/'+coverage.total_runs,values.standard_count_runs+'/'+coverage.total_runs])tr.append(element('td',String(value)));coverageTable.append(tr);}$('coveragetable').append(coverageTable);
+const integrity=data.data_integrity;
+$('integritysummary').textContent='Evaluated runs: '+integrity.disjoint_runs+' disjoint, '+integrity.overlapping_runs+' overlapping, '+integrity.unknown_runs+' unknown.';
+$('integritynote').textContent=integrity.note;
+const integrityTable=element('table'),integrityHead=element('tr');for(const title of ['Experiment','Seed','Policy','Disjoint','Train–test images','Val–test images','Affected test images'])integrityHead.append(element('th',title));integrityTable.append(integrityHead);
+for(const run of data.runs.filter(r=>r.evaluation_complete)){const tr=element('tr'),a=run.overlap_audit;for(const value of [run.variant,run.seed,a?.policy,a?.disjoint,a?.train_test_count,a?.val_test_count,a?.affected_test_count])tr.append(element('td',value===undefined||value===null?'unknown':String(value)));integrityTable.append(tr);}$('integritytable').append(integrityTable);
 const datasets=[...new Set(data.boards.map(b=>b.dataset))];
 function options(node,values){node.replaceChildren();for(const value of values)node.append(element('option',value));}
 options($('dataset'),datasets);if(datasets.includes('validation'))$('dataset').value='validation';
@@ -246,6 +286,7 @@ function render(){
  for(const board of visible){const rows=board.rows.filter(row=>row.variant_label.toLowerCase().includes($('search').value.toLowerCase()));if(!rows.length)continue;count++;
  const card=element('section',undefined,'card');card.append(element('h2',board.dataset+' · '+board.metric_label+' '+(board.direction==='lower'?'↓':board.direction==='higher'?'↑':'(unranked)')));
  card.append(element('p','Cohort '+board.cohort_id+' · same observed seeds ['+board.seeds.join(', ')+'] · '+rows.length+' variants','muted'));
+ if(board.kind==='descriptive_test'){const a=board.protocol.overlap_audit;card.append(element('p',a?'Split overlap policy: '+a.policy+' · disjoint: '+a.disjoint+' · train–test: '+a.train_test_count+' · val–test: '+a.val_test_count+' · affected test images: '+a.affected_test_count+(a.disjoint?'':'. COD10K scores retain the acknowledged overlapping images.'):'Split overlap audit: unknown (historical artifact without a verified audit).'));}
  const table=element('table'),head=element('thead'),header=element('tr');
  const columns=[['rank','Rank'],['variant_label','Experiment'],['mean','Mean'],['sample_std','Sample SD'],['n','n'],['seeds','Seeds'],['expected_seeds','Expected seeds'],['completion','State']];
  for(const [key,title] of columns){const th=element('th'),button=element('button',title+(key===sortKey?(ascending?' ▲':' ▼'):''));button.onclick=()=>{ascending=key===sortKey?!ascending:true;sortKey=key;render();};th.append(button);header.append(th);}head.append(header);table.append(head);
@@ -270,7 +311,8 @@ def write_leaderboard(output, report):
     (output / "leaderboard.md").write_text(_markdown(report), encoding="utf-8")
     (output / "leaderboard.html").write_text(_html(report), encoding="utf-8")
     columns = ["dataset", "metric", "direction", "cohort_id", "rank", "variant", "variant_label", "mean", "sample_std",
-               "n", "seeds", "expected_seeds", "missing_seeds", "completion", "variant_options", "protocol", "runs"]
+               "n", "seeds", "expected_seeds", "missing_seeds", "completion", "overlap_policy", "split_disjoint",
+               "train_test_count", "val_test_count", "affected_test_count", "variant_options", "protocol", "runs"]
     with (output / "leaderboard.csv").open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=columns)
         writer.writeheader()

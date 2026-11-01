@@ -49,11 +49,32 @@ Ubuntu의 `master@ubuntu` 터미널이 아니라 **Windows PowerShell**(`PS C:\U
 & "$Repo\Experiments\shMin_2026-10-28\FSA-Pseudo-Scale-Study\deploy\send_study.ps1" -Repo $Repo
 ```
 
-[`send_study.ps1`](../deploy/send_study.ps1)은 origin·브랜치·변경 없는 상태를 확인하고 `main`을 pull한 뒤 커밋된 study와 **필수 모델 보존 소스인 `Experiments/FSA-ZoomNeXt`, `docs/MIGRATION.md`를 함께** ZIP으로 만든다. 모델 import가 이 형제 디렉터리를 사용하므로 새 release에도 필요하다. ZIP과 체크섬을 SCP로 `master@192.168.1.200:/home/master/`에 보낸다. 전송한 revision과 새 코드 경로 `/home/master/mithila/INS_COD-releases/<revision12>`를 출력하며 원격 실험을 시작하거나 로컬 데이터셋·환경·체크포인트 가중치를 전송하지 않는다. Windows PC에서 해당 사설 서버 주소에 접근 가능해야 한다. Parsec 접속 성공만으로 이 네트워크 경로까지 보장되지는 않는다.
+[`send_study.ps1`](../deploy/send_study.ps1)은 origin·브랜치·변경 없는 상태를 확인하고 `main`을 pull한 뒤 커밋된 study와 **모델 import에 필요한 `Experiments/FSA-ZoomNeXt`, `docs/MIGRATION.md`를 함께** ZIP으로 만든다. ZIP과 체크섬을 SCP로 `master@192.168.1.200:/home/master/`에 보내고 전송한 revision 및 `/home/master/mithila/shMin` 아래의 활성 코드 위치를 출력한다. 전송만으로 코드 설치나 실험을 시작하지 않는다. 로컬 데이터셋·환경·체크포인트 가중치는 제외한다. Windows에서 서버 주소에 접근 가능해야 하며 Parsec 접속만으로 해당 경로가 보장되지는 않는다.
 
-ZIP 체크섬을 확인하고 출력된 **새 release 디렉터리**에 압축을 푼다. 아래 `STUDY`를 그 release의 `Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study`로 설정하고 기존 환경·데이터·체크포인트를 재사용한다. 서버의 기존 checkout은 압축 해제 대상이 아니므로 로컬 architecture 수정도 보존할 수 있다. 이 study는 알려진 `architecture=common` metadata 호환만 지원하며 실제 PCD 체크포인트에는 원 구현이 필요하다.
+전송 후에는 **Ubuntu Bash**에서 실행한다. `VERSION`은 전송 출력의 12자리 revision으로 바꾼다. 아래는 체크섬 확인 → 새 임시 staging 디렉터리에 압축 해제 → 포함된 [소스 설치기](../deploy/install_study.py) 실행이다. 기존 `INS_COD-releases/<revision>` 디렉터리를 다시 만들지 않으므로 그 폴더가 있어도 `mkdir` 충돌이 나지 않는다.
 
-전송 스크립트는 코드 수정 환경에서 검토했다. 해당 환경에서는 Windows PowerShell·사설망·실제 SCP를 실행하지 않았으므로 사용자 장비에서 확인해야 한다.
+```bash
+VERSION="REPLACE_WITH_TRANSFERRED_REVISION12"
+REL="Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+WORK="/home/master/mithila/shMin"
+STUDY="$WORK/$REL"
+PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
+ARCHIVE="/home/master/ins-cod-study-$VERSION.zip"
+
+(
+set -e
+cd /home/master
+sha256sum -c "ins-cod-study-$VERSION.zip.sha256"
+STAGING=$(mktemp -d /home/master/ins-cod-install.XXXXXX)
+"$PY" -m zipfile -e "$ARCHIVE" "$STAGING"
+"$PY" "$STAGING/$REL/deploy/install_study.py" \
+  --archive "$ARCHIVE" --work "$WORK"
+)
+```
+
+설치기는 체크섬과 archive commit을 확인하고 교체할 코드·문서를 `$WORK/.code-backups/<revision>-<unique>/`에 보존한 뒤 `shMin` 아래에 설치한다. 기존 결과·데이터셋·체크포인트·가상환경·추가 로컬 PCD 파일은 보존한다. 인식한 study 프로세스가 실행 중이면 설치를 중단한다. 임시 staging은 실제 활성 소스와 별개다. 기존 `INS_COD`는 환경·데이터·이력 경로로 유지한다. 체크포인트 metadata 호환은 알려진 `architecture=common`만 지원하며 실제 PCD 체크포인트는 원 모델 구현이 필요하다.
+
+사용자는 앞서 Windows/SCP 전송과 파일 백업을 동반한 소스 설치 성공을 보고했다. 패키지 설치기는 로컬 합성 파일시스템으로 검사하며, 코드 수정 작업이 사용자 원격 파일시스템에서 새 설치기를 실행한 것은 아니다. 설치에는 평가·학습·의존성 설치가 포함되지 않는다.
 
 ## 표준 테스트셋 4개를 요구하고 확인하기
 
@@ -70,11 +91,11 @@ ZIP 체크섬을 확인하고 출력된 **새 release 디렉터리**에 압축�
 
 ### 완료된 priority8 체크포인트 재평가
 
-수정 코드를 설치한 뒤 **Ubuntu Bash**에서 실행한다. 이 절의 명령은 **같은 터미널**의 변수를 사용한다. 별도 source release를 전송했다면 `STUDY`를 그 release의 실험 디렉터리 절대 경로로 바꾸고 `PY`는 기존 환경을 유지한다. `--rebind-entrypoints`는 검증한 기존 plan의 실행 스크립트 경로만 현재 release로 옮기는 명시적 선택이다. Python 실행 파일과 나머지 설정을 유지하고 원본 plan이나 기존 checkout을 덮어쓰지 않는다.
+수정 코드를 설치한 뒤 **Ubuntu Bash**에서 실행한다. 아래 기본값은 사용자가 통합한 활성 코드 위치 `shMin`이며 Python 환경은 기존 `INS_COD`에서 재사용한다. 이 기본 명령은 엄격 중복 검사를 유지하므로 기록된 7쌍이 있으면 중단한다. 해당 경우에는 [명시적 중복 기록 절](#확인된-cod10k-중복을-명시적으로-기록하고-진행하기)을 사용한다. 이 절의 명령은 **같은 터미널**의 변수를 사용한다. 별도 source release를 전송했다면 `STUDY`를 그 release의 실험 디렉터리 절대 경로로 바꾸고 `PY`는 기존 환경을 유지한다. `--rebind-entrypoints`는 검증한 기존 plan의 실행 스크립트 경로만 현재 release로 옮기는 명시적 선택이다. Python 실행 파일과 나머지 설정을 유지하고 원본 plan이나 기존 checkout을 덮어쓰지 않는다.
 
 ```bash
 REPO="/home/master/mithila/INS_COD"
-STUDY="$REPO/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+STUDY="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
 PY="$REPO/.venv/fsa-study-clean/bin/python"
 RUN="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647"
 STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
@@ -99,6 +120,49 @@ PYTHONUNBUFFERED=1 bash "$COMPLETE/run_evaluation.sh" 2>&1 | tee "$COMPLETE/eval
 ```
 
 새 지표는 `$RUN/runs/priority8/<variant>__seed3407/test-four-benchmarks-$STAMP/metrics.json`, 리더보드는 `$COMPLETE/leaderboard/leaderboard.html` 또는 `leaderboard.md`다. 데이터셋마다 기존 21개 지표·곡선·이미지별 결과를 보존한다. 복구 plan은 `run_plan.py`로 수동 호출해도 train/profile action을 거부한다.
+
+## 확인된 COD10K 중복을 명시적으로 기록하고 진행하기
+
+기본값은 계속 엄격 검사다. 서로 다른 split에 같은 이미지 바이트나 동일한 실제 경로가 있으면 준비를 중단한다. 이번 `Identical image paths or byte hashes cross train/val/test splits` 오류는 COD10K 이미지·GT 2,026쌍을 찾은 뒤 발생했다. 서버 진단에서는 **학습 원본과 테스트 사이 바이트가 같은 7쌍**을 찾았고, 기존 분할에서는 **최적화 train 6쌍, validation 1쌍**이었다. 동일한 실제 경로를 공유하는 쌍은 없었다. 코드 설치는 성공했으며 실패한 준비 명령은 평가·학습을 시작하지 않았다.
+
+근거 수준은 둘로 구분한다.
+
+- COD10K/SINet-V2 저자는 [2021-10-09 공식 안내](https://github.com/GewelsJI/SINet-V2/blob/5b9844c94d10a03b815c7c7039c194166a9a8ba3/README.md#L44)에서 **Crab-32**와 **Cat-1506**의 train/test 중복을 명시했다.
+- 7쌍 모두 독립적인 COD-TDQ 배포 자료의 고정 버전 `c4e97371fa835cd0a778ba67c071f24ca5deaf11`에서도 이름·SHA256이 서버 기록과 같았다. 작은 Git-LFS 포인터만 읽었으며 이미지 본체를 다운로드하지 않았다. 나머지 5쌍도 외부에 배포된 복사본에서 확인했지만, **COD10K 원저자가 7쌍 전체를 인정한 공지라는 뜻은 아니다.** [고정 URL·해시 근거](../results/verification-2026-11-01-overlap/upstream-evidence.json), [서버 진단 요약](../results/verification-2026-11-01-overlap/server-audit-summary.json).
+
+명시적인 `--acknowledge-cod10k-overlap` 옵션은 목록에 기록한 COD10K **ID 쌍과 이미지 SHA256**이 일치하는 7쌍만 허용한다. 다른 쌍·해시, 동일한 실제 경로, 다른 데이터셋 중복, train/validation 중복은 계속 오류다. 모든 중복을 무시하는 옵션이 아니다. 파일 해시·이미지/GT 대응·개수·크기·manifest·체크포인트 검사는 유지한다. 입력 이미지·GT·이전 manifest·체크포인트·과거 보고서를 변경하지 않는다.
+
+진단한 서버 복사본에서는 수정 코드를 `shMin` 아래에 설치한 뒤 위의 엄격 검사 준비 명령 대신 다음을 **Ubuntu Bash**에서 실행한다. 새 평가 계획만 생성한다. 이후 명령도 **같은 터미널**에서 실행한다.
+
+```bash
+STUDY="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
+RUN="$STUDY/results/priority8-separate-20261030_204647"
+STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
+COMPLETE="$RUN/plans/four-benchmarks-ack-$STAMP"
+
+"$PY" "$STUDY/complete_benchmark.py" \
+  --plan "$RUN/plans/priority8/plan.json" \
+  --output "$COMPLETE" \
+  --evaluation-subdir "test-four-benchmarks-ack-$STAMP" \
+  --rebind-entrypoints \
+  --acknowledge-cod10k-overlap
+```
+
+새 manifest의 `overlap_policy="acknowledged-cod10k-v1"`과 `overlap_audit`를 확인한다. 기록된 분할에서는 `disjoint=false`, `train_test_count=6`, `val_test_count=1`, `affected_test_count=7`과 정확한 쌍 목록이 나와야 한다. 평가 metadata와 새 보고서에도 이 조건이 전달된다. 표준 개수 충족·실행 완료와 데이터의 독립성은 다른 판단이다.
+
+아래 별도 명령은 기존 학습 체크포인트로 **평가만 실행**한다.
+
+```bash
+set -o pipefail
+PYTHONUNBUFFERED=1 bash "$COMPLETE/run_evaluation.sh" 2>&1 | tee "$COMPLETE/evaluation.log"
+```
+
+지표는 `$RUN/runs/priority8/<variant>__seed3407/test-four-benchmarks-ack-$STAMP/metrics.json`, 리더보드는 `$COMPLETE/leaderboard/`에 저장한다. 아래의 전체 학습 준비 절은 이 manifest를 그대로 입력으로 쓸 수 있다. 정책을 이어받고 validation을 train으로 이동한 뒤 중복 기록을 다시 계산하므로 이 복사본에서는 **train/test 7쌍, validation/test 0쌍**이 된다. 새 실험의 `run_study.py prepare`도 배포 개수를 의도적으로 유지할 때 같은 명시적 옵션을 지원한다.
+
+이 옵션은 배포 기준의 4,040/2,026장을 유지한다. **중복 노출을 없애거나 COD10K-test를 독립 평가셋으로 바꾸는 기능이 아니다.** 기존 모델은 6장의 중복 이미지를 최적화에, 1장을 validation·체크포인트 선택에 이미 사용했다. 인정 표시로 이 이력을 되돌릴 수 없다. 이번 COD10K 중복만으로 기존 CAMO·CHAMELEON·NC4K 점수가 무효가 되지는 않지만, 이 바이트 검사가 모든 시각적 유사 이미지 누출까지 보장하는 것도 아니다. 공식 공지의 2장에 대한 대략적인 지표 영향은 이번 7장이나 이 모델에 일반화하지 않는다.
+
+독립 분할을 사용하려면 별도 이름의 조건과 비교가 필요하다. 테스트에서 7장을 제외하면 **2,019장 부분집합**, 새 학습 전에 대응하는 학습 원본 7장을 제외하면 전체 테스트셋에 대해 **4,033장 학습**이다. 둘 다 표준 4,040/2,026 조건과 다르며 이번 옵션이 몰래 수행하는 동작이 아니다. [판단·근거 기록](../../../../Progress/2026-11-01/COD10K-Overlap/README.md).
 
 ## 별도 전체 데이터 학습 비교
 

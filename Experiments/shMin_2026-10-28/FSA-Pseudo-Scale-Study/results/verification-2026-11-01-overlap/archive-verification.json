@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "snapshot_commit": "b689dac169b449f1a2624127cfa75717302c8c17",
+  "snapshot_kind": "temporary staged-source commit, not a published branch",
+  "archive_sha256": "8d9e12a9a9f7f6e185523c6128beb03ff2907dacd5c7a3d6be5e02eae5065da5",
+  "archive_bytes": 850388,
+  "installer": "packaged installer executed in an isolated temporary destination",
+  "cli_help_checks": 4,
+  "cold_cpu_inference": {
+    "shape": [
+      1,
+      1,
+      64,
+      64
+    ],
+    "finite": true,
+    "backbone": "archived sibling imported",
+    "optimizer_updates": 0
+  },
+  "no_server_execution": true,
+  "source_hashes_match_final_verification": true
+}

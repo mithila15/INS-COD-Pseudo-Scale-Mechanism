@@ -88,6 +88,7 @@ def prepare_full_training_manifest(source_manifest_path, output_path, data_root=
     # Local imports avoid the data -> training_protocol dependency cycle.
     from .benchmark import benchmark_coverage
     from .data import load_manifest, manifest_digest, sha256_file, validate_manifest
+    from .overlap import overlap_metadata, refresh_overlap_audit
 
     source_path = Path(source_manifest_path).expanduser().resolve(strict=True)
     requested_target = Path(output_path).expanduser()
@@ -127,6 +128,9 @@ def prepare_full_training_manifest(source_manifest_path, output_path, data_root=
         "promoted_validation_samples": promoted, "source_test_extension": previous_extension,
         "policy": "preserve original train and test records; promote original validation to train; fixed final epoch",
     }
+    if "overlap_policy" in original:
+        result["full_training_source"]["source_overlap_audit"] = overlap_metadata(original)
+        refresh_overlap_audit(result)
     result["content_sha256"] = manifest_digest(result)
     validate_manifest(result, verify_files=False)
     validate_training_protocol(result, "full_train")

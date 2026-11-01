@@ -142,6 +142,11 @@ def completed(job, action):
                 or artifact.get("manifest_sha256") != requested_manifest.get("content_sha256")
                 or artifact.get("model_config") != config.get("model_config")):
             raise ValueError(f"Existing evaluation metadata disagrees with plan: {path}")
+        from fsa_study.overlap import overlap_metadata
+        recorded_overlap = artifact.get("overlap_audit")
+        if recorded_overlap is not None or requested_manifest.get("overlap_policy", "strict") != "strict":
+            if recorded_overlap != overlap_metadata(requested_manifest):
+                raise ValueError(f"Existing evaluation overlap audit disagrees with its manifest: {path}")
         if getattr(requested, "training_manifest", None):
             from fsa_study.benchmark import benchmark_coverage, validate_test_extension
             if Path(requested.training_manifest).resolve() != Path(arguments["manifest"]).resolve():

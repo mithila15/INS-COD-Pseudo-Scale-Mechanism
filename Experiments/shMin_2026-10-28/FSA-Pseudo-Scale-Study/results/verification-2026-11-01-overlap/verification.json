@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "tests": 736,
+  "subtests": 74,
+  "browser_checks": 5,
+  "source_sha256": {
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/complete_benchmark.py": "e3514da7d0699c2127012957b0549e1ff56b09949be666c00d9ba4bc1292df82",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/deploy/send_study.ps1": "09e5c8a5d4da35d212b2ca1b1865546e00a2df324054b3854e892cd859d4a473",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/benchmark.py": "8d4f8c67245d2ca9808d49839ced6ab600711963dbf6080da9054f0a498d9368",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/data.py": "1833fd382a3d905c68f30e99d4b06cde93eef2030e161171ca5afceded1883aa",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/engine.py": "7e3d95c15030070c039cd530e595ee796089dc0ba2d154e83cd69c634605af8f",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/leaderboard.py": "ce2c6a82a13305c7c9eb42b2eca13d4f9170500603e17987bf22b4ae133efbea",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/training_protocol.py": "bf4e74f31a3d75d2fd81f2d3e5305db57f1bc94ad65c6e51459c2c574bfa8a35",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_plan.py": "d77429ac8ac5ef79253576aa912c67a86bd3ce1136949bc0305a887fab5cc6ca",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py": "ffb14b09e4d75591f248e4ee04967694b4b043c32e4f196a7f5912a786e1af87",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/summarize_study.py": "f41b348609c8df31cd01855fa87049891369e6538f9bb0ac5f9775921d3444fa",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_benchmark_engine.py": "96fa92c2348477b70e3a5688f40bd1f1f3a537f8c70b69f49852d6578ae6e8a2",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/overlap.py": "a08d54fb7e58f90e0d67b55c027b208ae7b58039c6c32907e59a46bc5d4f8c25",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/deploy/install_study.py": "1d5a530b55734cf241ad848c52e3af78066fdfabe6ab867db3d264b0152433af",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_cod10k_overlap.py": "3ab7772d904583c7e159cbef4940906ad9185e38a62b6345c116e979e8a3a1bd",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_overlap_reporting.py": "3d8862769dfa3615b9888abdb6419864eef148417f1232a9c81cecb4cb2c74ce",
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_install_study.py": "4b2016e8ae2555e9ba0a840c7377d97496773688947265168fba8701f32a686d"
+  },
+  "historical_priority8_report": "byte-for-byte unchanged against f04dfbacc6c8",
+  "scope": "Synthetic tensor gradients, inference-only tiny models, manifest/plan preparation, report rendering and temporary-filesystem installer tests. No optimizer updates, real training, server execution or dataset download.",
+  "limitations": "Actual server file hashes/geometry/checkpoint loading are revalidated when the user executes the new plan. No new dataset scores measured locally; Windows transfer not executed here."
+}

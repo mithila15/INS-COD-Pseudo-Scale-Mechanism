@@ -8,6 +8,8 @@ This README is the execution guide. See the [method catalog and comparison ratio
 
 For existing results, use the [four-dataset recovery and full-data training guide](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md). Existing training uses **3,636 images + 404 validation**, while official ZoomNeXt uses **4,040 training images**. The new `full_train` option uses all 4,040 and a fixed final-epoch checkpoint; other architecture/training differences remain. [Windows pull and SCP transfer](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows) preserves the existing server checkout and results.
 
+The server audit also found **seven exact COD10K train-source/test duplicates (six train, one validation)**. Strict preparation stops by default. The [explicit overlap policy](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#acknowledge-the-verified-cod10k-overlaps) records only the verified ID/hash pairs, preserves published sample counts and exposes `disjoint=false`; it does not make COD10K evaluation independent. [Evidence and limits](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-01-overlap/README.md).
+
 ## 1. Set up the environment
 
 Start from a checkout of this repository. Set `REPO` to its absolute path on your machine. Use the **same terminal** for all blocks below. The documented profile uses Python 3.12.13, PyTorch 2.11.0, torchvision 0.26.0, timm 1.0.30 and the checked-in dependency lock.

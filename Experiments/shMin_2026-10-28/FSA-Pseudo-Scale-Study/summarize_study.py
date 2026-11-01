@@ -10,7 +10,8 @@ import statistics
 import tempfile
 from fsa_study.data import geometry_protocol, manifest_digest, sha256_file
 from fsa_study.benchmark import benchmark_coverage, validate_test_extension
-from fsa_study.leaderboard import build_leaderboard, summarize_benchmark_coverage, write_leaderboard
+from fsa_study.overlap import overlap_metadata
+from fsa_study.leaderboard import build_leaderboard, summarize_benchmark_coverage, summarize_data_integrity, write_leaderboard
 
 
 def _variant(model):
@@ -31,7 +32,20 @@ def _validate_test_manifest(metrics, config, metric_path, run):
             raise ValueError(f"Mismatched test metadata: {metric_path}")
         if metrics.get("training_manifest_sha256", config["manifest_sha256"]) != config["manifest_sha256"]:
             raise ValueError(f"Mismatched training manifest metadata: {metric_path}")
-        return
+        anchor = run / "manifest.json"
+        if metrics.get("overlap_audit") is not None:
+            if not anchor.is_file():
+                raise ValueError(f"Overlap audit requires the training manifest snapshot: {anchor}")
+            manifest = json.loads(anchor.read_text())
+            if (manifest.get("content_sha256") != config["manifest_sha256"]
+                    or manifest_digest(manifest) != config["manifest_sha256"]):
+                raise ValueError(f"Mismatched manifest content digest: {anchor}")
+            return _verify_overlap(metrics, manifest, metric_path)
+        if anchor.is_file():
+            manifest = json.loads(anchor.read_text())
+            if manifest.get("overlap_policy", "strict") != "strict":
+                raise ValueError(f"Acknowledged overlap metrics require an overlap audit: {metric_path}")
+        return None
     if metrics.get("training_manifest_sha256") != config["manifest_sha256"]:
         raise ValueError(f"Mismatched training manifest metadata: {metric_path}")
     snapshots = {}
@@ -63,6 +77,19 @@ def _validate_test_manifest(metrics, config, metric_path, run):
     actual_counts = {dataset: values.get("count") for dataset, values in metrics["datasets"].items()}
     if actual_counts != dict(expected_counts):
         raise ValueError(f"Test metric counts do not match the evaluation manifest: {metric_path}")
+    return _verify_overlap(metrics, evaluation, metric_path)
+
+
+def _verify_overlap(metrics, manifest, metric_path):
+    expected = overlap_metadata(manifest)
+    recorded = metrics.get("overlap_audit")
+    if recorded is None and expected["policy"] == "strict":
+        # Historical reports without an audit remain unknown, even when their
+        # count-only coverage happens to match all four standard datasets.
+        return None
+    if recorded != expected:
+        raise ValueError(f"Evaluation overlap audit disagrees with its manifest: {metric_path}")
+    return expected
 
 
 def _plan_jobs(plan, root):
@@ -154,7 +181,7 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
                 raise ValueError(f"Expected test split: {metric_path}")
             if metrics["model_config"] != model:
                 raise ValueError(f"Mismatched test metadata: {metric_path}")
-            _validate_test_manifest(metrics, config, metric_path, run)
+            overlap = _validate_test_manifest(metrics, config, metric_path, run)
             if not (run / "best.pth").exists() or metrics.get("checkpoint_sha256") != sha256_file(run / "best.pth"):
                 raise ValueError(f"Evaluation did not use this run's selected best checkpoint: {metric_path}")
             test_protocol = {**protocol, "metric_protocol": metrics.get("metric_protocol"),
@@ -163,9 +190,13 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
                              "prediction_protocol": metrics.get("prediction_protocol"),
                              "evaluation_source_sha256": metrics.get("source_sha256"),
                              "evaluation_packages": metrics.get("environment", {}).get("packages", {})}
+            # Different overlap policies, affected identities or train/val
+            # assignments are separate comparison cohorts.
+            test_protocol["overlap_audit"] = overlap
             if metrics.get("manifest_extension") is not None:
                 test_protocol["evaluation_manifest_sha256"] = metrics["manifest_sha256"]
             state["evaluation_complete"] = True
+            state["overlap_audit"] = overlap
             state["benchmark_coverage"] = benchmark_coverage({
                 dataset: values.get("count") for dataset, values in metrics["datasets"].items()})
             for dataset, values in metrics["datasets"].items():
@@ -220,6 +251,7 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
         expected[job["variant"]].append(job["seed"])
     return {"rows": rows, "incomplete_runs": incomplete, "runs": list(progress.values()),
             "benchmark_coverage": summarize_benchmark_coverage(list(progress.values())),
+            "data_integrity": summarize_data_integrity(list(progress.values())),
             "expected_seeds": {variant: sorted(seeds) for variant, seeds in expected.items()},
             "plan": {key: plan_payload.get(key) for key in ("phase", "run_count", "variant_count", "seeds")} if plan_payload is not None else None,
             "evaluation_subdir": evaluation_subdir,
@@ -261,7 +293,8 @@ def main():
             (staging / name).replace(output / name)
     print(json.dumps({"rows": len(report["rows"]), "incomplete": len(report["incomplete_runs"]),
                       "leaderboard": str(output / "leaderboard.html"), "progress": leaderboard["progress"],
-                      "benchmark_coverage": leaderboard["benchmark_coverage"]}))
+                      "benchmark_coverage": leaderboard["benchmark_coverage"],
+                      "data_integrity": leaderboard["data_integrity"]}))
 
 
 if __name__ == "__main__":

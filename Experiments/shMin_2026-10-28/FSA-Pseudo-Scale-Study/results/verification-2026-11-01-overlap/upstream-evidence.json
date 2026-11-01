@@ -1,0 +1,143 @@
+{
+  "checked_date_kst": "2026-11-01",
+  "official_two_overlap_notice": "https://github.com/GewelsJI/SINet-V2/blob/5b9844c94d10a03b815c7c7039c194166a9a8ba3/README.md#L44",
+  "independent_mirror": "cod-tdq/cod",
+  "mirror_revision": "c4e97371fa835cd0a778ba67c071f24ca5deaf11",
+  "mirror_is_official_cod10k_distribution": false,
+  "method": "Only 14 small Git LFS pointer text objects fetched; no image blobs, masks, dataset archives, or weights downloaded. User log image SHA256s match all seven mirror pairs.",
+  "pairs": [
+    {
+      "test": {
+        "split": "test",
+        "name": "COD10K-CAM-1-Aquatic-3-Crab-32",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TestDataset/COD10K/Imgs/COD10K-CAM-1-Aquatic-3-Crab-32.jpg",
+        "sha256": "e60fced9bfb2eeb8df4b7b9dcce931d6537b7f4f8ff4e49296e4bd763897d27a",
+        "size": 539241,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:e60fced9bfb2eeb8df4b7b9dcce931d6537b7f4f8ff4e49296e4bd763897d27a\nsize 539241\n"
+      },
+      "train": {
+        "split": "train",
+        "name": "COD10K-CAM-1-Aquatic-3-Crab-32",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TrainValDataset/Imgs/COD10K-CAM-1-Aquatic-3-Crab-32.jpg",
+        "sha256": "e60fced9bfb2eeb8df4b7b9dcce931d6537b7f4f8ff4e49296e4bd763897d27a",
+        "size": 539241,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:e60fced9bfb2eeb8df4b7b9dcce931d6537b7f4f8ff4e49296e4bd763897d27a\nsize 539241\n"
+      },
+      "same_sha256": true
+    },
+    {
+      "test": {
+        "split": "test",
+        "name": "COD10K-CAM-2-Terrestrial-23-Cat-1506",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TestDataset/COD10K/Imgs/COD10K-CAM-2-Terrestrial-23-Cat-1506.jpg",
+        "sha256": "311809538532626c3c07e95076c32130b7010d16cf5ae6e6d5624819ab1d70d0",
+        "size": 439153,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:311809538532626c3c07e95076c32130b7010d16cf5ae6e6d5624819ab1d70d0\nsize 439153\n"
+      },
+      "train": {
+        "split": "train",
+        "name": "COD10K-CAM-2-Terrestrial-23-Cat-1506",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TrainValDataset/Imgs/COD10K-CAM-2-Terrestrial-23-Cat-1506.jpg",
+        "sha256": "311809538532626c3c07e95076c32130b7010d16cf5ae6e6d5624819ab1d70d0",
+        "size": 439153,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:311809538532626c3c07e95076c32130b7010d16cf5ae6e6d5624819ab1d70d0\nsize 439153\n"
+      },
+      "same_sha256": true
+    },
+    {
+      "test": {
+        "split": "test",
+        "name": "COD10K-CAM-2-Terrestrial-28-Deer-1762",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TestDataset/COD10K/Imgs/COD10K-CAM-2-Terrestrial-28-Deer-1762.jpg",
+        "sha256": "58a9a7b96f9f5643139d33d73331c6f1851b599df7fa60a916e451ef01ca3afe",
+        "size": 266314,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:58a9a7b96f9f5643139d33d73331c6f1851b599df7fa60a916e451ef01ca3afe\nsize 266314\n"
+      },
+      "train": {
+        "split": "train",
+        "name": "COD10K-CAM-2-Terrestrial-28-Deer-1796",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TrainValDataset/Imgs/COD10K-CAM-2-Terrestrial-28-Deer-1796.jpg",
+        "sha256": "58a9a7b96f9f5643139d33d73331c6f1851b599df7fa60a916e451ef01ca3afe",
+        "size": 266314,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:58a9a7b96f9f5643139d33d73331c6f1851b599df7fa60a916e451ef01ca3afe\nsize 266314\n"
+      },
+      "same_sha256": true
+    },
+    {
+      "test": {
+        "split": "test",
+        "name": "COD10K-CAM-2-Terrestrial-31-Gecko-1892",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TestDataset/COD10K/Imgs/COD10K-CAM-2-Terrestrial-31-Gecko-1892.jpg",
+        "sha256": "1be584edf381ee65c4e802dedefb671742122d6db3f00af3b204d6b4754309d7",
+        "size": 404107,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:1be584edf381ee65c4e802dedefb671742122d6db3f00af3b204d6b4754309d7\nsize 404107\n"
+      },
+      "train": {
+        "split": "train",
+        "name": "COD10K-CAM-2-Terrestrial-26-Chameleon-1694",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TrainValDataset/Imgs/COD10K-CAM-2-Terrestrial-26-Chameleon-1694.jpg",
+        "sha256": "1be584edf381ee65c4e802dedefb671742122d6db3f00af3b204d6b4754309d7",
+        "size": 404107,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:1be584edf381ee65c4e802dedefb671742122d6db3f00af3b204d6b4754309d7\nsize 404107\n"
+      },
+      "same_sha256": true
+    },
+    {
+      "test": {
+        "split": "test",
+        "name": "COD10K-CAM-2-Terrestrial-31-Gecko-1895",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TestDataset/COD10K/Imgs/COD10K-CAM-2-Terrestrial-31-Gecko-1895.jpg",
+        "sha256": "e5f0ea8dec16c4b4ed178c58a9827cd946fa9e0e860e1d56ae769b50d59e6c4e",
+        "size": 234750,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:e5f0ea8dec16c4b4ed178c58a9827cd946fa9e0e860e1d56ae769b50d59e6c4e\nsize 234750\n"
+      },
+      "train": {
+        "split": "train",
+        "name": "COD10K-CAM-2-Terrestrial-31-Gecko-1928",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TrainValDataset/Imgs/COD10K-CAM-2-Terrestrial-31-Gecko-1928.jpg",
+        "sha256": "e5f0ea8dec16c4b4ed178c58a9827cd946fa9e0e860e1d56ae769b50d59e6c4e",
+        "size": 234750,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:e5f0ea8dec16c4b4ed178c58a9827cd946fa9e0e860e1d56ae769b50d59e6c4e\nsize 234750\n"
+      },
+      "same_sha256": true
+    },
+    {
+      "test": {
+        "split": "test",
+        "name": "COD10K-CAM-2-Terrestrial-32-Giraffe-1932",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TestDataset/COD10K/Imgs/COD10K-CAM-2-Terrestrial-32-Giraffe-1932.jpg",
+        "sha256": "6988e9b908fb9a6c8157405f49dcd37586ef14f08d6374e33996c780dcbb67e0",
+        "size": 727299,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:6988e9b908fb9a6c8157405f49dcd37586ef14f08d6374e33996c780dcbb67e0\nsize 727299\n"
+      },
+      "train": {
+        "split": "train",
+        "name": "COD10K-CAM-2-Terrestrial-32-Giraffe-1930",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TrainValDataset/Imgs/COD10K-CAM-2-Terrestrial-32-Giraffe-1930.jpg",
+        "sha256": "6988e9b908fb9a6c8157405f49dcd37586ef14f08d6374e33996c780dcbb67e0",
+        "size": 727299,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:6988e9b908fb9a6c8157405f49dcd37586ef14f08d6374e33996c780dcbb67e0\nsize 727299\n"
+      },
+      "same_sha256": true
+    },
+    {
+      "test": {
+        "split": "test",
+        "name": "COD10K-CAM-3-Flying-65-Owl-4633",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TestDataset/COD10K/Imgs/COD10K-CAM-3-Flying-65-Owl-4633.jpg",
+        "sha256": "6368c9991b9cc8f2d45eb87bb172e2611154efaaa99113fc1fab0d1943276390",
+        "size": 446765,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:6368c9991b9cc8f2d45eb87bb172e2611154efaaa99113fc1fab0d1943276390\nsize 446765\n"
+      },
+      "train": {
+        "split": "train",
+        "name": "COD10K-CAM-3-Flying-53-Bird-3205",
+        "url": "https://huggingface.co/datasets/cod-tdq/cod/raw/c4e97371fa835cd0a778ba67c071f24ca5deaf11/Dataset/TrainValDataset/Imgs/COD10K-CAM-3-Flying-53-Bird-3205.jpg",
+        "sha256": "6368c9991b9cc8f2d45eb87bb172e2611154efaaa99113fc1fab0d1943276390",
+        "size": 446765,
+        "pointer_text": "version https://git-lfs.github.com/spec/v1\noid sha256:6368c9991b9cc8f2d45eb87bb172e2611154efaaa99113fc1fab0d1943276390\nsize 446765\n"
+      },
+      "same_sha256": true
+    }
+  ]
+}

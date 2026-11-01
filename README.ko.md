@@ -8,6 +8,8 @@
 
 기존 결과에는 [4개 테스트셋 복구·전체 학습 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md)를 사용한다. 공식 ZoomNeXt와 비교하면 기존 학습은 **3,636장 + validation 404장**, ZoomNeXt는 **4,040장 학습**이다. 새 `full_train`은 4,040장 전체와 최종 epoch 고정 체크포인트를 사용하며 나머지 구조·학습 조건 차이는 남는다. [Windows pull·SCP 전송](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#windows에서-수정-코드-전송)은 기존 서버 checkout과 결과를 보존한다.
 
+서버 검사에서 **COD10K 학습 원본/test의 정확한 중복 7쌍(train 6, validation 1)**도 확인했다. 준비의 기본값은 중단이다. [명시적 중복 처리 규약](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#확인된-cod10k-중복을-명시적으로-기록하고-진행하기)은 확인한 ID·해시 쌍만 기록하고 배포 개수를 유지하며 `disjoint=false`를 표시한다. COD10K 평가가 독립적이 되는 것은 아니다. [근거와 한계](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-01-overlap/README.ko.md).
+
 ## 1. 환경 설정
 
 이 저장소의 checkout을 준비하고 `REPO`를 해당 장비의 절대 경로로 바꾼다. 아래 블록들은 **같은 터미널**에서 실행한다. 환경은 Python 3.12.13, PyTorch 2.11.0, torchvision 0.26.0, timm 1.0.30과 저장소의 dependency lock을 사용한다.

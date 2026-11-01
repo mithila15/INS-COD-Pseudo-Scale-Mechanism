@@ -40,6 +40,8 @@ def build_parser():
                          help="holdout: fixed training validation; full_train: all official training samples, no holdout")
     prepare.add_argument("--cod10k-prefix", default="COD10K-CAM-", help="Explicit COD10K foreground prefix; exclusions and hashes recorded. Empty string requires an audited foreground-only renamed copy")
     prepare.add_argument("--allow-nonstandard-counts", action="store_true", help="Explicit custom-data/fixture override; record actual counts")
+    prepare.add_argument("--acknowledge-cod10k-overlap", action="store_true",
+                         help="Explicitly acknowledge only the seven observed COD10K duplicate ID/hash pairs; records remain unchanged and overlap is reported")
     prepare.add_argument("--test-datasets", nargs="+", choices=["cod10k", "camo", "chameleon", "nc4k", "none"],
                          default=["cod10k", "camo", "chameleon", "nc4k"],
                          help="Default: require all four benchmarks. Explicit subsets/none remain available for documented partial studies")
@@ -91,15 +93,19 @@ def main(argv=None):
             fraction = resolve_val_fraction(args.training_protocol, args.val_fraction)
             manifest = prepare_manifest(args.data_root, args.manifest, args.split_seed, fraction,
                                         args.allow_nonstandard_counts, args.test_datasets, args.cod10k_prefix,
-                                        training_protocol=args.training_protocol)
-            print(json.dumps({"manifest": str(Path(args.manifest).expanduser().resolve()),
-                              "content_sha256": manifest["content_sha256"],
-                              "source_counts": manifest["source_counts"], "split_counts": manifest["split_counts"],
-                              "test_datasets_selected": manifest["test_datasets_selected"],
-                              "test_datasets_missing": manifest["test_datasets_missing"],
-                              "training": training_metadata(manifest, args.training_protocol),
-                              "benchmark_coverage": benchmark_coverage({name: manifest["split_counts"].get(f"{name}/test", 0)
-                                                                        for name in manifest["test_datasets_selected"]})}, indent=2))
+                                        training_protocol=args.training_protocol,
+                                        acknowledge_cod10k=args.acknowledge_cod10k_overlap)
+            summary = {"manifest": str(Path(args.manifest).expanduser().resolve()),
+                       "content_sha256": manifest["content_sha256"],
+                       "source_counts": manifest["source_counts"], "split_counts": manifest["split_counts"],
+                       "test_datasets_selected": manifest["test_datasets_selected"],
+                       "test_datasets_missing": manifest["test_datasets_missing"],
+                       "training": training_metadata(manifest, args.training_protocol),
+                       "benchmark_coverage": benchmark_coverage({name: manifest["split_counts"].get(f"{name}/test", 0)
+                                                                 for name in manifest["test_datasets_selected"]})}
+            if "overlap_audit" in manifest:
+                summary["overlap_audit"] = manifest["overlap_audit"]
+            print(json.dumps(summary, indent=2))
         else:
             # Must precede torch import / CUDA initialization.
             os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")

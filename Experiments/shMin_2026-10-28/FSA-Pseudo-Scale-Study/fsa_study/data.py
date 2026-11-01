@@ -8,6 +8,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from .training_protocol import resolve_val_fraction, validate_training_protocol
+from .overlap import ACKNOWLEDGED_POLICY, acknowledge_cod10k_overlap, overlap_metadata
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff"}
 GEOMETRY_POLICIES = ("strict", "resize-prediction-to-gt")
@@ -49,7 +50,7 @@ def _scan(folder):
     return paths
 
 
-def prepare_manifest(data_root, manifest_path, split_seed=1729, val_fraction=0.1, allow_nonstandard_counts=False, test_datasets=None, cod10k_prefix="COD10K-CAM-", training_protocol="holdout"):
+def prepare_manifest(data_root, manifest_path, split_seed=1729, val_fraction=0.1, allow_nonstandard_counts=False, test_datasets=None, cod10k_prefix="COD10K-CAM-", training_protocol="holdout", acknowledge_cod10k=False):
     root = Path(data_root).expanduser().resolve(strict=True)
     target = Path(manifest_path).expanduser().resolve()
     if target.exists():
@@ -147,6 +148,8 @@ def prepare_manifest(data_root, manifest_path, split_seed=1729, val_fraction=0.1
     # explicit new manifest, never an in-place relabeling of a completed run.
     if training_protocol == "full_train":
         manifest["training_protocol"] = training_protocol
+    if acknowledge_cod10k:
+        acknowledge_cod10k_overlap(manifest)
     manifest["content_sha256"] = manifest_digest(manifest)
     validate_manifest(manifest, verify_files=False)
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -165,7 +168,7 @@ def validate_manifest(manifest, verify_files=True, data_root=None):
     records = manifest["records"]
     if not records:
         raise ValueError("Manifest contains no samples")
-    ids, image_paths, image_hash_splits = set(), {}, defaultdict(set)
+    ids, image_paths = set(), {}
     for record in records:
         if record["id"] in ids:
             raise ValueError(f"Duplicate sample ID: {record['id']}")
@@ -183,10 +186,9 @@ def validate_manifest(manifest, verify_files=True, data_root=None):
                 raise ValueError(f"Changed {kind} content: {path}")
             if kind == "image":
                 previous = image_paths.get(str(path))
-                if previous is not None and previous != record["split"]:
+                if previous is not None and (previous != record["split"] or manifest.get("overlap_policy") == ACKNOWLEDGED_POLICY):
                     raise ValueError(f"Same image path crosses splits: {path}")
                 image_paths[str(path)] = record["split"]
-        image_hash_splits[record["image_sha256"]].add(record["split"])
     for exclusions in manifest.get("excluded_files", {}).values():
         for paths in exclusions.values():
             for excluded in paths:
@@ -195,9 +197,7 @@ def validate_manifest(manifest, verify_files=True, data_root=None):
                     raise ValueError(f"Excluded path escapes dataset root: {path}")
                 if verify_files and sha256_file(path) != excluded["sha256"]:
                     raise ValueError(f"Changed explicitly excluded source file: {path}")
-    leaked = [digest for digest, splits in image_hash_splits.items() if len(splits) > 1]
-    if leaked:
-        raise ValueError(f"{len(leaked)} identical image byte hashes cross train/val/test splits; resolve duplicates before preparing the study")
+    overlap_metadata(manifest)
     source_counts = dict(sorted(Counter(record["source"] for record in records).items()))
     split_counts = dict(sorted(Counter(f"{record['dataset']}/{record['split']}" for record in records).items()))
     if manifest["source_counts"] != source_counts or manifest["split_counts"] != split_counts:

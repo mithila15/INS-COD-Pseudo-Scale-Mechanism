@@ -4,6 +4,8 @@
 
 환경 → 데이터 → 계획 생성 → 학습 → validation/비용 → 테스트 명령은 [저장소 README](../../../README.ko.md)에 있다. 이 문서는 **무엇을 비교하고 결과를 어떻게 해석할지** 설명한다. 생성 12종 × 활용 13종과 대조군 2개로 158개 구성, seed 3개 기준 474회다. Fusion을 지원하며 공통 decoder에 residual 표현을 강제하지 않는다.
 
+[COD10K 중복 기록](results/verification-2026-11-01-overlap/README.ko.md)에 학습 원본/test의 바이트 중복 7쌍을 정리했다. 정확한 기록 쌍을 명시적으로 인정하지 않으면 준비는 계속 엄격하게 중단한다. 배포 개수를 유지하는 경우에도 **독립 분할이 아님**을 표시한다. [서버 복구 명령](docs/BENCHMARK-PROTOCOL.ko.md#확인된-cod10k-중복을-명시적으로-기록하고-진행하기)을 참고한다.
+
 ## 2026-11-01 결과와 실험 조건 수정
 
 [업로드된 priority8 보고서](results/priority8-report-20261101_172449/README.ko.md)는 seed 3407의 8개 실험을 **CAMO·CHAMELEON·NC4K에서만** 평가했다. COD10K-test를 추가하는 새 평가 plan은 기존 `best.pth`를 재사용하고 4개 테스트셋을 새 경로에서 다시 평가한다. `prepare` CLI는 이제 4개 테스트셋을 기본으로 요구하며, 리더보드는 실행 완료와 표준 벤치마크 전체 완료를 구분한다.

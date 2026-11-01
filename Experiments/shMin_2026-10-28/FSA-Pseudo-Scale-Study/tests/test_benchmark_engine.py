@@ -3,6 +3,7 @@ import copy
 import json
 import os
 import random
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -81,6 +82,9 @@ def test_old_checkpoint_evaluates_all_four_without_modifying_training(extension_
     evaluate(_arguments(extension_data, output))
     metrics = json.loads((output / "metrics.json").read_text())
     assert metrics["benchmark_coverage"]["complete"]
+    assert metrics["overlap_audit"]["policy"] == "strict"
+    assert metrics["overlap_audit"]["disjoint"]
+    assert metrics["overlap_audit"]["affected_test_count"] == 0
     assert set(metrics["datasets"]) == {"camo", "cod10k", "chameleon", "nc4k"}
     assert all(set(METRIC_KEYS).issubset(values) and values["count"] == 2
                for values in metrics["datasets"].values())
@@ -90,6 +94,34 @@ def test_old_checkpoint_evaluates_all_four_without_modifying_training(extension_
     for name in ("manifest.json", "training_manifest.json"):
         assert metrics["artifacts"]["sha256"][name] == sha256_file(output / name)
     assert {path: sha256_file(path) for path in hashes} == hashes
+
+
+def test_acknowledged_inference_records_overlap_without_dropping_scores(extension_data, tmp_path, monkeypatch):
+    from fsa_study import overlap
+    original_path, _, checkpoint, original, extended = extension_data
+    root = Path(original["data_root"])
+    training = next(r for r in original["records"] if r["source"] == "cod10k_train" and r["split"] == "train")
+    testing = next(r for r in extended["records"] if r["source"] == "cod10k_test")
+    (root / testing["image"]).write_bytes((root / training["image"]).read_bytes())
+    # Tiny synthetic PNGs stand in for the exact server-evidence pair. The
+    # production acknowledgement list is never changed on disk.
+    monkeypatch.setattr(overlap, "KNOWN_COD10K_OVERLAPS", ((Path(training["image"]).stem,
+                        Path(testing["image"]).stem, training["image_sha256"]),))
+    acknowledged_path = tmp_path / "acknowledged.json"
+    acknowledged = extend_test_manifest(original_path, acknowledged_path, acknowledge_cod10k=True)
+    before = {path: sha256_file(path) for path in (original_path, checkpoint, acknowledged_path)}
+    data = original_path, acknowledged_path, checkpoint, original, acknowledged
+    output = tmp_path / "acknowledged-test"
+    evaluate(_arguments(data, output))
+    metrics = json.loads((output / "metrics.json").read_text())
+    assert metrics["overlap_audit"] == overlap.overlap_metadata(acknowledged)
+    assert not metrics["overlap_audit"]["disjoint"]
+    assert metrics["overlap_audit"]["train_test_count"] == 1
+    assert metrics["overlap_audit"]["val_test_count"] == 0
+    assert metrics["benchmark_coverage"]["complete"]
+    assert all(set(METRIC_KEYS).issubset(values) and values["count"] == 2
+               for values in metrics["datasets"].values())
+    assert {path: sha256_file(path) for path in before} == before
 
 
 def test_extension_without_original_manifest_is_rejected(extension_data, tmp_path):

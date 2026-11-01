@@ -27,7 +27,8 @@ def _remove(command, flag):
 
 
 def complete_benchmark_plan(plan_path, output, evaluation_subdir="test-benchmark-v1",
-                            cod10k_images=None, cod10k_masks=None, rebind_entrypoints=False):
+                            cod10k_images=None, cod10k_masks=None, rebind_entrypoints=False,
+                            acknowledge_cod10k=False):
     """Generate an evaluation-only plan; every original training run must exist."""
     source = _absolute(plan_path, "--plan")
     if Path(output).expanduser().is_symlink():
@@ -86,7 +87,7 @@ def complete_benchmark_plan(plan_path, output, evaluation_subdir="test-benchmark
         temporary = Path(temporary)
         evaluation_manifest = extend_test_manifest(
             first_path, temporary / "manifest.json", cod10k_images=cod10k_images,
-            cod10k_masks=cod10k_masks, data_root=first_root)
+            cod10k_masks=cod10k_masks, data_root=first_root, acknowledge_cod10k=acknowledge_cod10k)
         evaluation_root = Path(evaluation_manifest["data_root"])
         proof = validate_test_extension(first_manifest, first_root, evaluation_manifest, evaluation_root, verify_files=False)
         geometry = audit_geometry(evaluation_manifest, evaluation_root, split="test", policy=POLICY)
@@ -139,19 +140,26 @@ def main(argv=None):
     parser.add_argument("--cod10k-masks", help="COD10K test object-GT directory, paired with --cod10k-images")
     parser.add_argument("--rebind-entrypoints", action="store_true",
                         help="Explicitly rebind recognized original study script paths to this isolated code directory; keep the original Python and all arguments")
+    parser.add_argument("--acknowledge-cod10k-overlap", action="store_true",
+                        help="Explicitly acknowledge only the seven observed COD10K duplicate ID/hash pairs; preserve every record and report overlap, never label the split clean")
     args = parser.parse_args(argv)
     try:
         plan = complete_benchmark_plan(args.plan, args.output, args.evaluation_subdir, args.cod10k_images, args.cod10k_masks,
-                                       rebind_entrypoints=args.rebind_entrypoints)
+                                       rebind_entrypoints=args.rebind_entrypoints,
+                                       acknowledge_cod10k=args.acknowledge_cod10k_overlap)
     except (ValueError, OSError) as error:
         parser.exit(2, f"error: {error}\n")
-    print(json.dumps({"plan": str(Path(args.output).expanduser().resolve() / "plan.json"),
-                      "status": "commands_only_not_executed", "evaluation_only": True,
-                      "evaluation_subdir": plan["evaluation_subdir"],
-                      "benchmark_coverage": plan["benchmark_repair"]["manifest_extension"]["benchmark_coverage"],
-                      "training_states": plan["benchmark_repair"]["training_states"],
-                      "geometry_audit": {key: plan["benchmark_repair"]["geometry_audit"][key]
-                                         for key in ("checked_pairs", "dataset_counts", "mismatch_count")}}, indent=2))
+    summary = {"plan": str(Path(args.output).expanduser().resolve() / "plan.json"),
+               "status": "commands_only_not_executed", "evaluation_only": True,
+               "evaluation_subdir": plan["evaluation_subdir"],
+               "benchmark_coverage": plan["benchmark_repair"]["manifest_extension"]["benchmark_coverage"],
+               "training_states": plan["benchmark_repair"]["training_states"],
+               "geometry_audit": {key: plan["benchmark_repair"]["geometry_audit"][key]
+                                  for key in ("checked_pairs", "dataset_counts", "mismatch_count")}}
+    proof = plan["benchmark_repair"]["manifest_extension"]
+    if "overlap_audit" in proof:
+        summary["overlap_audit"] = proof["overlap_audit"]
+    print(json.dumps(summary, indent=2))
     return 0
 
 

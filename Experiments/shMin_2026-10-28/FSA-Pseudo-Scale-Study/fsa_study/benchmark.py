@@ -12,6 +12,7 @@ from numbers import Integral
 from pathlib import Path
 
 from .data import SOURCES, _scan, load_manifest, manifest_digest, sha256_file, validate_manifest
+from .overlap import ACKNOWLEDGED_POLICY, acknowledge_cod10k_overlap, acknowledged_test_duplicate, overlap_metadata
 
 
 EXPECTED_TEST_COUNTS = {"camo": 250, "chameleon": 76, "cod10k": 2026, "nc4k": 4121}
@@ -110,7 +111,7 @@ def _validate_snapshot(manifest, root):
         raise ValueError("Invalid manifest schema/checksum")
     root = Path(root or manifest["data_root"]).expanduser().resolve()
     records = manifest["records"]
-    ids, paths, hashes = set(), {}, {}
+    ids, paths = set(), {}
     for record in records:
         if record["id"] in ids:
             raise ValueError(f"Duplicate sample ID: {record['id']}")
@@ -127,10 +128,11 @@ def _validate_snapshot(manifest, root):
             if not isinstance(digest, str) or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
                 raise ValueError(f"Invalid {kind} byte hash: {record['id']}")
             if kind == "image":
-                paths.setdefault(str(path), set()).add(record["split"])
-        hashes.setdefault(record["image_sha256"], set()).add(record["split"])
-    if any(len(splits) > 1 for splits in [*paths.values(), *hashes.values()]):
-        raise ValueError("Identical image paths or byte hashes cross train/val/test splits")
+                paths.setdefault(str(path), []).append(record["split"])
+    if any(len(set(splits)) > 1 or (len(splits) > 1 and manifest.get("overlap_policy") == ACKNOWLEDGED_POLICY)
+           for splits in paths.values()):
+        raise ValueError("Identical image paths cross train/val/test splits")
+    overlap_metadata(manifest)
     from .training_protocol import validate_training_protocol
     validate_training_protocol(manifest, manifest.get("training_protocol", "holdout"))
     for exclusions in manifest.get("excluded_files", {}).values():
@@ -161,7 +163,7 @@ def validate_test_extension(training_manifest, training_root, evaluation_manifes
     original = _rebased_original(training_manifest, training_root, evaluation_root, strict=verify_files)
     mutable_keys = {"content_sha256", "data_root", "records", "source_counts", "split_counts",
                     "test_datasets_selected", "test_datasets_missing", "test_datasets_unselected",
-                    "raw_source_counts", "excluded_files", "test_extension"}
+                    "raw_source_counts", "excluded_files", "test_extension", "overlap_policy", "overlap_audit"}
     for key in (set(original) | set(evaluation_manifest)) - mutable_keys:
         if original.get(key) != evaluation_manifest.get(key):
             raise ValueError(f"Evaluation extension changed original manifest metadata: {key}")
@@ -190,8 +192,9 @@ def validate_test_extension(training_manifest, training_root, evaluation_manifes
         for kind in ("image", "mask"):
             if str((evaluation_root / record[kind]).resolve()) in protected_paths:
                 raise ValueError("Added test path overlaps an original training/validation file")
-        if (str((evaluation_root / record["image"]).resolve()) in original_image_paths
-                or record["image_sha256"] in original_image_hashes):
+        if str((evaluation_root / record["image"]).resolve()) in original_image_paths:
+            raise ValueError("Added test image duplicates an original image path")
+        if record["image_sha256"] in original_image_hashes and not acknowledged_test_duplicate(evaluation_manifest, record):
             raise ValueError("Added test image duplicates an original image path or byte hash")
 
     for key in ("raw_source_counts", "excluded_files"):
@@ -216,13 +219,17 @@ def validate_test_extension(training_manifest, training_root, evaluation_manifes
     if (str(training_root) != provenance.get("training_data_root")
             or evaluation_root != Path(evaluation_manifest["data_root"]).expanduser().resolve()):
         raise ValueError("Evaluation extension roots disagree with audited provenance; regenerate the extension for relocated data")
-    return {"schema_version": 1, "training_manifest_sha256": training_manifest["content_sha256"],
-            "evaluation_manifest_sha256": evaluation_manifest["content_sha256"],
-            "original_record_count": len(original["records"]),
-            "added_records": len(added), "benchmark_coverage": coverage}
+    proof = {"schema_version": 1, "training_manifest_sha256": training_manifest["content_sha256"],
+             "evaluation_manifest_sha256": evaluation_manifest["content_sha256"],
+             "original_record_count": len(original["records"]),
+             "added_records": len(added), "benchmark_coverage": coverage}
+    if "overlap_policy" in evaluation_manifest:
+        proof["overlap_audit"] = overlap_metadata(evaluation_manifest)
+    return proof
 
 
-def extend_test_manifest(training_manifest_path, output_path, cod10k_images=None, cod10k_masks=None, data_root=None):
+def extend_test_manifest(training_manifest_path, output_path, cod10k_images=None, cod10k_masks=None, data_root=None,
+                         acknowledge_cod10k=False):
     """Write a new complete evaluation manifest while leaving the original intact."""
     import json
 
@@ -275,6 +282,8 @@ def extend_test_manifest(training_manifest_path, output_path, cod10k_images=None
                                   "training_manifest_file_sha256": sha256_file(source_path),
                                   "training_data_root": str(root), "original_record_count": len(manifest["records"]),
                                   "added_records": len(images), "policy": "preserve all original records; append canonical COD10K-test only"}
+    if acknowledge_cod10k:
+        acknowledge_cod10k_overlap(extended)
     extended["content_sha256"] = manifest_digest(extended)
     validate_test_extension(manifest, root, extended, new_root)
     target.parent.mkdir(parents=True, exist_ok=True)

@@ -361,6 +361,8 @@ def evaluate(args):
         raise RuntimeError("CUDA unavailable; choose --device cpu explicitly")
     # Full input checks precede model allocation; test metric dependency is mandatory.
     manifest, root = load_manifest(args.manifest, verify_files=True, data_root=args.data_root)
+    from .overlap import overlap_metadata
+    overlap = overlap_metadata(manifest)
     training_manifest = None
     extension = None
     training_path = getattr(args, "training_manifest", None)
@@ -409,6 +411,7 @@ def evaluate(args):
                     "model_config": checkpoint["model_config"], "manifest_sha256": manifest["content_sha256"],
                     "environment": _environment(), "source_sha256": _source_hashes()})
     results.update({"geometry_protocol": geometry_protocol(policy), "geometry_audit": geometry})
+    results["overlap_audit"] = overlap
     from .benchmark import benchmark_coverage
     if args.split == "test":
         results["benchmark_coverage"] = benchmark_coverage({name: values["count"] for name, values in results["datasets"].items()})

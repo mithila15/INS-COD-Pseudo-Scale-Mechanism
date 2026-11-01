@@ -4,6 +4,8 @@
 
 Use the [repository README](../../../README.md) for environment → data → plan → training → validation/cost → test commands. This document explains **what to compare and how to interpret it**. There are 12 generators × 13 utilizers plus two controls: 158 configurations, or 474 runs with three seeds. Fusion is supported throughout; the decoder does not require a residual representation.
 
+The [COD10K overlap record](results/verification-2026-11-01-overlap/README.md) documents seven byte-identical train-source/test pairs. Preparation remains strict unless the exact documented pairs are explicitly acknowledged. This preserves published counts while marking the split **non-disjoint**; see the [server recovery commands](docs/BENCHMARK-PROTOCOL.md#acknowledge-the-verified-cod10k-overlaps).
+
 ## 2026-11-01 results and protocol update
 
 The uploaded [priority8 report](results/priority8-report-20261101_172449/README.md) contains eight seed-3407 runs evaluated on **CAMO, CHAMELEON and NC4K only**. A new evaluation plan adds COD10K-test, reuses the existing `best.pth` files and re-evaluates all four datasets in fresh output directories. The `prepare` CLI now requires all four tests by default; leaderboards distinguish completed execution from complete benchmark coverage.

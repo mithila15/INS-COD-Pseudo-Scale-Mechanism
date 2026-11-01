@@ -62,5 +62,6 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Transferred commit: $Revision"
 Write-Host "Local archive: $Zip"
 Write-Host "Server archive: /home/master/$ZipName"
-Write-Host "New server source directory: /home/master/mithila/INS_COD-releases/$ShortRevision"
+Write-Host "Version for server installation: $ShortRevision"
+Write-Host 'Active source destination after install_study.py: /home/master/mithila/shMin'
 Write-Host 'Transfer only: extraction, evaluation and training have not started.'

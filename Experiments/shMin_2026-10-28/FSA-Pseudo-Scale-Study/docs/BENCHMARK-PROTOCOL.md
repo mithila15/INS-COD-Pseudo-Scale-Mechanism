@@ -49,11 +49,32 @@ After an initial `git -C "$Repo" pull --ff-only origin main` has obtained the ne
 & "$Repo\Experiments\shMin_2026-10-28\FSA-Pseudo-Scale-Study\deploy\send_study.ps1" -Repo $Repo
 ```
 
-[`send_study.ps1`](../deploy/send_study.ps1) verifies origin/branch/clean state, pulls `main`, and archives the committed study **together with its required archived model source at `Experiments/FSA-ZoomNeXt` and `docs/MIGRATION.md`**. The model imports need that sibling source directory in the extracted release. It hashes the ZIP and sends ZIP + checksum to `master@192.168.1.200:/home/master/` using SCP. It prints the transferred revision and the new source destination `/home/master/mithila/INS_COD-releases/<revision12>`. It does not run experiments remotely or transfer local datasets, environments or checkpoint weights. The private server address must be reachable from the Windows PC; successful Parsec access alone does not establish that route.
+[`send_study.ps1`](../deploy/send_study.ps1) verifies origin/branch/clean state, pulls `main`, and archives committed study source **together with the required archived model source at `Experiments/FSA-ZoomNeXt` and `docs/MIGRATION.md`**. It hashes the ZIP and sends ZIP + checksum to `master@192.168.1.200:/home/master/` using SCP. It prints the transferred revision and active server source directory under `/home/master/mithila/shMin`. Transfer does not install the code or start experiments. Local datasets, environments and checkpoint weights are excluded. The server address must be reachable from Windows; Parsec access alone does not establish that route.
 
-Extract into the printed **new release directory**, verify the ZIP checksum, and point `STUDY` below at that release's `Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study` directory. Reuse the old environment, data and checkpoints. The old server checkout can retain its local architecture changes; it is not the extraction destination. Only the known `architecture=common` metadata compatibility is supported by this study; an actual PCD checkpoint requires its original implementation.
+After transfer, use **Ubuntu Bash**. Replace `VERSION` with the printed 12-character revision. This block verifies the checksum, extracts into a fresh temporary staging directory and runs the packaged [source installer](../deploy/install_study.py). It does not reuse an existing `INS_COD-releases/<revision>` directory, so that directory's presence causes no `mkdir` conflict.
 
-The transfer script was reviewed in the code-editing environment; Windows PowerShell, the private-network connection and the actual SCP transfer were not executed there. The user must perform those steps on their own machines.
+```bash
+VERSION="REPLACE_WITH_TRANSFERRED_REVISION12"
+REL="Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+WORK="/home/master/mithila/shMin"
+STUDY="$WORK/$REL"
+PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
+ARCHIVE="/home/master/ins-cod-study-$VERSION.zip"
+
+(
+set -e
+cd /home/master
+sha256sum -c "ins-cod-study-$VERSION.zip.sha256"
+STAGING=$(mktemp -d /home/master/ins-cod-install.XXXXXX)
+"$PY" -m zipfile -e "$ARCHIVE" "$STAGING"
+"$PY" "$STAGING/$REL/deploy/install_study.py" \
+  --archive "$ARCHIVE" --work "$WORK"
+)
+```
+
+The installer validates the checksum and archive commit, saves replaced code/document files under `$WORK/.code-backups/<revision>-<unique>/`, then installs source under `shMin`. Existing results, datasets, checkpoints, virtual environments and extra local PCD files are preserved. It refuses installation while recognized study processes are active. The temporary staging copy is separate from the active source. The old `INS_COD` checkout remains available for its environment, data and recorded provenance. Only `architecture=common` checkpoint metadata compatibility is supported; an actual PCD checkpoint still requires its original model implementation.
+
+The user previously confirmed a successful Windows/SCP transfer and backup-preserving source installation. The packaged installer has local synthetic filesystem checks; the code-editing task did not run the new installer against the user's remote filesystem. Installation performs no evaluation, training or dependency installation.
 
 ## Require and verify all four test datasets
 
@@ -70,11 +91,11 @@ An intentional subset remains possible with `--test-datasets camo chameleon nc4k
 
 ### Re-evaluate completed priority8 checkpoints
 
-Run the following in **Ubuntu Bash**, after installing the updated source. Use the same terminal for the blocks in this section. If using a transferred isolated source release, set `STUDY` to that release's absolute study directory; keep `PY` pointed at the existing environment. `--rebind-entrypoints` explicitly changes validated plan script paths to the current release while preserving the declared Python executable and other settings. It does not rewrite the original plan or install over the old checkout.
+Run the following in **Ubuntu Bash**, after installing the updated source. The default below uses the user-consolidated active `shMin` source and reuses Python from the old `INS_COD` environment. This default command keeps strict overlap checks and stops on the recorded seven pairs; use the [explicit acknowledgment section](#acknowledge-the-verified-cod10k-overlaps) in that case. Use the same terminal for the blocks in this section. If using a transferred isolated source release, set `STUDY` to that release's absolute study directory; keep `PY` pointed at the existing environment. `--rebind-entrypoints` explicitly changes validated plan script paths to the current release while preserving the declared Python executable and other settings. It does not rewrite the original plan or install over the old checkout.
 
 ```bash
 REPO="/home/master/mithila/INS_COD"
-STUDY="$REPO/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+STUDY="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
 PY="$REPO/.venv/fsa-study-clean/bin/python"
 RUN="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647"
 STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
@@ -99,6 +120,49 @@ PYTHONUNBUFFERED=1 bash "$COMPLETE/run_evaluation.sh" 2>&1 | tee "$COMPLETE/eval
 ```
 
 New metrics: `$RUN/runs/priority8/<variant>__seed3407/test-four-benchmarks-$STAMP/metrics.json`. New leaderboard: `$COMPLETE/leaderboard/leaderboard.html` or `leaderboard.md`. Each dataset retains all 21 scalar metrics, curves and per-image outputs. The recovery plan rejects train/profile actions, even if invoked manually through `run_plan.py`.
+
+## Acknowledge the verified COD10K overlaps
+
+The default remains strict: preparation rejects identical image bytes or resolved paths crossing splits. The reported `Identical image paths or byte hashes cross train/val/test splits` error occurred after finding all 2,026 COD10K image/GT pairs. The server audit found **seven byte-identical train-source/test pairs**, with **six in the optimization split and one in the validation split**. None shared the same resolved path. The code installation succeeded; the failed preparation did not begin evaluation or training.
+
+Two evidence levels must stay separate:
+
+- The COD10K/SINet-V2 authors explicitly acknowledge **Crab-32** and **Cat-1506** in their [2021-10-09 notice](https://github.com/GewelsJI/SINet-V2/blob/5b9844c94d10a03b815c7c7039c194166a9a8ba3/README.md#L44).
+- All seven exact name/hash pairs also appear in the independent COD-TDQ dataset bundle at pinned revision `c4e97371fa835cd0a778ba67c071f24ca5deaf11`. Only its small Git-LFS metadata pointers were fetched. This corroborates published copies of the remaining five pairs; it is **not an official COD10K acknowledgment of all seven**. [Pinned URLs and hash evidence](../results/verification-2026-11-01-overlap/upstream-evidence.json), [server audit summary](../results/verification-2026-11-01-overlap/server-audit-summary.json).
+
+The explicit `--acknowledge-cod10k-overlap` option permits only the seven catalogued COD10K **ID pairs and image SHA256 values**. Different pairs/hashes, shared resolved paths, other dataset overlap and train/validation overlap remain errors. This is not a general `ignore-overlap` switch. Normal file-hash, pairing, count, geometry, manifest and checkpoint checks remain active. No input image, mask, old manifest, checkpoint or historical report is changed.
+
+For the audited server copy, after installing the corrected source under `shMin`, use this **Ubuntu Bash** block instead of the strict preparation block above. It creates a fresh evaluation plan only. Run the subsequent blocks in the **same terminal**.
+
+```bash
+STUDY="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
+RUN="$STUDY/results/priority8-separate-20261030_204647"
+STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
+COMPLETE="$RUN/plans/four-benchmarks-ack-$STAMP"
+
+"$PY" "$STUDY/complete_benchmark.py" \
+  --plan "$RUN/plans/priority8/plan.json" \
+  --output "$COMPLETE" \
+  --evaluation-subdir "test-four-benchmarks-ack-$STAMP" \
+  --rebind-entrypoints \
+  --acknowledge-cod10k-overlap
+```
+
+Inspect the new manifest's `overlap_policy="acknowledged-cod10k-v1"` and `overlap_audit`. For the recorded split, expect `disjoint=false`, `train_test_count=6`, `val_test_count=1`, `affected_test_count=7`, and the exact groups. Evaluation metadata and refreshed reports carry this disclosure. Standard dataset counts and completed execution do **not** establish disjoint data.
+
+This separate block starts **evaluation only**, using the existing trained checkpoints:
+
+```bash
+set -o pipefail
+PYTHONUNBUFFERED=1 bash "$COMPLETE/run_evaluation.sh" 2>&1 | tee "$COMPLETE/evaluation.log"
+```
+
+Metrics go to `$RUN/runs/priority8/<variant>__seed3407/test-four-benchmarks-ack-$STAMP/metrics.json`; the leaderboard goes to `$COMPLETE/leaderboard/`. The following full-data preparation section can reuse this manifest: it inherits the policy and recomputes the audit after promoting validation to train, giving **seven train/test pairs and zero validation/test pairs** for this copy. A fresh `run_study.py prepare` command also supports the explicit acknowledgement option when intentionally retaining these published sample counts.
+
+This option retains the published 4,040/2,026 counts; it does **not** remove exposure or make COD10K-test independent. Existing models already used six duplicate images for optimization and one for validation/checkpoint selection. Acknowledgment cannot undo that history. The earlier CAMO/CHAMELEON/NC4K scores are not invalidated by this specific COD10K finding, but this audit is not a guarantee against every form of near-duplicate leakage. The upstream notice's approximate metric effect for two images must not be extrapolated to all seven or to this study.
+
+A different, disjoint protocol would need separately named outputs and comparisons: removing seven test records yields a **2,019-image subset**, while removing their seven training-source counterparts before fresh training yields **4,033 training images** with the full test set. Neither is the standard 4,040/2,026 setting, and neither is silently performed by this option. [Decision and evidence record](../../../../Progress/2026-11-01/COD10K-Overlap/README.md).
 
 ## Train a separate full-data comparison
 
