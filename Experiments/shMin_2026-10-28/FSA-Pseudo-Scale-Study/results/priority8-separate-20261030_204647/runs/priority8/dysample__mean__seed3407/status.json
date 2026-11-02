@@ -1,0 +1,7 @@
+{
+  "status": "training_complete",
+  "epochs": 150,
+  "optimizer_steps": 136350,
+  "best_val_mae": 0.028709384174740844,
+  "test_evaluation": "not_run"
+}

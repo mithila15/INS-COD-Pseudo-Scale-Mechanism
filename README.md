@@ -1,14 +1,16 @@
-# 2026-11-01 · INS_COD — Pseudo-scale experiment guide
+# 2026-11-02 · INS_COD — Pseudo-scale experiment guide
 
 **English** | [한국어](README.ko.md)
 
 Compare **how to generate pseudo-scale features** and **how to use them** in a single-encoder camouflaged object detector. Utilization includes subtraction, direct fusion, and channel/spatial attention. The study provides **12 generators × 13 utilizers**, plus a no-pseudo baseline and the archived full FSA reference: **158 configurations, 474 runs with three seeds**.
 
-This README is the execution guide. See the [method catalog and comparison rationale](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md) for what each variant tests. Referenced papers and adaptations are retained below. The uploaded [priority8 results](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-report-20261101_172449/README.md) cover eight runs with one seed and **three test datasets; COD10K-test is missing**.
+**Latest actual results:** [2026-11-02 full-4040 snapshot review](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.md) — **3/8 runs complete on all four test datasets**, one run at epoch 15/150 and four with no run history in the export. CAMO/CHAMELEON improve with native-scale ASFF/SK fusion; COD10K/NC4K are mixed. One seed, no overall winner. [Complete server ZIP and predictions](https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102).
 
-For existing results, use the [four-dataset recovery and full-data training guide](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md). Existing training uses **3,636 images + 404 validation**, while official ZoomNeXt uses **4,040 training images**. The new `full_train` option uses all 4,040 and a fixed final-epoch checkpoint; other architecture/training differences remain. [Windows pull and SCP transfer](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows) preserves the existing server checkout and results.
+This README is the execution guide. See the [method catalog and comparison rationale](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md) for what each variant tests. Referenced papers and adaptations are retained below. The historical holdout [priority8 results](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-report-20261101_172449/README.md) cover eight runs with one seed and **three test datasets; COD10K-test is missing**.
 
-The server audit also found **seven exact COD10K train-source/test duplicates (six train, one validation)**. Strict preparation stops by default. The [explicit overlap policy](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#acknowledge-the-verified-cod10k-overlaps) records only the verified ID/hash pairs, preserves published sample counts and exposes `disjoint=false`; it does not make COD10K evaluation independent. [Evidence and limits](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-01-overlap/README.md).
+For existing results, use the [four-dataset recovery and full-data training guide](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md). The historical holdout training uses **3,636 images + 404 validation**, while official ZoomNeXt uses **4,040 training images**. The new `full_train` option uses all 4,040 and a fixed final-epoch checkpoint; other architecture/training differences remain. [Windows pull and SCP transfer](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows) preserves the existing server checkout and results.
+
+The server audit found **seven exact COD10K train-source/test duplicates**: **six train/test + one validation/test** in the historical holdout split; **seven train/test + zero validation/test** in the new `full_train` split. Strict preparation stops by default. The [explicit overlap policy](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#acknowledge-the-verified-cod10k-overlaps) records only the verified ID/hash pairs, preserves published sample counts and exposes `disjoint=false`; it does not make COD10K evaluation independent. [Evidence and limits](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-01-overlap/README.md).
 
 ## 1. Set up the environment
 
@@ -35,7 +37,7 @@ fi
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 "$PY" -m pytest -q "$STUDY/tests"
 ```
 
-The checks import dependencies and test operators; they do not run training. For installation prerequisites, CUDA checks, troubleshooting, and the distinction between the historical local verification environment and a fresh installation, see [environment setup](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.md). A fresh full lock installation and actual pretrained-data training have not been validated in this task.
+The checks import dependencies and test operators; they do not run training. For installation prerequisites, CUDA checks, troubleshooting, and the distinction between the historical local verification environment and a fresh installation, see [environment setup](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.md). The original setup check did not validate a fresh full lock installation or real-data training. The 2026-11-02 server snapshot now contains actual user-run pretrained-data training and evaluation; this artifact review did not independently rebuild that environment or rerun training.
 
 ## 2. Prepare existing data and backbone weights
 
@@ -177,10 +179,10 @@ Checked on **2026-10-28**. Korean title translations are provided in the [Korean
 
 ## Verification and existing experiments
 
-The recorded code verification passed **281 tests and 67 subtests**, with CPU/GPU inference checks and zero optimizer steps. That initial check did not measure real-data convergence or rankings. The later uploaded priority8 report supplies three-dataset results; four-dataset completion and full-data retraining still require execution. See the [verification artifacts](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md).
+The recorded code verification passed **281 tests and 67 subtests**, with CPU/GPU inference checks and zero optimizer steps. That initial check did not measure real-data convergence or rankings. The historical eight-run holdout report supplies three-dataset results. The [2026-11-02 server review](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.md) adds **three completed full-data, four-test runs**, one partial run and four remaining planned runs; it does not merge the two protocols. See the [verification artifacts](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md).
 
 The original BRG main experiment remains in [COD](https://github.com/sh-min/COD); CoCoNet was excluded from this upload. Archived sources and their licenses remain intact. Historical organization details are in the [migration record](docs/MIGRATION.md), [experiment index](Experiments/README.md), [benchmark index](Benchmarks/README.md), and [research decisions](Progress/README.md).
 
 Metric/leaderboard verification on 2026-10-29: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md).
 
-The [2026-11-01 change record](Progress/2026-11-01/Benchmark-Completion/README.md) distinguishes code validation, uploaded historical results and pending server execution.
+The [2026-11-01 change record](Progress/2026-11-01/Benchmark-Completion/README.md) records the protocol change. The [2026-11-02 review record](Progress/2026-11-02/Server-Results-Review/README.md) records the recovered upload, actual partial results, archive/hash checks and remaining preplanned experiments. No training or inference was run during this review.

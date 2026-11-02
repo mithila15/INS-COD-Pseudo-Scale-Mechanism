@@ -1,0 +1,37 @@
+{
+  "created_at": "2026-11-02T13:16:05.387305+09:00",
+  "source": "/home/master/mithila/shMin",
+  "scopes": [
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study",
+    "Experiments/FSA-ZoomNeXt"
+  ],
+  "file_count": 55518,
+  "excluded_directories": [
+    ".cache",
+    ".code-backups",
+    ".git",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".scratch",
+    ".venv",
+    "__pycache__",
+    "checkpoints",
+    "data",
+    "dataset",
+    "datasets",
+    "env",
+    "venv",
+    "weights"
+  ],
+  "excluded_suffixes": [
+    ".ckpt",
+    ".pt",
+    ".pth",
+    ".pyc",
+    ".pyo",
+    ".safetensors"
+  ],
+  "status": "Snapshot; running experiments may be incomplete"
+}

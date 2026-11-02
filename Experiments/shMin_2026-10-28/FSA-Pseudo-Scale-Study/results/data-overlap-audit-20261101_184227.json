@@ -1,0 +1,154 @@
+{
+  "plan": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/plan.json",
+  "manifest": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+  "data_root": "/home/master/mithila/INS_COD/Datasets/COD-Data",
+  "manifest_sha256": "21a61141c06e7a2cd3cd36d90d71aec26977757efd56c4df985f21cb33dbf08a",
+  "original_split_counts": {
+    "camo/test": 250,
+    "camo/train": 900,
+    "camo/val": 100,
+    "chameleon/test": 76,
+    "cod10k/train": 2736,
+    "cod10k/val": 304,
+    "nc4k/test": 4121
+  },
+  "cod10k_images": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/Image",
+  "cod10k_masks": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/GT_Object",
+  "raw_counts": {
+    "images": 2026,
+    "masks": 2026
+  },
+  "foreground_counts": {
+    "images": 2026,
+    "masks": 2026
+  },
+  "missing_masks": [],
+  "orphan_masks": [],
+  "overlapping_candidates": 7,
+  "candidates_by_matched_split": {
+    "train": 6,
+    "val": 1
+  },
+  "cross_train_or_val_candidates": 7,
+  "overlaps": [
+    {
+      "cod10k_test_image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/Image/COD10K-CAM-1-Aquatic-3-Crab-32.jpg",
+      "cod10k_test_mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/GT_Object/COD10K-CAM-1-Aquatic-3-Crab-32.png",
+      "image_sha256": "e60fced9bfb2eeb8df4b7b9dcce931d6537b7f4f8ff4e49296e4bd763897d27a",
+      "cross_train_or_val": true,
+      "matches": [
+        {
+          "id": "cod10k_train/COD10K-CAM-1-Aquatic-3-Crab-32",
+          "source": "cod10k_train",
+          "split": "train",
+          "image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/Image/COD10K-CAM-1-Aquatic-3-Crab-32.jpg",
+          "mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/GT_Object/COD10K-CAM-1-Aquatic-3-Crab-32.png",
+          "same_bytes": true,
+          "same_path": false
+        }
+      ]
+    },
+    {
+      "cod10k_test_image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/Image/COD10K-CAM-2-Terrestrial-23-Cat-1506.jpg",
+      "cod10k_test_mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/GT_Object/COD10K-CAM-2-Terrestrial-23-Cat-1506.png",
+      "image_sha256": "311809538532626c3c07e95076c32130b7010d16cf5ae6e6d5624819ab1d70d0",
+      "cross_train_or_val": true,
+      "matches": [
+        {
+          "id": "cod10k_train/COD10K-CAM-2-Terrestrial-23-Cat-1506",
+          "source": "cod10k_train",
+          "split": "train",
+          "image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/Image/COD10K-CAM-2-Terrestrial-23-Cat-1506.jpg",
+          "mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/GT_Object/COD10K-CAM-2-Terrestrial-23-Cat-1506.png",
+          "same_bytes": true,
+          "same_path": false
+        }
+      ]
+    },
+    {
+      "cod10k_test_image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/Image/COD10K-CAM-2-Terrestrial-28-Deer-1762.jpg",
+      "cod10k_test_mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/GT_Object/COD10K-CAM-2-Terrestrial-28-Deer-1762.png",
+      "image_sha256": "58a9a7b96f9f5643139d33d73331c6f1851b599df7fa60a916e451ef01ca3afe",
+      "cross_train_or_val": true,
+      "matches": [
+        {
+          "id": "cod10k_train/COD10K-CAM-2-Terrestrial-28-Deer-1796",
+          "source": "cod10k_train",
+          "split": "train",
+          "image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/Image/COD10K-CAM-2-Terrestrial-28-Deer-1796.jpg",
+          "mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/GT_Object/COD10K-CAM-2-Terrestrial-28-Deer-1796.png",
+          "same_bytes": true,
+          "same_path": false
+        }
+      ]
+    },
+    {
+      "cod10k_test_image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/Image/COD10K-CAM-2-Terrestrial-31-Gecko-1892.jpg",
+      "cod10k_test_mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/GT_Object/COD10K-CAM-2-Terrestrial-31-Gecko-1892.png",
+      "image_sha256": "1be584edf381ee65c4e802dedefb671742122d6db3f00af3b204d6b4754309d7",
+      "cross_train_or_val": true,
+      "matches": [
+        {
+          "id": "cod10k_train/COD10K-CAM-2-Terrestrial-26-Chameleon-1694",
+          "source": "cod10k_train",
+          "split": "train",
+          "image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/Image/COD10K-CAM-2-Terrestrial-26-Chameleon-1694.jpg",
+          "mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/GT_Object/COD10K-CAM-2-Terrestrial-26-Chameleon-1694.png",
+          "same_bytes": true,
+          "same_path": false
+        }
+      ]
+    },
+    {
+      "cod10k_test_image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/Image/COD10K-CAM-2-Terrestrial-31-Gecko-1895.jpg",
+      "cod10k_test_mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/GT_Object/COD10K-CAM-2-Terrestrial-31-Gecko-1895.png",
+      "image_sha256": "e5f0ea8dec16c4b4ed178c58a9827cd946fa9e0e860e1d56ae769b50d59e6c4e",
+      "cross_train_or_val": true,
+      "matches": [
+        {
+          "id": "cod10k_train/COD10K-CAM-2-Terrestrial-31-Gecko-1928",
+          "source": "cod10k_train",
+          "split": "train",
+          "image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/Image/COD10K-CAM-2-Terrestrial-31-Gecko-1928.jpg",
+          "mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/GT_Object/COD10K-CAM-2-Terrestrial-31-Gecko-1928.png",
+          "same_bytes": true,
+          "same_path": false
+        }
+      ]
+    },
+    {
+      "cod10k_test_image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/Image/COD10K-CAM-2-Terrestrial-32-Giraffe-1932.jpg",
+      "cod10k_test_mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/GT_Object/COD10K-CAM-2-Terrestrial-32-Giraffe-1932.png",
+      "image_sha256": "6988e9b908fb9a6c8157405f49dcd37586ef14f08d6374e33996c780dcbb67e0",
+      "cross_train_or_val": true,
+      "matches": [
+        {
+          "id": "cod10k_train/COD10K-CAM-2-Terrestrial-32-Giraffe-1930",
+          "source": "cod10k_train",
+          "split": "val",
+          "image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/Image/COD10K-CAM-2-Terrestrial-32-Giraffe-1930.jpg",
+          "mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/GT_Object/COD10K-CAM-2-Terrestrial-32-Giraffe-1930.png",
+          "same_bytes": true,
+          "same_path": false
+        }
+      ]
+    },
+    {
+      "cod10k_test_image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/Image/COD10K-CAM-3-Flying-65-Owl-4633.jpg",
+      "cod10k_test_mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Test/GT_Object/COD10K-CAM-3-Flying-65-Owl-4633.png",
+      "image_sha256": "6368c9991b9cc8f2d45eb87bb172e2611154efaaa99113fc1fab0d1943276390",
+      "cross_train_or_val": true,
+      "matches": [
+        {
+          "id": "cod10k_train/COD10K-CAM-3-Flying-53-Bird-3205",
+          "source": "cod10k_train",
+          "split": "train",
+          "image": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/Image/COD10K-CAM-3-Flying-53-Bird-3205.jpg",
+          "mask": "/home/master/mithila/INS_COD/Datasets/COD-Data/COD10K-v3/Train/GT_Object/COD10K-CAM-3-Flying-53-Bird-3205.png",
+          "same_bytes": true,
+          "same_path": false
+        }
+      ]
+    }
+  ]
+}

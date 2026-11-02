@@ -1,14 +1,16 @@
-# 2026-11-01 · INS_COD — Pseudo-scale 비교 실험 실행 안내
+# 2026-11-02 · INS_COD — Pseudo-scale 비교 실험 실행 안내
 
 [English](README.md) | **한국어**
 
 단일 인코더 위장 객체 검출 모델에서 **pseudo-scale 특징을 생성하는 방법**과 **생성된 특징을 활용하는 방법**을 비교한다. 활용에는 차이 계산뿐 아니라 직접 fusion, 채널·공간 attention을 포함한다. **생성 12종 × 활용 13종**에 no-pseudo 기준 모델과 기존 FSA 전체 구조를 더해 **158개 구성**, seed 3개로 **474회**를 실행할 수 있다.
 
-이 README는 실험 실행 순서다. 각 변형이 무엇을 비교하는지는 [방법 목록과 비교 기준](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.ko.md)을 참고한다. 참고 논문과 적용 범위는 아래에 보존했다. 업로드된 [priority8 결과](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-report-20261101_172449/README.ko.md)는 seed 1개의 8개 실험이며 **테스트셋 3개만 포함하고 COD10K-test가 빠져 있다**.
+**최신 실제 결과:** [2026-11-02 full-4040 스냅샷 검토](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.ko.md) — **8개 중 3개 실험의 4개 테스트셋 평가 완료**, 1개는 15/150 epoch, 나머지 4개는 내보내기 자료에 실행 기록이 없다. Native-scale ASFF/SK fusion은 CAMO·CHAMELEON에서 개선되고 COD10K·NC4K는 혼재한다. Seed 하나의 중간 결과이며 전체 우승 모델은 정하지 않는다. [서버 전체 ZIP·예측 마스크](https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102).
 
-기존 결과에는 [4개 테스트셋 복구·전체 학습 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md)를 사용한다. 공식 ZoomNeXt와 비교하면 기존 학습은 **3,636장 + validation 404장**, ZoomNeXt는 **4,040장 학습**이다. 새 `full_train`은 4,040장 전체와 최종 epoch 고정 체크포인트를 사용하며 나머지 구조·학습 조건 차이는 남는다. [Windows pull·SCP 전송](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#windows에서-수정-코드-전송)은 기존 서버 checkout과 결과를 보존한다.
+이 README는 실험 실행 순서다. 각 변형이 무엇을 비교하는지는 [방법 목록과 비교 기준](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.ko.md)을 참고한다. 참고 논문과 적용 범위는 아래에 보존했다. 과거 holdout의 [priority8 결과](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-report-20261101_172449/README.ko.md)는 seed 1개의 8개 실험이며 **테스트셋 3개만 포함하고 COD10K-test가 빠져 있다**.
 
-서버 검사에서 **COD10K 학습 원본/test의 정확한 중복 7쌍(train 6, validation 1)**도 확인했다. 준비의 기본값은 중단이다. [명시적 중복 처리 규약](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#확인된-cod10k-중복을-명시적으로-기록하고-진행하기)은 확인한 ID·해시 쌍만 기록하고 배포 개수를 유지하며 `disjoint=false`를 표시한다. COD10K 평가가 독립적이 되는 것은 아니다. [근거와 한계](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-01-overlap/README.ko.md).
+기존 결과에는 [4개 테스트셋 복구·전체 학습 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md)를 사용한다. 공식 ZoomNeXt와 비교하면 과거 holdout 학습은 **3,636장 + validation 404장**, ZoomNeXt는 **4,040장 학습**이다. 새 `full_train`은 4,040장 전체와 최종 epoch 고정 체크포인트를 사용하며 나머지 구조·학습 조건 차이는 남는다. [Windows pull·SCP 전송](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#windows에서-수정-코드-전송)은 기존 서버 checkout과 결과를 보존한다.
+
+서버 검사에서 **COD10K 학습 원본/test의 정확한 중복 7쌍**을 확인했다. 과거 holdout에서는 **train/test 6쌍·validation/test 1쌍**, 새 `full_train`에서는 **train/test 7쌍·validation/test 0쌍**이다. 준비의 기본값은 중단이다. [명시적 중복 처리 규약](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#확인된-cod10k-중복을-명시적으로-기록하고-진행하기)은 확인한 ID·해시 쌍만 기록하고 배포 개수를 유지하며 `disjoint=false`를 표시한다. COD10K 평가가 독립적이 되는 것은 아니다. [근거와 한계](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-01-overlap/README.ko.md).
 
 ## 1. 환경 설정
 
@@ -35,7 +37,7 @@ fi
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 "$PY" -m pytest -q "$STUDY/tests"
 ```
 
-이 검사는 의존성 import와 연산 검증이며 학습을 실행하지 않는다. 설치 조건, CUDA 확인, 문제 해결, 기존 로컬 검증 환경과 신규 설치의 차이는 [환경 설정 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.ko.md)에 있다. 이번 작업에서 완전히 새 환경의 lock 전체 설치와 실제 사전학습·데이터 학습은 검증하지 않았다.
+이 검사는 의존성 import와 연산 검증이며 학습을 실행하지 않는다. 설치 조건, CUDA 확인, 문제 해결, 기존 로컬 검증 환경과 신규 설치의 차이는 [환경 설정 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.ko.md)에 있다. 최초 환경 검사에서는 새 환경의 lock 전체 설치와 실제 데이터 학습을 검증하지 않았다. 2026-11-02 서버 스냅샷에는 사용자가 실행한 실제 학습·평가가 포함되며, 이번 자료 검토에서 환경을 다시 설치하거나 학습을 재실행하지 않았다.
 
 ## 2. 기존 데이터와 backbone 가중치 준비
 
@@ -177,10 +179,10 @@ results/<run-id>/
 
 ## 검증 상태와 기존 실험
 
-기록된 코드 검증은 **281 tests + 67 subtests 통과**, CPU/GPU 추론 확인, optimizer step 0회다. 이 초기 검사는 실제 데이터 수렴·순위를 측정하지 않았다. 이후 업로드된 priority8 보고서에는 3개 테스트셋 결과가 있으며 4개 전체 평가와 전체 데이터 재학습은 실행이 남아 있다. [검증 산출물](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md)을 참고한다.
+기록된 코드 검증은 **281 tests + 67 subtests 통과**, CPU/GPU 추론 확인, optimizer step 0회다. 이 초기 검사는 실제 데이터 수렴·순위를 측정하지 않았다. 과거 8개 holdout 실험 보고서는 3개 테스트셋 결과다. [2026-11-02 서버 검토](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.ko.md)에는 **전체 데이터 학습·4개 테스트셋 평가를 끝낸 3개 실험**, 부분 실행 1개와 남은 계획 4개가 추가되며 두 프로토콜의 결과를 섞지 않는다. [검증 산출물](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md)을 참고한다.
 
 기존 BRG main 실험은 [COD](https://github.com/sh-min/COD)에 유지하고 CoCoNet은 이번 업로드에서 제외했다. 보존 코드·라이선스는 유지한다. 이전 정리 과정은 [이관 기록](docs/MIGRATION.md), [실험 목록](Experiments/README.md), [비교 도구](Benchmarks/README.md), [연구 결정](Progress/README.md)에서 확인한다.
 
 2026-10-29 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md).
 
-[2026-11-01 변경 기록](Progress/2026-11-01/Benchmark-Completion/README.md)은 코드 검증·기존 실측 결과·아직 실행하지 않은 서버 작업을 구분한다.
+[2026-11-01 변경 기록](Progress/2026-11-01/Benchmark-Completion/README.md)은 프로토콜 변경을 기록한다. [2026-11-02 검토 기록](Progress/2026-11-02/Server-Results-Review/README.md)은 업로드 복구·실제 중간 결과·압축 및 해시 검증·남은 사전 계획 실험을 정리한다. 이번 검토에서 학습·추론은 실행하지 않았다.

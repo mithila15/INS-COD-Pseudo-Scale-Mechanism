@@ -1,0 +1,773 @@
+{
+  "reference": "e79c8d477c7a5b0954d8321e4bd838ce52fc259f",
+  "scopes": [
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study",
+    "Experiments/FSA-ZoomNeXt"
+  ],
+  "source_equal": [
+    "Experiments/FSA-ZoomNeXt/utils/__init__.py",
+    "Experiments/FSA-ZoomNeXt/utils/recorder/cod_metrics.py",
+    "Experiments/FSA-ZoomNeXt/methods/zoomnext/__init__.py",
+    "Experiments/FSA-ZoomNeXt/methods/backbone/__init__.py"
+  ],
+  "source_modified": [],
+  "source_added": [],
+  "source_missing_from_archive": [],
+  "unsafe_entries": [],
+  "excluded_payload_present": [],
+  "empty_entries": [
+    "Experiments/FSA-ZoomNeXt/utils/__init__.py",
+    "Experiments/FSA-ZoomNeXt/methods/zoomnext/__init__.py",
+    "Experiments/FSA-ZoomNeXt/methods/backbone/__init__.py"
+  ],
+  "case_collisions": [],
+  "largest_entries": [
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/run.log",
+      "bytes": 9509176
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/summary.json",
+      "bytes": 6375655
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/leaderboard.csv",
+      "bytes": 5732380
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/summary.csv",
+      "bytes": 5655337
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/run.log",
+      "bytes": 5585062
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/manifest.json",
+      "bytes": 4667554
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__mean__seed3407/manifest.json",
+      "bytes": 4667554
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/manifest.json",
+      "bytes": 4667554
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/manifest.json",
+      "bytes": 4667554
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/manifest.json",
+      "bytes": 4667554
+    }
+  ],
+  "entries": 55519,
+  "compressed_bytes": 947688217,
+  "uncompressed_bytes": 1093803407,
+  "duplicate_entries": [],
+  "file_types": {
+    ".py": 82,
+    ".txt": 8,
+    ".md": 16,
+    ".json": 105,
+    ".lock": 1,
+    ".sha256": 2,
+    ".xml": 5,
+    ".log": 2,
+    ".sh": 19,
+    ".csv": 51,
+    ".html": 2,
+    ".jsonl": 12,
+    ".png": 55103,
+    ".svg": 108,
+    ".ps1": 1,
+    ".toml": 1,
+    ".yaml": 1
+  },
+  "windows_invalid_paths": [],
+  "prediction_png_groups": {
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/predictions/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256": 2026,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/predictions/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256": 2026,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/predictions/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256": 2026,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 3,
+    "OTHER/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 3,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/predictions/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785": 250,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/predictions/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af": 76,
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/predictions/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3": 4121
+  },
+  "snapshot_files": {
+    "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-export-20261102_131605/snapshot.json": {
+      "created_at": "2026-11-02T13:16:05.387305+09:00",
+      "source": "/home/master/mithila/shMin",
+      "scopes": [
+        "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study",
+        "Experiments/FSA-ZoomNeXt"
+      ],
+      "file_count": 55518,
+      "excluded_directories": [
+        ".cache",
+        ".code-backups",
+        ".git",
+        ".ipynb_checkpoints",
+        ".mypy_cache",
+        ".pytest_cache",
+        ".ruff_cache",
+        ".scratch",
+        ".venv",
+        "__pycache__",
+        "checkpoints",
+        "data",
+        "dataset",
+        "datasets",
+        "env",
+        "venv",
+        "weights"
+      ],
+      "excluded_suffixes": [
+        ".ckpt",
+        ".pt",
+        ".pth",
+        ".pyc",
+        ".pyo",
+        ".safetensors"
+      ],
+      "status": "Snapshot; running experiments may be incomplete"
+    }
+  },
+  "source_line_endings_only": [
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/recover_evaluation.py",
+      "bytes": 7384,
+      "sha256": "25c68385130f946e4459e91cb037fc34b91d1c5313bd0448b7b01be5b10bc77d"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+      "bytes": 8003,
+      "sha256": "c132a04d15a1acd4aa82426d7bb9766ad497a19656fdd034edd54d77c0c5265d"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/prepare_full_training.py",
+      "bytes": 13222,
+      "sha256": "7f2f8754f1db2fb7d2219bb004efb2ed985184f38977ecac361a7d77fa027f6f"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/requirements.txt",
+      "bytes": 131,
+      "sha256": "3375e2f492f104b6b972c5f8e40658529db61f829e8779f73aa8d2666f4cc995"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+      "bytes": 8576,
+      "sha256": "8bb5d68764d710481569656d83fc96a5b959dff48d6c93fc74d64f2f40174163"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_plan.py",
+      "bytes": 17740,
+      "sha256": "74c83f6913c29d886cdb767235a78993b98f1fa28213b4059b0fcbffecc0fccb"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/summarize_study.py",
+      "bytes": 19571,
+      "sha256": "6c611e95c608f42099b7db3ff00d7a996cedf062e1bbfc663f62589c5cbfada4"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.ko.md",
+      "bytes": 23144,
+      "sha256": "87e0e649d0a7e21005a0ccb88e748720e2fda19697a7fa947368991b42dd101c"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/complete_benchmark.py",
+      "bytes": 10265,
+      "sha256": "ba44b97b0d0dcdb080a0390a58caa5984195b4d0bac1b78f15ce2826d59397d1"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/plan_study.py",
+      "bytes": 7152,
+      "sha256": "60e1f4d72e3434137ffeed900be3754562abdac68923eedef80c2a8718f94804"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md",
+      "bytes": 20741,
+      "sha256": "7792e42433a0adeb4d509a868db3bb87c1f8f725359eb284957a8b1a108946c0"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/generators.py",
+      "bytes": 20273,
+      "sha256": "9c98ee17c00d693d240e1a312af7e86f8aef9733d7b3a835a950be4e5841dc61"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/leaderboard.py",
+      "bytes": 28251,
+      "sha256": "da6eb46e0ddd569b7e13e07effcd6b05abd32d7362ab0a1b46be1e34cd06f21d"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/benchmark.py",
+      "bytes": 18051,
+      "sha256": "a6ed3fca79ba864d11fcf303688e0bcef398c15a9dbc46cd9cfa03738ea41435"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/overlap.py",
+      "bytes": 6681,
+      "sha256": "30fc1c4cdf4f9ddd640a4cf46ca15032d59e4530340fb9e616a1dca171bf88d9"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/utilizers.py",
+      "bytes": 20706,
+      "sha256": "cd99aa30d95991f2e834b44aa864456303e6bfc4b5dd715633a22318161840a8"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/engine.py",
+      "bytes": 24002,
+      "sha256": "c52e9906d30753fbde2932007ebe093fb833629a04903789112c50d2fa739eed"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/training_protocol.py",
+      "bytes": 7828,
+      "sha256": "78125f601835fb836bf2eb2276b2af18c2b3d0018f5d2f1b85ed27c7e9c7293f"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/data.py",
+      "bytes": 17825,
+      "sha256": "6083f0f02835f694f8aeb051958de2902cde489feffd95e4fd147ed07202b32b"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/__init__.py",
+      "bytes": 88,
+      "sha256": "5ae4aa55efd6789781ffec11f0ed02943ea5f8f4fa5c0c61408ccc354865f6e8"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/model.py",
+      "bytes": 8044,
+      "sha256": "1054143e21893105f356521fa248803d420a6e1c36ffbac7715a603fa692e5d8"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/metrics.py",
+      "bytes": 15847,
+      "sha256": "a90a9182f37388a0203a35f42aa3449efb96eef4d988e5516ea12b9f1163ac52"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/fsa_study/complexity.py",
+      "bytes": 14965,
+      "sha256": "b8f44b7c984f2814f7099bbbe764cb3af8bc3c32958051329ebe11ecfda69565"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/verification.json",
+      "bytes": 2159,
+      "sha256": "83ee4ba0400d9729476a521682a6c2cab03d962f0d049db86d3b3b74cdab4f68"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.ko.md",
+      "bytes": 6887,
+      "sha256": "6aa1f53cd7490ee312b4c08d84b233c4eaf154eb834d40c22f7398fb89a1f2a8"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/requirements.lock",
+      "bytes": 70530,
+      "sha256": "3e7118e1dd2362d555eb438aee4ae3105b624f9bf761db079be455cac699ce82"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/constraints-verified.txt",
+      "bytes": 1275,
+      "sha256": "5eee736aa718177caaf175f9e055b9b92d38052b0b97143d0d508e192324d7b6"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.md",
+      "bytes": 6499,
+      "sha256": "32538aaaf09a94d5fb772368d10b08c44c9386e4b7477f9ac68ede6f3e9665ab"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md",
+      "bytes": 24868,
+      "sha256": "89fdf5af712c8cdca7eded17aae69ef8940ebc0533c4a0c97cd78110a5321406"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/UTILIZATION.md",
+      "bytes": 18754,
+      "sha256": "3fad0ef9ff4bbc01cefb6769cdf2e60ab09e184b93f144b64da28a476976a9c2"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.ko.md",
+      "bytes": 13464,
+      "sha256": "96576dc8b88759745d68aa95e8fe3c92b5786c2c001d5a4e60f9cda7a8fe0a1d"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.md",
+      "bytes": 12743,
+      "sha256": "43051a88b71993b20eb061c0fb933439ca8798b24abe8038378d901a36e8bbf5"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/GENERATION.md",
+      "bytes": 18765,
+      "sha256": "f969ec53fdd886fa302c16ac387b53dc598fff5c9796fcb89dfa53a7f022763e"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md",
+      "bytes": 23471,
+      "sha256": "7b48ec51d09772d3ee741fa033ae3cf436777b058753facf85b634a900771c0f"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md",
+      "bytes": 25022,
+      "sha256": "de02a44175b392ec6e614fb509d1c8a355c1f7921f9541beb89dbbdb270035f0"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/deploy/install_study.py",
+      "bytes": 5926,
+      "sha256": "b20d2ca52f364a2762eb2e8780d632c9d86cc020cdc7746624aa38af82eec3d6"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/deploy/send_study.ps1",
+      "bytes": 3212,
+      "sha256": "3aaf07bb20ff223d2615b7b00faa77bf2b15ba8a096e43eaa2df108de10a6658"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_complexity.py",
+      "bytes": 7480,
+      "sha256": "e5b29b230261ca0457ce4086a02c7bbf1b698070498358d5a85c0cbf9bf7e525"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_reference_operators.py",
+      "bytes": 6988,
+      "sha256": "c03042ac7a5841fbffe2a2397c696a13fb9f7a0e097e7f29e749f8fe995ba638"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/conftest.py",
+      "bytes": 189,
+      "sha256": "2942a561b121bf448028b6d06c3bd27195d5c63b6f8cb9e3e2589b280dc51ab0"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_generators.py",
+      "bytes": 7203,
+      "sha256": "150891535d3e66f306022e82dac6a6407fde38f99dcaf93433ce9873005aad4e"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_metrics.py",
+      "bytes": 14642,
+      "sha256": "f3535960a3458fab1f68ea5b3a6a494a288561b07a6e1055d749440ef7f07608"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_utilizers.py",
+      "bytes": 9729,
+      "sha256": "219fc9b59a7e1f87405d0593ba45147fc095fc959161d9270fa9e6c694ef5e55"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_prepare_full_training.py",
+      "bytes": 15714,
+      "sha256": "071b668fb4eea4062e347ef8bc9381a2b928465a11d4594ade64a589856621dd"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_model.py",
+      "bytes": 4296,
+      "sha256": "b7fe0a9445a826976efb0cc1c7112ff2926ab13fd302031cdf6ffd38c755da04"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_workflow.py",
+      "bytes": 13272,
+      "sha256": "3e6c93007318154d695f2c39ff308683e5e502ede4374db918eea4db865afcbe"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_overlap_reporting.py",
+      "bytes": 6672,
+      "sha256": "17d8ee1038c56c4dd51c8c4138dd7038315754ea694804e72a17369d43e1e7d4"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_run_plan.py",
+      "bytes": 14404,
+      "sha256": "2d52af90553d90f641a440fc870902d7de860c2a5034bd6d09495878246411a6"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_complete_benchmark.py",
+      "bytes": 15584,
+      "sha256": "ddd93cf489928a82d399fa4b3a8323c821208c5a1e8a0284efd9181117aae7c6"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_recover_evaluation.py",
+      "bytes": 12681,
+      "sha256": "e2a0d9a0009c30efd38f1ab7408a61fc8066b345198e4747f519d3f43c09bfad"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_geometry.py",
+      "bytes": 6028,
+      "sha256": "9ffd7144bd6fc62977320a92db1f2699b470418f6b132a7ec3234fe9de2b99ab"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_data.py",
+      "bytes": 8650,
+      "sha256": "27814b0f845d0d78617c221bc9a8fb09b4add2849210346b531bb9611cc6a320"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_benchmark_engine.py",
+      "bytes": 10018,
+      "sha256": "9929cdfcc54b5f5aae3629f6e303fdaf0a942f16cc2fcabc6093df4a12f0cd86"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_benchmark_manifest.py",
+      "bytes": 14866,
+      "sha256": "92f04d6f6444e92eea2b44383e9a43916584981eb456f87fe4e55b97c99c3285"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_training_protocol.py",
+      "bytes": 14736,
+      "sha256": "1f371efe917e7278e5a48a5390ca22820c35dc8175b53a9d4fce242691716a1b"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_cod10k_overlap.py",
+      "bytes": 16457,
+      "sha256": "a364ceb10ba28ecd271cdcd48a9d96efeb4df7c22a921b825bfebe15322ad3dc"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_install_study.py",
+      "bytes": 3739,
+      "sha256": "93e005e83b0b0ec31e77a61e1038293e1c69e9e86817decd27915d36ab0625a9"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/tests/test_leaderboard.py",
+      "bytes": 24696,
+      "sha256": "8b4984de9aba644b56615bd1b4d7bfc0dcbf27cfb0042555a6f339586f10b90f"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/main_for_fsa.py",
+      "bytes": 37257,
+      "sha256": "04697d35e0a56dbd7dc7e18f3f4af37850bf2bc337693479bf53b2d9b980287e"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/requirements.txt",
+      "bytes": 349,
+      "sha256": "0d0300ef9195b4e0723434ff262ad1ab026e64b43519797eeafe2dcf6319ac04"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/pyproject.toml",
+      "bytes": 1360,
+      "sha256": "5e63b1bb91962f7a18a532d5295048d831b75bf1ff600608dcb2380e72275e92"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/pt_utils.py",
+      "bytes": 2181,
+      "sha256": "8b01b02cfbdc7b4d847fb5080ed3eb0d09c507d397f93a0f9f1e783ae66a298e"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/py_utils.py",
+      "bytes": 6133,
+      "sha256": "eb94c8ef6549f2fab89ffc53b2cba9f18ac7353119b691d5414bfbf98f6e41bc"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/io/params.py",
+      "bytes": 1018,
+      "sha256": "cb540a4e2542d2418db2a8a72b29d841048bc4430cf0f2e7f2f05ee82472e27d"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/io/image.py",
+      "bytes": 1370,
+      "sha256": "045a59423b70ef735bc941f4f56309a11cfb3635bbbaec65989c0879ffc5fb53"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/io/__init__.py",
+      "bytes": 217,
+      "sha256": "c987d21e95bdc164a6e96a495477b45e7a3d3cf6718938892b933b44e32b2795"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/ops/tensor_ops.py",
+      "bytes": 1070,
+      "sha256": "7a02cb722ea06c23c9b10862449f65a28a09468f2dedde76c998c72801911794"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/ops/__init__.py",
+      "bytes": 173,
+      "sha256": "f1446cc825ba0dcab3cb52fe978766c06f7913c095bf08c790901787c7f1b066"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/ops/array_ops.py",
+      "bytes": 3687,
+      "sha256": "14d16bf196fb3d66f4b9f5a55367859a69631009040b6a9b9e6c94b91baeba33"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/pipeline/optimizer.py",
+      "bytes": 7046,
+      "sha256": "6a0abc04542b3ed9192a8bebfd0168f23513181b8e79e64ee067dd438ccc1107"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/pipeline/scheduler.py",
+      "bytes": 15603,
+      "sha256": "b338cef197e21e196fe8798bc9a93914123edf16ca4cf55146d2acfeaafb54a4"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/pipeline/__init__.py",
+      "bytes": 223,
+      "sha256": "bc5773323907f9de2d8d6bedcd2b95a30d1193d879d4be94dc3f037fc66d4e42"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/pipeline/scaler.py",
+      "bytes": 2309,
+      "sha256": "351648b59c342bec4b3a8df3e1865fc7c2513ae6737a2acc07c0505b7ebc05b2"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/recorder/meter_recorder.py",
+      "bytes": 2369,
+      "sha256": "5a10d7569de5245eae2cf7d99dd3465eb2978ac89b2e0be9b9091dfae0bfe025"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/recorder/visualize_results.py",
+      "bytes": 1526,
+      "sha256": "84ee8f02e635ed51dc2092c544ce468d241f099f29d03ed797c1167ea0875246"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/recorder/logger.py",
+      "bytes": 690,
+      "sha256": "5f0b67f0480074f2295db887d200f27ae3011eef083f9bcb1e1336481f20a0ae"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/recorder/group_metric_caller.py",
+      "bytes": 9137,
+      "sha256": "37184019f5506216c954dc6e52deddcd7de6b2a8343a8f28394c30004b3414b5"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/recorder/__init__.py",
+      "bytes": 348,
+      "sha256": "08cccea8bef5a2cfae148802eadad6a52ca43baf0916e16d018dd5e6d9b46919"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/utils/recorder/counter.py",
+      "bytes": 2378,
+      "sha256": "9dd9ad17349a01bd92272cdb8dc066143a31ea6ccfbe645ff71e27fb7889d2d4"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/__init__.py",
+      "bytes": 471,
+      "sha256": "694446de2d3cc6ea867ba8feaa8ed7be098030e0c130705a0380d8ce6c526d37"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/zoomnext/ops.py",
+      "bytes": 7366,
+      "sha256": "4bc47c0485bc0e17fe41b17f02802c290a984d71f67c1eb637f55bc08a097f3f"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/zoomnext/fsa_layers.py",
+      "bytes": 12436,
+      "sha256": "7d9bf78e18cdf8688a990875e85c3d58e15c690bc2443c8a6d0d209a591a47cf"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/zoomnext/layers.py",
+      "bytes": 7609,
+      "sha256": "4eb6f0453f397a914b09c0d14d2b4f3994f154c906fa053ca65304c20daaac0b"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/zoomnext/zoomnext.py",
+      "bytes": 15142,
+      "sha256": "e3150aa7983fb52f7812567ea8007c961ab9377631effc5cc871852a575bf27b"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/zoomnext/fsa_zoomnext.py",
+      "bytes": 12075,
+      "sha256": "13026fdd09f3b4620c5272e71a58b7d22568fc27d4ce877dfa2c23ec324216e4"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/backbone/efficientnet.py",
+      "bytes": 17980,
+      "sha256": "d8a0e41ad3b592d2aad2588ce6a9072809c8609446a25f92fd899e6c98103c8c"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/backbone/efficientnet_utils.py",
+      "bytes": 25577,
+      "sha256": "ee3a229038667433a7a0ac3c2b18c5ec74eceeb389c64282fab254f791fc18f9"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/methods/backbone/pvt_v2_eff.py",
+      "bytes": 19471,
+      "sha256": "5bff4f9c056ec7aabab43ff049c30f9d46a9fb1fb13f419ed8101934ef9e9372"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/tools/measure_flops.py",
+      "bytes": 8105,
+      "sha256": "f964e9762b0179af5a5989dc8b671eb4fa5b0cd1a6a9af0242c6b17107640b8b"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/tools/search_iso_flops.py",
+      "bytes": 3655,
+      "sha256": "0f1838acc963ba59e3a803cea91ea04e1196693848d92342bccd251f292b8a56"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/tools/runpod_preflight.py",
+      "bytes": 8808,
+      "sha256": "932245bceb2a51ce2b74bd855923da66c19eee9e75bc7151a80de3d880e9a6ee"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/configs/fsa_pvtb2_train.py",
+      "bytes": 1707,
+      "sha256": "dd544c41c1ee00297901dc24c008b60a81496ce460ac93c9b25e19168a0ad9b3"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/configs/fsa_pvtb2_debug.py",
+      "bytes": 1289,
+      "sha256": "38f7555eaf7ddedfdd1a15e450c6125353a151f992e528978af2ff0d1776bb0e"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/configs/fsa_pvtb2_isoflops.py",
+      "bytes": 1676,
+      "sha256": "023ce807d6cd6eccc9eda6328bc5d97fc79ba4372775d73894c0f5bed6e1d245"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/configs/dataset_cod_runpod.yaml",
+      "bytes": 1742,
+      "sha256": "05b1b30a7ee3cafe2312c5423a2979e4d78382937d5a9dfc7af25118645c500b"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/measure_flops_fsa.sh",
+      "bytes": 382,
+      "sha256": "f811d45ea349b2cc8343089c7b40856ae966837ba4193d87c8c819d06c11ee6c"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/_runpod_preflight.sh",
+      "bytes": 427,
+      "sha256": "9b5789b05133730a5c6916af0712d85453e3c48381d3fd2e6ee5ff2e14ec1a55"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/train_fsa_pvtb2_isoflops.sh",
+      "bytes": 658,
+      "sha256": "825fbd3ac7d8d23eaae600d2004ed4d8fda38cf4bdf2d142e2be71fa8c92226f"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/clean_pycache.sh",
+      "bytes": 199,
+      "sha256": "4003c532c5d1e5ddd952708b4daba4a97430e55620cbf0167faed73615cba9a3"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/sm120_op_test.sh",
+      "bytes": 677,
+      "sha256": "cd32a2f4370606f535c707d00803c37c530729160b6e50dadaf5d70a6a5e60d9"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/_resolve_datasets_root.sh",
+      "bytes": 2559,
+      "sha256": "7c60aeb133911f1363ff9c8a6da7942575e49622677eac7cce1b1ec0bee21215"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/runpod_setup.sh",
+      "bytes": 578,
+      "sha256": "bd82972ec087f9759d23eb8bc30edc454c031a5869ca77a740ca8027be5f606f"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/verify_lite_patch.sh",
+      "bytes": 780,
+      "sha256": "c3522385b91420cc08f841439d4d7bc7e95b390425559e424cfed0362ccfd8ed"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/search_iso_flops_fsa.sh",
+      "bytes": 356,
+      "sha256": "a554e006a5a5c1754d13f44498c2dc18bbc3f4adcac4b6e18084f3a212040257"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/check_dataset_paths.sh",
+      "bytes": 1012,
+      "sha256": "28ee0bac582b4b06963dceec515559c324c8196baa9ab38d9809ddcc997a7d5b"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/eval_fsa_pvtb2.sh",
+      "bytes": 726,
+      "sha256": "56aa16fcbfbe9774a0afe9b8bc7cf361b687dbd0a0b47466d6aa9fba590baf65"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/debug_fsa_pvtb2.sh",
+      "bytes": 652,
+      "sha256": "b6b80347937091ae2f203242b6c0d0395cecf3bfd407c02cccbd72dcb2c80060"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/diagnose_cuda.sh",
+      "bytes": 768,
+      "sha256": "17aca6fba7f30198ef8054a4e9ce659d3f47bf0eb92344ceb5ae82863001210a"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/train_fsa_pvtb2.sh",
+      "bytes": 646,
+      "sha256": "220d889e96d7896b71599b5d979778b89a2f9ae28255c598e1e6ee1a80993f0f"
+    },
+    {
+      "path": "Experiments/FSA-ZoomNeXt/scripts/fix_torch_cuda128.sh",
+      "bytes": 387,
+      "sha256": "5eee73001268ecaef756acc3350d9d833c2c68f25e11dfbba0601555cefdd4c0"
+    }
+  ],
+  "source_total": 114,
+  "prediction_png_count": 54995,
+  "curve_png_count": 108,
+  "png_count_by_run_family": {
+    "priority8-full4040-fixed-20261101_200834": 19455,
+    "priority8-separate-20261030_204647": 35648
+  },
+  "windows_path_length_estimate": {
+    "longest_relative_path": 374,
+    "at_least_MAX_PATH": 55250
+  },
+  "interpretation": {
+    "source_changes": "No semantic source change: all 114 non-results paths are present and match restored reference after CRLF-to-LF normalization; retain existing Git versions to avoid line-ending churn.",
+    "archive_exclusions": "No entries named as excluded dataset/data/weight/environment/cache paths or forbidden checkpoint suffixes; all 55,103 PNGs are prediction masks (54,995) or evaluation curve images (108).",
+    "previous_windows_extraction": "Server ZIP does not omit the source files previously deleted. Its 374-character maximum relative path exceeds legacy Windows MAX_PATH even before a checkout prefix; long-path extraction failure is plausible but cannot be proven from this archive alone.",
+    "prediction_counts": "New full4040 has 3 complete prediction sets: single, native_conv__asff, native_conv__sk, each CAMO250/CHAMELEON76/COD10K2026/NC4K4121; old holdout includes 8 complete sets without COD10K.",
+    "verification_scope": "Central-directory safety, source byte comparison, inventory/content classification only; this report does not itself claim full archive CRC or numerical recomputation of evaluation metrics."
+  }
+}

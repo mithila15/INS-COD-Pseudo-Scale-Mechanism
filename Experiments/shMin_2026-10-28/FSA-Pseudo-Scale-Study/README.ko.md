@@ -1,4 +1,4 @@
-# 2026-11-01 · Pseudo-Scale Study — 방법별 비교 기준·실험 조건·평가 복구
+# 2026-11-02 · Pseudo-Scale Study — 방법별 비교 기준·실험 조건·평가 복구
 
 [English](README.md) | **한국어** | [실행 안내](../../../README.ko.md) | [환경 설정](environment/README.ko.md)
 
@@ -6,9 +6,15 @@
 
 [COD10K 중복 기록](results/verification-2026-11-01-overlap/README.ko.md)에 학습 원본/test의 바이트 중복 7쌍을 정리했다. 정확한 기록 쌍을 명시적으로 인정하지 않으면 준비는 계속 엄격하게 중단한다. 배포 개수를 유지하는 경우에도 **독립 분할이 아님**을 표시한다. [서버 복구 명령](docs/BENCHMARK-PROTOCOL.ko.md#확인된-cod10k-중복을-명시적으로-기록하고-진행하기)을 참고한다.
 
-## 2026-11-01 결과와 실험 조건 수정
+## 2026-11-02 실제 서버 결과
 
-[업로드된 priority8 보고서](results/priority8-report-20261101_172449/README.ko.md)는 seed 3407의 8개 실험을 **CAMO·CHAMELEON·NC4K에서만** 평가했다. COD10K-test를 추가하는 새 평가 plan은 기존 `best.pth`를 재사용하고 4개 테스트셋을 새 경로에서 다시 평가한다. `prepare` CLI는 이제 4개 테스트셋을 기본으로 요구하며, 리더보드는 실행 완료와 표준 벤치마크 전체 완료를 구분한다.
+[Full-4040 스냅샷 검토](results/server-review-20261102/README.ko.md): **8개 중 3개가 학습·4개 데이터셋 평가·profiling 완료**, `native_conv__mean`은 15/150 epoch, 나머지 4개는 내보내기 자료에 실행 기록이 없다. 압축 생성 시각은 2026-11-02 13:16:05 KST이며 현재 서버 상태를 의미하지 않는다. Native-scale ASFF/SK는 CAMO·CHAMELEON에서 개선되고 COD10K·NC4K는 혼재한다. Seed 3407 하나의 중간 결과로 종합 우승·유의성을 주장하지 않는다. [원본 전체 파일·예측 PNG](https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102) · [검토·무결성 근거](results/server-review-20261102/asset-index.md).
+
+원본 리더보드는 보존했다. 미시작 5개 표시는 네 번째 실험 history보다 앞선 갱신 상태다. 알려진 COD10K 중복 7쌍은 과거 holdout에서 train/test 6·validation/test 1이며, 전체 학습으로 합친 뒤에는 train/test 7·validation/test 0이다.
+
+## 과거 2026-11-01 결과와 실험 조건 수정
+
+[과거 holdout priority8 보고서](results/priority8-report-20261101_172449/README.ko.md)는 seed 3407의 8개 실험을 **CAMO·CHAMELEON·NC4K에서만** 평가했다. COD10K-test를 추가하는 새 평가 plan은 기존 `best.pth`를 재사용하고 4개 테스트셋을 새 경로에서 다시 평가한다. `prepare` CLI는 이제 4개 테스트셋을 기본으로 요구하며, 리더보드는 실행 완료와 표준 벤치마크 전체 완료를 구분한다.
 
 공식 ZoomNeXt는 학습 4,040장을 쓰지만 기존 비교는 학습 3,636장 + validation 404장이다. 새 `full_train`은 **4,040장 전체로 새로 학습하고 최종 epoch를 고정 선택**한다. 기존 결과·분할·체크포인트는 그대로 보존한다. 구조·손실·증강·정밀도 차이까지 같아진 것은 아니다. [공식 코드·논문 대조, 복구 및 새 학습 명령](docs/BENCHMARK-PROTOCOL.ko.md) · [Windows pull·SCP 전송](docs/BENCHMARK-PROTOCOL.ko.md#windows에서-수정-코드-전송).
 
@@ -171,10 +177,10 @@ PYTHONUNBUFFERED=1 bash "$RECOVERY/run_all.sh" 2>&1 | tee "$RECOVERY/run.log"
 
 ## 현재 검증 상태
 
-[기존 검증 기록](results/verification-2026-10-28/README.md)은 281 tests + 67 subtests 통과이며 전체 156개 모듈 조합, 공통 초기화, 원본 연산 일치, 데이터·체크포인트, CPU/GPU 추론을 포함한다. Optimizer step, 실제 데이터 학습, 데이터 다운로드는 실행하지 않았다. 실제 사전학습 파일 로딩·수렴·정확도 순위는 미검증이다. [연구 기록](../../../Progress/2026-10-28/Pseudo-Scale-Study/README.md)에서 코드 관측과 가설을 구분한다.
+[기존 검증 기록](results/verification-2026-10-28/README.md)은 281 tests + 67 subtests 통과이며 전체 156개 모듈 조합, 공통 초기화, 원본 연산 일치, 데이터·체크포인트, CPU/GPU 추론을 포함한다. Optimizer step, 실제 데이터 학습, 데이터 다운로드는 실행하지 않았다. 그 최초 코드 검사에서는 실제 사전학습 파일 로딩·수렴·정확도 순위를 검증하지 않았다. 별도 2026-11-02 서버 검토는 사용자가 실행한 학습·평가 산출물을 기록한다. [연구 기록](../../../Progress/2026-10-28/Pseudo-Scale-Study/README.md)에서 코드 관측과 가설을 구분한다.
 
 2026-10-29 평가·리더보드 검증: **522 tests + 67 subtests**, 전체 158개 초기화 모델 연산 커버리지, 브라우저 8개 검사 통과. 학습·다운로드는 실행하지 않았다. [2026-10-29 검증 기록](results/verification-2026-10-29-metrics/README.md).
 
 2026-10-30 크기 불일치 복구 검증: **557 tests + 67 subtests 통과**. 이미지 1000×628 / GT 998×628을 합성 데이터로 재현하여 21개 유한 지표, 입력·checkpoint 바이트 보존, train/val 엄격 검사와 기존 모델을 재사용하는 복구 순서를 확인했다. 학습·다운로드는 실행하지 않았고 실제 서버 원본 쌍은 미검증이다. [검증 산출물](results/verification-2026-10-30-geometry/README.md) · [변경 기록](../../../Progress/2026-10-30/Geometry-Recovery/README.md).
 
-2026-11-01의 새 데이터 프로토콜과 벤치마크 완성 기능은 [변경 기록](../../../Progress/2026-11-01/Benchmark-Completion/README.md)에 정리했다. 새 실제 데이터 학습·4개 벤치마크 평가 결과는 아직 실행 전이며 과거 검증 수치와 구분한다.
+2026-11-01의 새 데이터 프로토콜과 벤치마크 완성 기능은 [변경 기록](../../../Progress/2026-11-01/Benchmark-Completion/README.md)에 정리했다. [2026-11-02 검토](results/server-review-20261102/README.ko.md)에는 전체 데이터 학습·4개 벤치마크 평가를 완료한 3개 실험과 부분 학습 1개가 있다. 실제 결과와 과거 코드 검사 수치를 구분하며 이번 검토에서 학습·추론을 새로 실행하지 않았다.

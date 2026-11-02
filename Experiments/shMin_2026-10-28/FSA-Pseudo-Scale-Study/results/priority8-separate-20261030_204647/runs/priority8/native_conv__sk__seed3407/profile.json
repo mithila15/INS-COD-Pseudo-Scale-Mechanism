@@ -1,0 +1,503 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "config": {
+      "architecture": "common",
+      "generator": "native_conv",
+      "utilizer": "sk",
+      "channels": 48,
+      "seed": 3407,
+      "baseline": false,
+      "legacy_reference": false,
+      "generator_options": {},
+      "utilizer_options": {}
+    },
+    "architecture": "controlled_common_decoder",
+    "generator": {
+      "name": "native_conv",
+      "channels": 48,
+      "num_branches": 3,
+      "branch_order": [
+        "main",
+        "large_or_local",
+        "small_or_context"
+      ],
+      "output_alignment": "input B,C,H,W; bilinear align_corners=False",
+      "family": "native_scale_projection",
+      "description": "Resample, project at native scale, then align",
+      "papers": [],
+      "normalization": "channel LayerNorm",
+      "checked_date": "2026-10-28",
+      "full_paper_reproduction": false,
+      "scale_factors": [
+        1.5,
+        0.5
+      ],
+      "rounding": "max(1, round(size*scale)); Python round",
+      "shared_projection": false
+    },
+    "utilizer": {
+      "name": "sk",
+      "channels": 48,
+      "num_branches": 3,
+      "bank_order": [
+        "main",
+        "large_or_local",
+        "small_or_context"
+      ],
+      "citation": "https://openaccess.thecvf.com/content_CVPR_2019/html/Li_Selective_Kernel_Networks_CVPR_2019_paper.html",
+      "checked_date": "2026-10-28",
+      "adaptation": "SK Fuse/Select on externally generated branches. Pooled BN omitted for batch-one support; hidden size configurable. No original SK split kernels.",
+      "normalization": "softmax over branches per channel; no normalization in pooled MLP",
+      "output": "one fused B,C,H,W tensor; no residual head",
+      "reduction": 4,
+      "hidden_channels": 12
+    }
+  },
+  "parameters": 25351427,
+  "encoder_parameters": 24849856,
+  "latency_ms": {
+    "median": 7.38632190041244,
+    "mean": 7.384068723767996,
+    "stdev": 0.01965585265833646,
+    "samples": [
+      7.386867888271809,
+      7.377023110166192,
+      7.3225609958171844,
+      7.337623042985797,
+      7.368220016360283,
+      7.349520921707153,
+      7.38138984888792,
+      7.410214049741626,
+      7.411755854263902,
+      7.368079153820872,
+      7.379005895927548,
+      7.41606205701828,
+      7.359846960753202,
+      7.388300029560924,
+      7.37350806593895,
+      7.376843132078648,
+      7.362030912190676,
+      7.363913115113974,
+      7.357924012467265,
+      7.397694047540426,
+      7.386036915704608,
+      7.400299189612269,
+      7.3815700598061085,
+      7.39844492636621,
+      7.394118933007121,
+      7.404654985293746,
+      7.407199125736952,
+      7.400518981739879,
+      7.373888976871967,
+      7.4003280606120825,
+      7.386606885120273,
+      7.371885934844613,
+      7.374458946287632,
+      7.392575964331627,
+      7.372556021437049,
+      7.375070126727223,
+      7.39086396060884,
+      7.3935179971158504,
+      7.378004025667906,
+      7.367829093709588,
+      7.379055954515934,
+      7.391926134005189,
+      7.380037102848291,
+      7.395691005513072,
+      7.408970966935158,
+      7.40218092687428,
+      7.3898418340831995,
+      7.418366149067879,
+      7.409041980281472,
+      7.389511913061142
+    ]
+  },
+  "images_per_second": 135.42669189699967,
+  "cuda_memory": {
+    "peak_allocated_bytes": 215678464,
+    "peak_increment_bytes": 102766592
+  },
+  "diagnostics": [
+    {
+      "level": 2,
+      "mean_rms": 0.5339303612709045,
+      "branches": [
+        {
+          "rms": 0.5788035988807678,
+          "relative_difference_rms": 1.103583574295044,
+          "cosine_channel_mean": 0.44257652759552
+        },
+        {
+          "rms": 0.43778058886528015,
+          "relative_difference_rms": 1.166777491569519,
+          "cosine_channel_mean": 0.19059404730796814
+        }
+      ],
+      "fused_rms": 0.3331267833709717,
+      "fused_main_cosine": 0.7952682971954346,
+      "mean_branch_weights": [
+        0.3207521438598633,
+        0.3448964059352875,
+        0.334351509809494
+      ],
+      "weight_min": 0.14556540548801422
+    },
+    {
+      "level": 3,
+      "mean_rms": 0.4648427963256836,
+      "branches": [
+        {
+          "rms": 0.6271796226501465,
+          "relative_difference_rms": 1.387839674949646,
+          "cosine_channel_mean": 0.33178484439849854
+        },
+        {
+          "rms": 0.5116561055183411,
+          "relative_difference_rms": 1.220761775970459,
+          "cosine_channel_mean": 0.32826370000839233
+        }
+      ],
+      "fused_rms": 0.38882437348365784,
+      "fused_main_cosine": 0.7804417610168457,
+      "mean_branch_weights": [
+        0.3904380202293396,
+        0.3236512839794159,
+        0.2859107255935669
+      ],
+      "weight_min": 0.12816457450389862
+    },
+    {
+      "level": 4,
+      "mean_rms": 0.3738500475883484,
+      "branches": [
+        {
+          "rms": 0.7855690121650696,
+          "relative_difference_rms": 1.9351725578308105,
+          "cosine_channel_mean": 0.4057210087776184
+        },
+        {
+          "rms": 0.5982715487480164,
+          "relative_difference_rms": 1.552066683769226,
+          "cosine_channel_mean": 0.3690437376499176
+        }
+      ],
+      "fused_rms": 0.5339606404304504,
+      "fused_main_cosine": 0.6840766072273254,
+      "mean_branch_weights": [
+        0.41339898109436035,
+        0.32529744505882263,
+        0.2613036334514618
+      ],
+      "weight_min": 0.02708430029451847
+    },
+    {
+      "level": 5,
+      "mean_rms": 0.4479368329048157,
+      "branches": [
+        {
+          "rms": 0.6053277850151062,
+          "relative_difference_rms": 1.2889764308929443,
+          "cosine_channel_mean": 0.4329740107059479
+        },
+        {
+          "rms": 0.6279515624046326,
+          "relative_difference_rms": 1.5903438329696655,
+          "cosine_channel_mean": 0.1575007140636444
+        }
+      ],
+      "fused_rms": 0.35013315081596375,
+      "fused_main_cosine": 0.7379546761512756,
+      "mean_branch_weights": [
+        0.3538946807384491,
+        0.3245822787284851,
+        0.3215230703353882
+      ],
+      "weight_min": 0.14984315633773804
+    }
+  ],
+  "complexity": {
+    "version": "aten_analytical_v1",
+    "scope": "one inference forward including encoder, generator, utilizer and all output heads",
+    "convention": "MACs: dense convolution and tensor contractions; FLOPs: 2*MACs; other operations estimated separately",
+    "convolution": "dense padded kernels; transposed kernels counted at input spatial positions, including subsequently cropped positions",
+    "estimates": "scalar arithmetic/comparison/transcendental operations each cost 1; interpolation excludes internal coordinate/index computation",
+    "exclusions": "IO, transfer, memory movement, integer indexing, backward and optimizer; no claim of hardware-exact FLOPs",
+    "batch_size": 1,
+    "macs": 14068047744,
+    "flops": 28136095488,
+    "macs_per_image": 14068047744.0,
+    "flops_per_image": 28136095488.0,
+    "estimated_noncontraction_flops": 656706808,
+    "estimated_counted_flops": 28792802296,
+    "estimated_total_flops": 28792802296,
+    "estimated_total_flops_per_image": 28792802296.0,
+    "coverage": {
+      "supported_calls": 546,
+      "contraction_calls": 212,
+      "estimated_calls": 334,
+      "non_arithmetic_calls": 372,
+      "unsupported_calls": 0,
+      "all_observed_ops_classified": true,
+      "unsupported_operators": [],
+      "note": "Call coverage is not a fraction of FLOPs; full classification still uses documented estimates/exclusions."
+    },
+    "operators": {
+      "aten.add.Tensor": {
+        "category": "estimated",
+        "calls": 44,
+        "macs": 0,
+        "estimated_noncontraction_flops": 10315008,
+        "rule": "one scalar operation per output element (alpha multiply adds one)"
+      },
+      "aten.batch_norm.default": {
+        "category": "estimated",
+        "calls": 51,
+        "macs": 0,
+        "estimated_noncontraction_flops": 98007904,
+        "rule": "running variance add+rsqrt per channel; center/scale; optional affine multiply/add"
+      },
+      "aten.cat.default": {
+        "category": "non_arithmetic",
+        "calls": 6,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.chunk.default": {
+        "category": "non_arithmetic",
+        "calls": 1,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.contiguous.default": {
+        "category": "non_arithmetic",
+        "calls": 4,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.conv2d.default": {
+        "category": "contraction",
+        "calls": 116,
+        "macs": 2982895488,
+        "estimated_noncontraction_flops": 30600768,
+        "rule": "batch*spatial*weight.numel; input spatial for transpose; bias adds separate"
+      },
+      "aten.div.Tensor": {
+        "category": "estimated",
+        "calls": 1,
+        "macs": 0,
+        "estimated_noncontraction_flops": 442368,
+        "rule": "one scalar operation per output element (alpha multiply adds one)"
+      },
+      "aten.dropout.default": {
+        "category": "non_arithmetic",
+        "calls": 48,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "evaluation dropout is identity"
+      },
+      "aten.flatten.using_ints": {
+        "category": "non_arithmetic",
+        "calls": 20,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.gelu.default": {
+        "category": "estimated",
+        "calls": 32,
+        "macs": 0,
+        "estimated_noncontraction_flops": 159194880,
+        "rule": "erf GELU 5 or tanh GELU 9 scalar operations per element"
+      },
+      "aten.layer_norm.default": {
+        "category": "estimated",
+        "calls": 69,
+        "macs": 0,
+        "estimated_noncontraction_flops": 127381248,
+        "rule": "mean/variance and normalization ~7 operations/element; affine adds 2"
+      },
+      "aten.linear.default": {
+        "category": "contraction",
+        "calls": 80,
+        "macs": 9853599744,
+        "estimated_noncontraction_flops": 42928128,
+        "rule": "output.numel*input_features; bias adds separate"
+      },
+      "aten.mean.dim": {
+        "category": "estimated",
+        "calls": 5,
+        "macs": 0,
+        "estimated_noncontraction_flops": 594432,
+        "rule": "reduction inputs-outputs operations; mean adds output divisions"
+      },
+      "aten.mul.Tensor": {
+        "category": "estimated",
+        "calls": 24,
+        "macs": 0,
+        "estimated_noncontraction_flops": 4112652,
+        "rule": "one scalar operation per output element (alpha multiply adds one)"
+      },
+      "aten.permute.default": {
+        "category": "non_arithmetic",
+        "calls": 94,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.relu.default": {
+        "category": "estimated",
+        "calls": 4,
+        "macs": 0,
+        "estimated_noncontraction_flops": 48,
+        "rule": "one scalar operation per output element (alpha multiply adds one)"
+      },
+      "aten.relu_.default": {
+        "category": "estimated",
+        "calls": 52,
+        "macs": 0,
+        "estimated_noncontraction_flops": 24500784,
+        "rule": "one scalar operation per output element (alpha multiply adds one)"
+      },
+      "aten.reshape.default": {
+        "category": "non_arithmetic",
+        "calls": 82,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.scaled_dot_product_attention.default": {
+        "category": "contraction",
+        "calls": 16,
+        "macs": 1231552512,
+        "estimated_noncontraction_flops": 57729024,
+        "rule": "QK and attention*V contractions; scale+softmax estimate and optional mask"
+      },
+      "aten.select.int": {
+        "category": "non_arithmetic",
+        "calls": 32,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.sigmoid.default": {
+        "category": "estimated",
+        "calls": 4,
+        "macs": 0,
+        "estimated_noncontraction_flops": 48960,
+        "rule": "negation, exp, add, reciprocal each cost 1"
+      },
+      "aten.softmax.int": {
+        "category": "estimated",
+        "calls": 8,
+        "macs": 0,
+        "estimated_noncontraction_flops": 2940,
+        "rule": "max, subtract, exp, sum, divide; optional log; 1 cost per scalar"
+      },
+      "aten.stack.default": {
+        "category": "non_arithmetic",
+        "calls": 8,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.sub.Tensor": {
+        "category": "estimated",
+        "calls": 1,
+        "macs": 0,
+        "estimated_noncontraction_flops": 442368,
+        "rule": "one scalar operation per output element (alpha multiply adds one)"
+      },
+      "aten.sum.dim_IntList": {
+        "category": "estimated",
+        "calls": 8,
+        "macs": 0,
+        "estimated_noncontraction_flops": 2350080,
+        "rule": "reduction inputs-outputs operations; mean adds output divisions"
+      },
+      "aten.to.dtype": {
+        "category": "non_arithmetic",
+        "calls": 4,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.transpose.int": {
+        "category": "non_arithmetic",
+        "calls": 52,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.unbind.int": {
+        "category": "non_arithmetic",
+        "calls": 4,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.upsample_bilinear2d.vec": {
+        "category": "estimated",
+        "calls": 31,
+        "macs": 0,
+        "estimated_noncontraction_flops": 98055216,
+        "rule": "4 weighted samples: 4 multiplies+3 additions/output; internal coordinates excluded"
+      },
+      "aten.view.default": {
+        "category": "non_arithmetic",
+        "calls": 16,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      },
+      "aten.zeros_like.default": {
+        "category": "non_arithmetic",
+        "calls": 1,
+        "macs": 0,
+        "estimated_noncontraction_flops": 0,
+        "rule": "shape/index/allocation/data movement; memory cost excluded"
+      }
+    }
+  },
+  "protocol": {
+    "generator": "legacy",
+    "utilizer": "mean",
+    "baseline": false,
+    "legacy_reference": false,
+    "checkpoint": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/best.pth",
+    "image": null,
+    "size": 384,
+    "batch_size": 1,
+    "channels": 48,
+    "seed": 3407,
+    "device": "cuda:0",
+    "threads": 2,
+    "warmup": 10,
+    "repeats": 50,
+    "output": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/profile.json",
+    "dtype": "float32",
+    "inference_mode": true,
+    "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
+    "input": "synthetic_uniform_RGB",
+    "weights": "study_checkpoint",
+    "complexity_protocol": {
+      "version": "aten_analytical_v1",
+      "scope": "one inference forward including encoder, generator, utilizer and all output heads",
+      "convention": "MACs: dense convolution and tensor contractions; FLOPs: 2*MACs; other operations estimated separately",
+      "convolution": "dense padded kernels; transposed kernels counted at input spatial positions, including subsequently cropped positions",
+      "estimates": "scalar arithmetic/comparison/transcendental operations each cost 1; interpolation excludes internal coordinate/index computation",
+      "exclusions": "IO, transfer, memory movement, integer indexing, backward and optimizer; no claim of hardware-exact FLOPs"
+    },
+    "interpretation": "Execution diagnostics only; random input/weights cannot establish COD quality or learned branch utility"
+  },
+  "checkpoint_sha256": "17288286d9662dda31191bf368df3359b688ce04123749c8180b90a9e55c85f3",
+  "image_sha256": null,
+  "environment": {
+    "torch": "2.11.0+cu130",
+    "python": "3.12.13",
+    "device": "NVIDIA RTX PRO 5000 Blackwell"
+  }
+}

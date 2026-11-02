@@ -1,0 +1,51 @@
+{
+  "policy": "resize-prediction-to-gt",
+  "split": "test",
+  "checked_pairs": 6473,
+  "dataset_counts": {
+    "camo": 250,
+    "chameleon": 76,
+    "cod10k": 2026,
+    "nc4k": 4121
+  },
+  "mismatch_count": 2,
+  "mismatches": [
+    {
+      "id": "chameleon_test/animal-62",
+      "dataset": "chameleon",
+      "image": "CHAMELEON/Imgs/animal-62.jpg",
+      "mask": "CHAMELEON/GT/animal-62.png",
+      "image_size": [
+        1000,
+        628
+      ],
+      "mask_size": [
+        998,
+        628
+      ]
+    },
+    {
+      "id": "chameleon_test/animal-74",
+      "dataset": "chameleon",
+      "image": "CHAMELEON/Imgs/animal-74.jpg",
+      "mask": "CHAMELEON/GT/animal-74.png",
+      "image_size": [
+        933,
+        700
+      ],
+      "mask_size": [
+        933,
+        678
+      ]
+    }
+  ],
+  "manifest_sha256": "2ad6d012c953111260597459aa1ea437439c9f5f909dbb1e54fc32405e753ea8",
+  "protocol": {
+    "version": 1,
+    "policy": "resize-prediction-to-gt",
+    "prediction_grid": "original GT mask height/width",
+    "prediction_resize": "bilinear; align_corners=False; after model-resolution min-max",
+    "ground_truth": "original bytes and resolution; no crop, resize or sample exclusion",
+    "alignment": "full-image normalized coordinates; registration is not verified"
+  }
+}

@@ -1,4 +1,4 @@
-# 2026-11-01 · Pseudo-Scale Study — Methods, comparison protocol and evaluation recovery
+# 2026-11-02 · Pseudo-Scale Study — Methods, comparison protocol and evaluation recovery
 
 **English** | [한국어](README.ko.md) | [Execution guide](../../../README.md) | [Environment setup](environment/README.md)
 
@@ -6,9 +6,15 @@ Use the [repository README](../../../README.md) for environment → data → pla
 
 The [COD10K overlap record](results/verification-2026-11-01-overlap/README.md) documents seven byte-identical train-source/test pairs. Preparation remains strict unless the exact documented pairs are explicitly acknowledged. This preserves published counts while marking the split **non-disjoint**; see the [server recovery commands](docs/BENCHMARK-PROTOCOL.md#acknowledge-the-verified-cod10k-overlaps).
 
-## 2026-11-01 results and protocol update
+## 2026-11-02 actual server results
 
-The uploaded [priority8 report](results/priority8-report-20261101_172449/README.md) contains eight seed-3407 runs evaluated on **CAMO, CHAMELEON and NC4K only**. A new evaluation plan adds COD10K-test, reuses the existing `best.pth` files and re-evaluates all four datasets in fresh output directories. The `prepare` CLI now requires all four tests by default; leaderboards distinguish completed execution from complete benchmark coverage.
+[Full-4040 snapshot review](results/server-review-20261102/README.md): **3 of 8 runs completed training, four-dataset evaluation and profiling**; `native_conv__mean` reached epoch 15/150; four variants have no run history in the export. The archive was created at 2026-11-02 13:16:05 KST and does not establish current server state. Native-scale ASFF/SK improve CAMO and CHAMELEON; COD10K/NC4K are mixed. This is one seed (3407), with no composite winner or significance claim. [All original files and prediction PNGs](https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102) · [Review and integrity evidence](results/server-review-20261102/asset-index.md).
+
+The original leaderboard is preserved; its five `not_started` rows predate the fourth run history. The known seven COD10K overlaps are six train/test plus one validation/test in the historical holdout split, and seven train/test plus zero validation/test after full-data merging.
+
+## Historical 2026-11-01 results and protocol update
+
+The historical holdout [priority8 report](results/priority8-report-20261101_172449/README.md) contains eight seed-3407 runs evaluated on **CAMO, CHAMELEON and NC4K only**. A new evaluation plan adds COD10K-test, reuses the existing `best.pth` files and re-evaluates all four datasets in fresh output directories. The `prepare` CLI now requires all four tests by default; leaderboards distinguish completed execution from complete benchmark coverage.
 
 Official ZoomNeXt trains on 4,040 images, while the existing study uses 3,636 training + 404 validation images. The new `full_train` protocol **trains fresh models on all 4,040 and fixes selection to the final epoch**. Existing results, splits and checkpoints are preserved. Architecture, loss, augmentation and precision still differ. [Official-source comparison, recovery and training commands](docs/BENCHMARK-PROTOCOL.md) · [Windows pull and SCP transfer](docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows).
 
@@ -171,10 +177,10 @@ Checked on **2026-10-28**. Korean title translations are provided in the [Korean
 
 ## Current verification status
 
-[Recorded verification](results/verification-2026-10-28/README.md): 281 tests and 67 subtests passed, including all 156 module pairings, common initialization, original-operator agreement, data/checkpoint checks and CPU/GPU inference. No optimizer steps, real-data training or dataset downloads were run. Actual pretrained-file loading, convergence and accuracy rankings remain unverified. The [research record](../../../Progress/2026-10-28/Pseudo-Scale-Study/README.md) separates code observations from hypotheses.
+[Recorded verification](results/verification-2026-10-28/README.md): 281 tests and 67 subtests passed, including all 156 module pairings, common initialization, original-operator agreement, data/checkpoint checks and CPU/GPU inference. No optimizer steps, real-data training or dataset downloads were run. Actual pretrained-file loading, convergence and accuracy rankings were not verified by that initial code check; the separate 2026-11-02 server review now records user-run training and evaluation artifacts. The [research record](../../../Progress/2026-10-28/Pseudo-Scale-Study/README.md) separates code observations from hypotheses.
 
 Metric/leaderboard verification on 2026-10-29: **522 tests + 67 subtests**, operation coverage for all 158 initialized models, and eight browser checks passed. No training or downloads were run. [2026-10-29 verification](results/verification-2026-10-29-metrics/README.md).
 
 Geometry recovery verification on 2026-10-30: **557 tests + 67 subtests passed**, including the reported 1000×628 image / 998×628 GT dimensions with synthetic inputs, all 21 finite test metrics, unchanged input/checkpoint bytes, strict train/val checks and checkpoint-preserving recovery order. No training or downloads were run; the actual remote pair remains uninspected. [Verification artifacts](results/verification-2026-10-30-geometry/README.md) · [Change record](../../../Progress/2026-10-30/Geometry-Recovery/README.md).
 
-The 2026-11-01 data-protocol and benchmark-completion changes are documented in the [change record](../../../Progress/2026-11-01/Benchmark-Completion/README.md). New real-data training and four-benchmark evaluation are pending execution, separate from the historical verification counts.
+The 2026-11-01 data-protocol and benchmark-completion changes are documented in the [change record](../../../Progress/2026-11-01/Benchmark-Completion/README.md). The [2026-11-02 review](results/server-review-20261102/README.md) now provides three completed full-data/four-benchmark results and one partial training history. These observed results are separate from historical code-test counts; this review did not run new training or inference.

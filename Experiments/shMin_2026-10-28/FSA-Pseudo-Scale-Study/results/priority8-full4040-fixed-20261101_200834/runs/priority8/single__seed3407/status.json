@@ -1,0 +1,9 @@
+{
+  "status": "training_complete",
+  "epochs": 150,
+  "optimizer_steps": 151500,
+  "best_val_mae": null,
+  "training_protocol": "full_train",
+  "checkpoint_selection": "fixed final epoch; no validation or test selection",
+  "test_evaluation": "not_run"
+}

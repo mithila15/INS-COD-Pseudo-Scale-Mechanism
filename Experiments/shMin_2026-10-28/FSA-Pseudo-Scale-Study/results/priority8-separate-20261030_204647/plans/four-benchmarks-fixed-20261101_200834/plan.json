@@ -1,0 +1,924 @@
+{
+  "schema_version": 2,
+  "phase": "priority8",
+  "variant_count": 8,
+  "results": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8",
+  "evaluation_subdir": "test-four-benchmarks-fixed-20261101_200834",
+  "profile_name": "profile.json",
+  "run_count": 8,
+  "seeds": [
+    3407
+  ],
+  "status": "commands_only_not_executed",
+  "jobs": [
+    {
+      "variant": "single",
+      "seed": 3407,
+      "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407",
+      "train": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "train",
+        "--manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407",
+        "--seed",
+        "3407",
+        "--epochs",
+        "150",
+        "--batch-size",
+        "4",
+        "--size",
+        "384",
+        "--channels",
+        "48",
+        "--workers",
+        "2",
+        "--device",
+        "cuda:0",
+        "--baseline",
+        "--backbone-weights",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/weights/pvt_v2_b2.pth"
+      ],
+      "evaluate": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "evaluate",
+        "--manifest",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/best.pth",
+        "--split",
+        "test",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-four-benchmarks-fixed-20261101_200834",
+        "--device",
+        "cuda:0",
+        "--batch-size",
+        "4",
+        "--workers",
+        "2",
+        "--test-geometry",
+        "resize-prediction-to-gt",
+        "--training-manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json"
+      ],
+      "profile": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/best.pth",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/profile.json",
+        "--device",
+        "cuda:0",
+        "--size",
+        "384",
+        "--batch-size",
+        "1"
+      ]
+    },
+    {
+      "variant": "native_conv__asff",
+      "seed": 3407,
+      "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407",
+      "train": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "train",
+        "--manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407",
+        "--seed",
+        "3407",
+        "--epochs",
+        "150",
+        "--batch-size",
+        "4",
+        "--size",
+        "384",
+        "--channels",
+        "48",
+        "--workers",
+        "2",
+        "--device",
+        "cuda:0",
+        "--generator",
+        "native_conv",
+        "--utilizer",
+        "asff",
+        "--backbone-weights",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/weights/pvt_v2_b2.pth"
+      ],
+      "evaluate": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "evaluate",
+        "--manifest",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/best.pth",
+        "--split",
+        "test",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks-fixed-20261101_200834",
+        "--device",
+        "cuda:0",
+        "--batch-size",
+        "4",
+        "--workers",
+        "2",
+        "--test-geometry",
+        "resize-prediction-to-gt",
+        "--training-manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json"
+      ],
+      "profile": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/best.pth",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/profile.json",
+        "--device",
+        "cuda:0",
+        "--size",
+        "384",
+        "--batch-size",
+        "1"
+      ]
+    },
+    {
+      "variant": "native_conv__sk",
+      "seed": 3407,
+      "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407",
+      "train": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "train",
+        "--manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407",
+        "--seed",
+        "3407",
+        "--epochs",
+        "150",
+        "--batch-size",
+        "4",
+        "--size",
+        "384",
+        "--channels",
+        "48",
+        "--workers",
+        "2",
+        "--device",
+        "cuda:0",
+        "--generator",
+        "native_conv",
+        "--utilizer",
+        "sk",
+        "--backbone-weights",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/weights/pvt_v2_b2.pth"
+      ],
+      "evaluate": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "evaluate",
+        "--manifest",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/best.pth",
+        "--split",
+        "test",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks-fixed-20261101_200834",
+        "--device",
+        "cuda:0",
+        "--batch-size",
+        "4",
+        "--workers",
+        "2",
+        "--test-geometry",
+        "resize-prediction-to-gt",
+        "--training-manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json"
+      ],
+      "profile": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/best.pth",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/profile.json",
+        "--device",
+        "cuda:0",
+        "--size",
+        "384",
+        "--batch-size",
+        "1"
+      ]
+    },
+    {
+      "variant": "native_conv__mean",
+      "seed": 3407,
+      "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407",
+      "train": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "train",
+        "--manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407",
+        "--seed",
+        "3407",
+        "--epochs",
+        "150",
+        "--batch-size",
+        "4",
+        "--size",
+        "384",
+        "--channels",
+        "48",
+        "--workers",
+        "2",
+        "--device",
+        "cuda:0",
+        "--generator",
+        "native_conv",
+        "--utilizer",
+        "mean",
+        "--backbone-weights",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/weights/pvt_v2_b2.pth"
+      ],
+      "evaluate": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "evaluate",
+        "--manifest",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/best.pth",
+        "--split",
+        "test",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-four-benchmarks-fixed-20261101_200834",
+        "--device",
+        "cuda:0",
+        "--batch-size",
+        "4",
+        "--workers",
+        "2",
+        "--test-geometry",
+        "resize-prediction-to-gt",
+        "--training-manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json"
+      ],
+      "profile": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/best.pth",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/profile.json",
+        "--device",
+        "cuda:0",
+        "--size",
+        "384",
+        "--batch-size",
+        "1"
+      ]
+    },
+    {
+      "variant": "projection__mean",
+      "seed": 3407,
+      "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407",
+      "train": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "train",
+        "--manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407",
+        "--seed",
+        "3407",
+        "--epochs",
+        "150",
+        "--batch-size",
+        "4",
+        "--size",
+        "384",
+        "--channels",
+        "48",
+        "--workers",
+        "2",
+        "--device",
+        "cuda:0",
+        "--generator",
+        "projection",
+        "--utilizer",
+        "mean",
+        "--backbone-weights",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/weights/pvt_v2_b2.pth"
+      ],
+      "evaluate": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "evaluate",
+        "--manifest",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/best.pth",
+        "--split",
+        "test",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-four-benchmarks-fixed-20261101_200834",
+        "--device",
+        "cuda:0",
+        "--batch-size",
+        "4",
+        "--workers",
+        "2",
+        "--test-geometry",
+        "resize-prediction-to-gt",
+        "--training-manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json"
+      ],
+      "profile": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/best.pth",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/profile.json",
+        "--device",
+        "cuda:0",
+        "--size",
+        "384",
+        "--batch-size",
+        "1"
+      ]
+    },
+    {
+      "variant": "dysample__asff",
+      "seed": 3407,
+      "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407",
+      "train": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "train",
+        "--manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407",
+        "--seed",
+        "3407",
+        "--epochs",
+        "150",
+        "--batch-size",
+        "4",
+        "--size",
+        "384",
+        "--channels",
+        "48",
+        "--workers",
+        "2",
+        "--device",
+        "cuda:0",
+        "--generator",
+        "dysample",
+        "--utilizer",
+        "asff",
+        "--backbone-weights",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/weights/pvt_v2_b2.pth"
+      ],
+      "evaluate": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "evaluate",
+        "--manifest",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/best.pth",
+        "--split",
+        "test",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-four-benchmarks-fixed-20261101_200834",
+        "--device",
+        "cuda:0",
+        "--batch-size",
+        "4",
+        "--workers",
+        "2",
+        "--test-geometry",
+        "resize-prediction-to-gt",
+        "--training-manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json"
+      ],
+      "profile": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/best.pth",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/profile.json",
+        "--device",
+        "cuda:0",
+        "--size",
+        "384",
+        "--batch-size",
+        "1"
+      ]
+    },
+    {
+      "variant": "dysample__sk",
+      "seed": 3407,
+      "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407",
+      "train": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "train",
+        "--manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407",
+        "--seed",
+        "3407",
+        "--epochs",
+        "150",
+        "--batch-size",
+        "4",
+        "--size",
+        "384",
+        "--channels",
+        "48",
+        "--workers",
+        "2",
+        "--device",
+        "cuda:0",
+        "--generator",
+        "dysample",
+        "--utilizer",
+        "sk",
+        "--backbone-weights",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/weights/pvt_v2_b2.pth"
+      ],
+      "evaluate": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "evaluate",
+        "--manifest",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/best.pth",
+        "--split",
+        "test",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-four-benchmarks-fixed-20261101_200834",
+        "--device",
+        "cuda:0",
+        "--batch-size",
+        "4",
+        "--workers",
+        "2",
+        "--test-geometry",
+        "resize-prediction-to-gt",
+        "--training-manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json"
+      ],
+      "profile": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/best.pth",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/profile.json",
+        "--device",
+        "cuda:0",
+        "--size",
+        "384",
+        "--batch-size",
+        "1"
+      ]
+    },
+    {
+      "variant": "dysample__mean",
+      "seed": 3407,
+      "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407",
+      "train": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "train",
+        "--manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407",
+        "--seed",
+        "3407",
+        "--epochs",
+        "150",
+        "--batch-size",
+        "4",
+        "--size",
+        "384",
+        "--channels",
+        "48",
+        "--workers",
+        "2",
+        "--device",
+        "cuda:0",
+        "--generator",
+        "dysample",
+        "--utilizer",
+        "mean",
+        "--backbone-weights",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/weights/pvt_v2_b2.pth"
+      ],
+      "evaluate": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/run_study.py",
+        "evaluate",
+        "--manifest",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/best.pth",
+        "--split",
+        "test",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-four-benchmarks-fixed-20261101_200834",
+        "--device",
+        "cuda:0",
+        "--batch-size",
+        "4",
+        "--workers",
+        "2",
+        "--test-geometry",
+        "resize-prediction-to-gt",
+        "--training-manifest",
+        "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json"
+      ],
+      "profile": [
+        "/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/profile_study.py",
+        "--checkpoint",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/best.pth",
+        "--output",
+        "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/profile.json",
+        "--device",
+        "cuda:0",
+        "--size",
+        "384",
+        "--batch-size",
+        "1"
+      ]
+    }
+  ],
+  "relocation": {
+    "source_plan": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/plans/geometry-recovery-20261030_204023/plan.json",
+    "source_plan_sha256": "be32e9989ba5f73123d47f741a2d3e2323c8ecb865c34e06af11e4bbdf10b062",
+    "source_recovery": {
+      "schema_version": 1,
+      "source_plan": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/plans/priority8/plan.json",
+      "source_plan_sha256": "6cbee4c151919dad0a0c2c3dc8cc178c2b3f226b1a3e39d9619fabf02cad5834",
+      "test_geometry": "resize-prediction-to-gt",
+      "original_evaluation_subdir": "test",
+      "training_states": [
+        {
+          "variant": "single",
+          "seed": 3407,
+          "run": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/single__seed3407",
+          "state": "completed_training_reused"
+        },
+        {
+          "variant": "native_conv__asff",
+          "seed": 3407,
+          "run": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/native_conv__asff__seed3407",
+          "state": "training_not_started"
+        },
+        {
+          "variant": "native_conv__sk",
+          "seed": 3407,
+          "run": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/native_conv__sk__seed3407",
+          "state": "training_not_started"
+        },
+        {
+          "variant": "native_conv__mean",
+          "seed": 3407,
+          "run": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/native_conv__mean__seed3407",
+          "state": "training_not_started"
+        },
+        {
+          "variant": "projection__mean",
+          "seed": 3407,
+          "run": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/projection__mean__seed3407",
+          "state": "training_not_started"
+        },
+        {
+          "variant": "dysample__asff",
+          "seed": 3407,
+          "run": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/dysample__asff__seed3407",
+          "state": "training_not_started"
+        },
+        {
+          "variant": "dysample__sk",
+          "seed": 3407,
+          "run": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/dysample__sk__seed3407",
+          "state": "training_not_started"
+        },
+        {
+          "variant": "dysample__mean",
+          "seed": 3407,
+          "run": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/dysample__mean__seed3407",
+          "state": "training_not_started"
+        }
+      ],
+      "data_audits": [
+        {
+          "manifest": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/manifest_no_cod10k_test.json",
+          "manifest_sha256": "21a61141c06e7a2cd3cd36d90d71aec26977757efd56c4df985f21cb33dbf08a",
+          "data_root": "/home/master/mithila/INS_COD/Datasets/COD-Data",
+          "test_datasets_selected": [
+            "camo",
+            "chameleon",
+            "nc4k"
+          ],
+          "geometry_audit": {
+            "policy": "resize-prediction-to-gt",
+            "split": "test",
+            "checked_pairs": 4447,
+            "dataset_counts": {
+              "camo": 250,
+              "chameleon": 76,
+              "nc4k": 4121
+            },
+            "mismatch_count": 2,
+            "mismatches": [
+              {
+                "id": "chameleon_test/animal-62",
+                "dataset": "chameleon",
+                "image": "CHAMELEON/Imgs/animal-62.jpg",
+                "mask": "CHAMELEON/GT/animal-62.png",
+                "image_size": [
+                  1000,
+                  628
+                ],
+                "mask_size": [
+                  998,
+                  628
+                ]
+              },
+              {
+                "id": "chameleon_test/animal-74",
+                "dataset": "chameleon",
+                "image": "CHAMELEON/Imgs/animal-74.jpg",
+                "mask": "CHAMELEON/GT/animal-74.png",
+                "image_size": [
+                  933,
+                  700
+                ],
+                "mask_size": [
+                  933,
+                  678
+                ]
+              }
+            ],
+            "manifest_sha256": "21a61141c06e7a2cd3cd36d90d71aec26977757efd56c4df985f21cb33dbf08a",
+            "protocol": {
+              "version": 1,
+              "policy": "resize-prediction-to-gt",
+              "prediction_grid": "original GT mask height/width",
+              "prediction_resize": "bilinear; align_corners=False; after model-resolution min-max",
+              "ground_truth": "original bytes and resolution; no crop, resize or sample exclusion",
+              "alignment": "full-image normalized coordinates; registration is not verified"
+            }
+          }
+        }
+      ],
+      "execution": "not_started"
+    },
+    "copied_training": [
+      {
+        "source": "/home/master/mithila/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-seed3407-20261030_114816/runs/priority8/single__seed3407",
+        "destination": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407",
+        "sha256": {
+          "best.pth": "4cccfe9c739f47a67ca441767402c03b42971c6ee2147c54b4a777c4a4729f1c",
+          "last.pth": "c24107d09bc82709d95df0879193cc877bb53902e503f475ff781d44c2a52b5c",
+          "config.json": "1577c6833480bda8a54efba07c05f575c26b8a80166886a7de25f441a64dd839",
+          "status.json": "011b901af6f62fb4940421f25abd5f3048dc3b47cef45777be1882ab4ec571e4",
+          "manifest.json": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+          "history.jsonl": "c1d98e5bf6494f4e5bb33968dd2b87be03e97ef6dafeeb457c7ab87113b1398d"
+        }
+      }
+    ]
+  },
+  "evaluation_only": true,
+  "benchmark_repair": {
+    "schema_version": 1,
+    "source_plan": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/plan.json",
+    "source_plan_sha256": "fdc7661b9dc33504c34ab2bf47dcdc41bf30b77576346a841aadfb8656e593c7",
+    "original_evaluation_subdir": "test-geometry-v1-20261030_204023",
+    "manifest_extension": {
+      "schema_version": 1,
+      "training_manifest_sha256": "21a61141c06e7a2cd3cd36d90d71aec26977757efd56c4df985f21cb33dbf08a",
+      "evaluation_manifest_sha256": "2ad6d012c953111260597459aa1ea437439c9f5f909dbb1e54fc32405e753ea8",
+      "original_record_count": 8487,
+      "added_records": 2026,
+      "benchmark_coverage": {
+        "expected_counts": {
+          "camo": 250,
+          "chameleon": 76,
+          "cod10k": 2026,
+          "nc4k": 4121
+        },
+        "observed_counts": {
+          "camo": 250,
+          "chameleon": 76,
+          "cod10k": 2026,
+          "nc4k": 4121
+        },
+        "missing_datasets": [],
+        "unexpected_datasets": [],
+        "nonstandard_counts": {},
+        "complete": true
+      },
+      "overlap_audit": {
+        "schema_version": 1,
+        "policy": "acknowledged-cod10k-v1",
+        "disjoint": false,
+        "train_test_count": 6,
+        "val_test_count": 1,
+        "affected_test_count": 7,
+        "groups": [
+          {
+            "image_sha256": "1be584edf381ee65c4e802dedefb671742122d6db3f00af3b204d6b4754309d7",
+            "train_id": "cod10k_train/COD10K-CAM-2-Terrestrial-26-Chameleon-1694",
+            "train_split": "train",
+            "test_id": "cod10k_test/COD10K-CAM-2-Terrestrial-31-Gecko-1892",
+            "test_split": "test"
+          },
+          {
+            "image_sha256": "311809538532626c3c07e95076c32130b7010d16cf5ae6e6d5624819ab1d70d0",
+            "train_id": "cod10k_train/COD10K-CAM-2-Terrestrial-23-Cat-1506",
+            "train_split": "train",
+            "test_id": "cod10k_test/COD10K-CAM-2-Terrestrial-23-Cat-1506",
+            "test_split": "test"
+          },
+          {
+            "image_sha256": "58a9a7b96f9f5643139d33d73331c6f1851b599df7fa60a916e451ef01ca3afe",
+            "train_id": "cod10k_train/COD10K-CAM-2-Terrestrial-28-Deer-1796",
+            "train_split": "train",
+            "test_id": "cod10k_test/COD10K-CAM-2-Terrestrial-28-Deer-1762",
+            "test_split": "test"
+          },
+          {
+            "image_sha256": "6368c9991b9cc8f2d45eb87bb172e2611154efaaa99113fc1fab0d1943276390",
+            "train_id": "cod10k_train/COD10K-CAM-3-Flying-53-Bird-3205",
+            "train_split": "train",
+            "test_id": "cod10k_test/COD10K-CAM-3-Flying-65-Owl-4633",
+            "test_split": "test"
+          },
+          {
+            "image_sha256": "6988e9b908fb9a6c8157405f49dcd37586ef14f08d6374e33996c780dcbb67e0",
+            "train_id": "cod10k_train/COD10K-CAM-2-Terrestrial-32-Giraffe-1930",
+            "train_split": "val",
+            "test_id": "cod10k_test/COD10K-CAM-2-Terrestrial-32-Giraffe-1932",
+            "test_split": "test"
+          },
+          {
+            "image_sha256": "e5f0ea8dec16c4b4ed178c58a9827cd946fa9e0e860e1d56ae769b50d59e6c4e",
+            "train_id": "cod10k_train/COD10K-CAM-2-Terrestrial-31-Gecko-1928",
+            "train_split": "train",
+            "test_id": "cod10k_test/COD10K-CAM-2-Terrestrial-31-Gecko-1895",
+            "test_split": "test"
+          },
+          {
+            "image_sha256": "e60fced9bfb2eeb8df4b7b9dcce931d6537b7f4f8ff4e49296e4bd763897d27a",
+            "train_id": "cod10k_train/COD10K-CAM-1-Aquatic-3-Crab-32",
+            "train_split": "train",
+            "test_id": "cod10k_test/COD10K-CAM-1-Aquatic-3-Crab-32",
+            "test_split": "test"
+          }
+        ]
+      }
+    },
+    "geometry_audit": {
+      "policy": "resize-prediction-to-gt",
+      "split": "test",
+      "checked_pairs": 6473,
+      "dataset_counts": {
+        "camo": 250,
+        "chameleon": 76,
+        "cod10k": 2026,
+        "nc4k": 4121
+      },
+      "mismatch_count": 2,
+      "mismatches": [
+        {
+          "id": "chameleon_test/animal-62",
+          "dataset": "chameleon",
+          "image": "CHAMELEON/Imgs/animal-62.jpg",
+          "mask": "CHAMELEON/GT/animal-62.png",
+          "image_size": [
+            1000,
+            628
+          ],
+          "mask_size": [
+            998,
+            628
+          ]
+        },
+        {
+          "id": "chameleon_test/animal-74",
+          "dataset": "chameleon",
+          "image": "CHAMELEON/Imgs/animal-74.jpg",
+          "mask": "CHAMELEON/GT/animal-74.png",
+          "image_size": [
+            933,
+            700
+          ],
+          "mask_size": [
+            933,
+            678
+          ]
+        }
+      ],
+      "manifest_sha256": "2ad6d012c953111260597459aa1ea437439c9f5f909dbb1e54fc32405e753ea8",
+      "protocol": {
+        "version": 1,
+        "policy": "resize-prediction-to-gt",
+        "prediction_grid": "original GT mask height/width",
+        "prediction_resize": "bilinear; align_corners=False; after model-resolution min-max",
+        "ground_truth": "original bytes and resolution; no crop, resize or sample exclusion",
+        "alignment": "full-image normalized coordinates; registration is not verified"
+      }
+    },
+    "training_states": [
+      {
+        "variant": "single",
+        "seed": 3407,
+        "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407",
+        "state": "completed_training_reused",
+        "checkpoint_sha256": "4cccfe9c739f47a67ca441767402c03b42971c6ee2147c54b4a777c4a4729f1c"
+      },
+      {
+        "variant": "native_conv__asff",
+        "seed": 3407,
+        "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407",
+        "state": "completed_training_reused",
+        "checkpoint_sha256": "a1b1b69e910d0d9eb0aea7465389850f4214a2f97c69023c7223808f6466e1da"
+      },
+      {
+        "variant": "native_conv__sk",
+        "seed": 3407,
+        "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407",
+        "state": "completed_training_reused",
+        "checkpoint_sha256": "17288286d9662dda31191bf368df3359b688ce04123749c8180b90a9e55c85f3"
+      },
+      {
+        "variant": "native_conv__mean",
+        "seed": 3407,
+        "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407",
+        "state": "completed_training_reused",
+        "checkpoint_sha256": "fa8d1ffebaf6b46498b375fa88d7d29acb7be975c16eaf450614b63910691652"
+      },
+      {
+        "variant": "projection__mean",
+        "seed": 3407,
+        "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407",
+        "state": "completed_training_reused",
+        "checkpoint_sha256": "d5fd13cdd59d3d6b24a9445b5b64834fb8397089c5cea0a89fa090ccc774e7dd"
+      },
+      {
+        "variant": "dysample__asff",
+        "seed": 3407,
+        "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407",
+        "state": "completed_training_reused",
+        "checkpoint_sha256": "6b1a41a0287c3b848711afbc0866a5a9cec0f8ce618e08fa76b3b340052d53f9"
+      },
+      {
+        "variant": "dysample__sk",
+        "seed": 3407,
+        "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407",
+        "state": "completed_training_reused",
+        "checkpoint_sha256": "bc9acd1a4ebb6f2f01df800f348990f73fcceb487ff21148aed5ee3b93b2b6f0"
+      },
+      {
+        "variant": "dysample__mean",
+        "seed": 3407,
+        "run": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407",
+        "state": "completed_training_reused",
+        "checkpoint_sha256": "a03ba94e9c62e371aff69bf57f908ce9d2fe79864bc91a68b977c1269105fbf0"
+      }
+    ],
+    "execution": "not_started; explicit evaluation only; no training or profiling",
+    "entrypoint_rebinding": {
+      "enabled": true,
+      "current_study_directory": "/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study",
+      "policy": "only script paths change; original Python, arguments, checkpoints and outputs are preserved"
+    }
+  }
+}

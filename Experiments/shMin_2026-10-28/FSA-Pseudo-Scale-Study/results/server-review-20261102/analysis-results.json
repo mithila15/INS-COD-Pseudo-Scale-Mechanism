@@ -1,0 +1,565 @@
+{
+  "source_snapshot": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834",
+  "snapshot_status": {
+    "planned_runs": 8,
+    "training_evaluation_profile_complete": 3,
+    "complete_variants": [
+      "single",
+      "native_conv__asff",
+      "native_conv__sk"
+    ],
+    "started_incomplete_variant": "native_conv__mean",
+    "last_recorded_epoch": 15,
+    "remaining_without_run_history": [
+      "projection__mean",
+      "dysample__asff",
+      "dysample__sk",
+      "dysample__mean"
+    ],
+    "leaderboard_progress": {
+      "total_runs": 8,
+      "planned_runs": 8,
+      "training_complete": 3,
+      "evaluation_complete": 3,
+      "profile_complete": 3,
+      "not_started": 5,
+      "training_incomplete": 0,
+      "all_stages_complete": 3,
+      "execution_complete": 3,
+      "benchmark_complete": 3
+    },
+    "explanation": "Leaderboard reflects completed-stage refresh and says not_started=5; history/run.log proves native_conv__mean has completed epoch15. Archive cannot establish live server state."
+  },
+  "conditions": {
+    "seed": 3407,
+    "size": 384,
+    "batch_size": 4,
+    "epochs": 150,
+    "channels": 48,
+    "lr": 0.0001,
+    "training_protocol": "full_train",
+    "training_sample_count": 4040,
+    "validation_sample_count": 0,
+    "training_split_counts": {
+      "train": {
+        "camo": 1000,
+        "cod10k": 3040
+      },
+      "val": {}
+    },
+    "checkpoint_selection": "fixed final epoch; no validation or test selection",
+    "backbone_sha256": "80711cd1b37ffba12bec6c7a2a7c54efe2315ed635e6d2055fd51c3e909ede4d",
+    "manifest_sha256": "af2cd10f1a6db6f8c474493c751e860c40009025b35a6cc53d9baaa7f5f9aa7f",
+    "loss_weights": {
+      "seg": 1,
+      "deep": 0.25,
+      "region": 0.5,
+      "edge": 1,
+      "ual": 1
+    },
+    "augmentation": "stateless seeded horizontal flip p=.5, vertical flip p=.2; resized RGB/mask"
+  },
+  "principal_metrics": {
+    "single": {
+      "camo": {
+        "count": 250,
+        "S": 0.836505627843304,
+        "wF": 0.7911295392477766,
+        "E_mean": 0.8988956100052086,
+        "MAE": 0.0587133597288398
+      },
+      "chameleon": {
+        "count": 76,
+        "S": 0.9006211205717488,
+        "wF": 0.854717813268685,
+        "E_mean": 0.9428718356308946,
+        "MAE": 0.027204664521011317
+      },
+      "cod10k": {
+        "count": 2026,
+        "S": 0.8551385575022257,
+        "wF": 0.7666501276440837,
+        "E_mean": 0.9246411373143424,
+        "MAE": 0.02567727934266115
+      },
+      "nc4k": {
+        "count": 4121,
+        "S": 0.8724416577403894,
+        "wF": 0.8229906106258383,
+        "E_mean": 0.9247978966089403,
+        "MAE": 0.03662558463935841
+      }
+    },
+    "native_conv__asff": {
+      "camo": {
+        "count": 250,
+        "S": 0.8391877026569176,
+        "wF": 0.7946240067367994,
+        "E_mean": 0.9024897624298696,
+        "MAE": 0.05817316242542365
+      },
+      "chameleon": {
+        "count": 76,
+        "S": 0.9034804069230072,
+        "wF": 0.8572445150299314,
+        "E_mean": 0.9480607407467196,
+        "MAE": 0.02487025767386175
+      },
+      "cod10k": {
+        "count": 2026,
+        "S": 0.8555053505930379,
+        "wF": 0.7655900959525892,
+        "E_mean": 0.9247097012029724,
+        "MAE": 0.025216416754664815
+      },
+      "nc4k": {
+        "count": 4121,
+        "S": 0.8718836000399942,
+        "wF": 0.8220252389703286,
+        "E_mean": 0.9254415268773051,
+        "MAE": 0.0364322243019755
+      }
+    },
+    "native_conv__sk": {
+      "camo": {
+        "count": 250,
+        "S": 0.8376906339090677,
+        "wF": 0.7933130639226181,
+        "E_mean": 0.8993741771340329,
+        "MAE": 0.05775507689342268
+      },
+      "chameleon": {
+        "count": 76,
+        "S": 0.907426615663339,
+        "wF": 0.8652329160724965,
+        "E_mean": 0.9510904103478359,
+        "MAE": 0.02359833332360159
+      },
+      "cod10k": {
+        "count": 2026,
+        "S": 0.8550477423291224,
+        "wF": 0.7665784988155636,
+        "E_mean": 0.9249988015355952,
+        "MAE": 0.02555311682689974
+      },
+      "nc4k": {
+        "count": 4121,
+        "S": 0.8714910536367018,
+        "wF": 0.8222715745866859,
+        "E_mean": 0.9233792747809233,
+        "MAE": 0.03654111635991644
+      }
+    }
+  },
+  "delta_vs_single": {
+    "native_conv__asff": {
+      "camo": {
+        "S": 0.0026820748136135997,
+        "wF": 0.0034944674890228233,
+        "E_mean": 0.00359415242466099,
+        "MAE": -0.0005401973034161525
+      },
+      "chameleon": {
+        "S": 0.0028592863512584277,
+        "wF": 0.002526701761246364,
+        "E_mean": 0.005188905115825038,
+        "MAE": -0.0023344068471495664
+      },
+      "cod10k": {
+        "S": 0.000366793090812223,
+        "wF": -0.0010600316914944896,
+        "E_mean": 6.856388862996887e-05,
+        "MAE": -0.00046086258799633503
+      },
+      "nc4k": {
+        "S": -0.000558057700395187,
+        "wF": -0.0009653716555096947,
+        "E_mean": 0.000643630268364781,
+        "MAE": -0.00019336033738290986
+      }
+    },
+    "native_conv__sk": {
+      "camo": {
+        "S": 0.0011850060657637718,
+        "wF": 0.0021835246748415083,
+        "E_mean": 0.0004785671288243254,
+        "MAE": -0.0009582828354171222
+      },
+      "chameleon": {
+        "S": 0.00680549509159023,
+        "wF": 0.010515102803811516,
+        "E_mean": 0.008218574716941318,
+        "MAE": -0.0036063311974097283
+      },
+      "cod10k": {
+        "S": -9.08151731032758e-05,
+        "wF": -7.162882852007613e-05,
+        "E_mean": 0.00035766422125282915,
+        "MAE": -0.00012416251576140985
+      },
+      "nc4k": {
+        "S": -0.0009506041036876356,
+        "wF": -0.0007190360391524653,
+        "E_mean": -0.001418621828016997,
+        "MAE": -8.446827944196683e-05
+      }
+    }
+  },
+  "inference_and_training_cost": {
+    "single": {
+      "parameters": 25318163,
+      "latency_median_ms": 6.3071014592424035,
+      "fps": 158.53404634042525,
+      "macs": 13984316928,
+      "flops_2_macs": 27968633856,
+      "estimated_total_flops": 28561003672,
+      "peak_allocated_bytes": 215461376,
+      "train_seconds": 17078.13650684897,
+      "gpu": "NVIDIA RTX PRO 5000 Blackwell",
+      "profile_batch_size": 1,
+      "profile_size": 384,
+      "profile_dtype": "float32",
+      "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer"
+    },
+    "native_conv__asff": {
+      "parameters": 25351775,
+      "latency_median_ms": 7.761582615785301,
+      "fps": 128.84567863308885,
+      "macs": 14098002048,
+      "flops_2_macs": 28196004096,
+      "estimated_total_flops": 28857040312,
+      "peak_allocated_bytes": 215688704,
+      "train_seconds": 20826.011388993124,
+      "gpu": "NVIDIA RTX PRO 5000 Blackwell",
+      "profile_batch_size": 1,
+      "profile_size": 384,
+      "profile_dtype": "float32",
+      "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
+      "percent_change_vs_single": {
+        "parameters": 0.13275844696947203,
+        "latency_median_ms": 23.061007753593454,
+        "fps": -18.726808778718496,
+        "macs": 0.8129472507332425,
+        "flops_2_macs": 0.8129472507332425,
+        "estimated_total_flops": 1.0365064316357309,
+        "peak_allocated_bytes": 0.10550754117526484,
+        "train_seconds": 21.945455703794824
+      }
+    },
+    "native_conv__sk": {
+      "parameters": 25351427,
+      "latency_median_ms": 7.447432493790984,
+      "fps": 134.29514655001762,
+      "macs": 14068047744,
+      "flops_2_macs": 28136095488,
+      "estimated_total_flops": 28792802296,
+      "peak_allocated_bytes": 215678464,
+      "train_seconds": 20531.119859803934,
+      "gpu": "NVIDIA RTX PRO 5000 Blackwell",
+      "profile_batch_size": 1,
+      "profile_size": 384,
+      "profile_dtype": "float32",
+      "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
+      "percent_change_vs_single": {
+        "parameters": 0.13138393966418693,
+        "latency_median_ms": 18.080112424345796,
+        "fps": -15.289397041162168,
+        "macs": 0.5987479862698875,
+        "flops_2_macs": 0.5987479862698875,
+        "estimated_total_flops": 0.8115913105226191,
+        "peak_allocated_bytes": 0.10075494923043049,
+        "train_seconds": 20.21873611075886
+      }
+    }
+  },
+  "principal_rankings": {
+    "camo": {
+      "S": [
+        "native_conv__asff",
+        "native_conv__sk",
+        "single"
+      ],
+      "wF": [
+        "native_conv__asff",
+        "native_conv__sk",
+        "single"
+      ],
+      "E_mean": [
+        "native_conv__asff",
+        "native_conv__sk",
+        "single"
+      ],
+      "MAE": [
+        "native_conv__sk",
+        "native_conv__asff",
+        "single"
+      ]
+    },
+    "chameleon": {
+      "S": [
+        "native_conv__sk",
+        "native_conv__asff",
+        "single"
+      ],
+      "wF": [
+        "native_conv__sk",
+        "native_conv__asff",
+        "single"
+      ],
+      "E_mean": [
+        "native_conv__sk",
+        "native_conv__asff",
+        "single"
+      ],
+      "MAE": [
+        "native_conv__sk",
+        "native_conv__asff",
+        "single"
+      ]
+    },
+    "cod10k": {
+      "S": [
+        "native_conv__asff",
+        "single",
+        "native_conv__sk"
+      ],
+      "wF": [
+        "single",
+        "native_conv__sk",
+        "native_conv__asff"
+      ],
+      "E_mean": [
+        "native_conv__sk",
+        "native_conv__asff",
+        "single"
+      ],
+      "MAE": [
+        "native_conv__asff",
+        "native_conv__sk",
+        "single"
+      ]
+    },
+    "nc4k": {
+      "S": [
+        "single",
+        "native_conv__asff",
+        "native_conv__sk"
+      ],
+      "wF": [
+        "single",
+        "native_conv__sk",
+        "native_conv__asff"
+      ],
+      "E_mean": [
+        "native_conv__asff",
+        "single",
+        "native_conv__sk"
+      ],
+      "MAE": [
+        "native_conv__asff",
+        "native_conv__sk",
+        "single"
+      ]
+    }
+  },
+  "independent_leaderboard_check": {
+    "test_boards_checked": 84,
+    "errors": []
+  },
+  "source_consistency": {
+    "training_source_hashes_identical": true,
+    "evaluation_source_hashes_identical": true,
+    "manifest_hashes_identical": true,
+    "checkpoint_epoch": {
+      "single": 150,
+      "native_conv__asff": 150,
+      "native_conv__sk": 150
+    }
+  },
+  "caveats": [
+    "Single seed 3407; no multi-seed variability or significance assessment.",
+    "This is a partial archive of 3 completed experiments of 8, not the live state of the server.",
+    "No single variant dominates every dataset or metric; no composite winner is computed.",
+    "COD10K scores include 7 acknowledged byte-identical train/test images; not disjoint-test evidence.",
+    "CHAMELEON has 2 image/mask size mismatches; predictions are resized to unchanged GT grid and alignment has not been independently verified.",
+    "Timing is batch1 float32 synthetic input on NVIDIA RTX PRO 5000 Blackwell; includes all heads, excludes IO and transfer.",
+    "Recorded profile protocol generator/utilizer/baseline fields are CLI defaults; effective model identity comes from loaded-checkpoint metadata.config.",
+    "Old holdout experiment differs in training sample count and checkpoint selection and is not interchangeable with current full_train comparison."
+  ],
+  "overlap_audit": {
+    "schema_version": 1,
+    "policy": "acknowledged-cod10k-v1",
+    "disjoint": false,
+    "train_test_count": 7,
+    "val_test_count": 0,
+    "affected_test_count": 7
+  },
+  "geometry_audit": {
+    "policy": "resize-prediction-to-gt",
+    "checked_pairs": 6473,
+    "dataset_counts": {
+      "camo": 250,
+      "chameleon": 76,
+      "cod10k": 2026,
+      "nc4k": 4121
+    },
+    "mismatch_count": 2,
+    "mismatches": [
+      {
+        "id": "chameleon_test/animal-62",
+        "dataset": "chameleon",
+        "image": "CHAMELEON/Imgs/animal-62.jpg",
+        "mask": "CHAMELEON/GT/animal-62.png",
+        "image_size": [
+          1000,
+          628
+        ],
+        "mask_size": [
+          998,
+          628
+        ]
+      },
+      {
+        "id": "chameleon_test/animal-74",
+        "dataset": "chameleon",
+        "image": "CHAMELEON/Imgs/animal-74.jpg",
+        "mask": "CHAMELEON/GT/animal-74.png",
+        "image_size": [
+          933,
+          700
+        ],
+        "mask_size": [
+          933,
+          678
+        ]
+      }
+    ]
+  },
+  "all_metric_names": [
+    "Accuracy_0_5",
+    "BER_0_5",
+    "BalancedAccuracy_0_5",
+    "BoundaryIoU_0_5",
+    "Dice_0_5",
+    "E_adaptive",
+    "E_max",
+    "E_mean",
+    "F1_0_5",
+    "FNR_0_5",
+    "FPR_0_5",
+    "Fbeta_adaptive",
+    "Fbeta_max",
+    "Fbeta_mean",
+    "IoU_0_5",
+    "MAE",
+    "Precision_0_5",
+    "Recall_0_5",
+    "S",
+    "Specificity_0_5",
+    "wF"
+  ],
+  "last_history_record": {
+    "single": {
+      "epoch": 150,
+      "step": 151500,
+      "seconds_elapsed": 17078.13650684897,
+      "train_losses": {
+        "seg": 0.15912016692506795,
+        "deep": 0.077217904754942,
+        "region": 0.0888744280996299,
+        "edge": 0.15178380480202117,
+        "ual": 0.006834093333535487
+      },
+      "validation": null,
+      "best_val_mae": null,
+      "training_protocol": "full_train",
+      "checkpoint_selection": "fixed final epoch; no validation or test selection"
+    },
+    "native_conv__asff": {
+      "epoch": 150,
+      "step": 151500,
+      "seconds_elapsed": 20826.011388993124,
+      "train_losses": {
+        "seg": 0.1574636548130524,
+        "deep": 0.07684531221074042,
+        "region": 0.0878339540471535,
+        "edge": 0.15238045340422357,
+        "ual": 0.006755509325084138
+      },
+      "validation": null,
+      "best_val_mae": null,
+      "training_protocol": "full_train",
+      "checkpoint_selection": "fixed final epoch; no validation or test selection"
+    },
+    "native_conv__sk": {
+      "epoch": 150,
+      "step": 151500,
+      "seconds_elapsed": 20531.119859803934,
+      "train_losses": {
+        "seg": 0.15919571358083498,
+        "deep": 0.07774131115120236,
+        "region": 0.08914233160269733,
+        "edge": 0.15160013665952304,
+        "ual": 0.006812398741540435
+      },
+      "validation": null,
+      "best_val_mae": null,
+      "training_protocol": "full_train",
+      "checkpoint_selection": "fixed final epoch; no validation or test selection"
+    },
+    "native_conv__mean": {
+      "epoch": 15,
+      "step": 15150,
+      "seconds_elapsed": 2039.9712819829583,
+      "train_losses": {
+        "seg": 0.3465676180206903,
+        "deep": 0.1209297049901273,
+        "region": 0.18278337906640355,
+        "edge": 0.3299908152753764,
+        "ual": 0.0006198730737709735
+      },
+      "validation": null,
+      "best_val_mae": null,
+      "training_protocol": "full_train",
+      "checkpoint_selection": "fixed final epoch; no validation or test selection"
+    }
+  },
+  "independent_per_image_aggregate_check": {
+    "variants": {
+      "single": {
+        "rows": 6473,
+        "unique_dataset_ids": 6473,
+        "counts": {
+          "camo": 250,
+          "chameleon": 76,
+          "nc4k": 4121,
+          "cod10k": 2026
+        },
+        "max_abs_principal_aggregate_error": 2.220446049250313e-16
+      },
+      "native_conv__asff": {
+        "rows": 6473,
+        "unique_dataset_ids": 6473,
+        "counts": {
+          "camo": 250,
+          "chameleon": 76,
+          "nc4k": 4121,
+          "cod10k": 2026
+        },
+        "max_abs_principal_aggregate_error": 2.220446049250313e-16
+      },
+      "native_conv__sk": {
+        "rows": 6473,
+        "unique_dataset_ids": 6473,
+        "counts": {
+          "camo": 250,
+          "chameleon": 76,
+          "nc4k": 4121,
+          "cod10k": 2026
+        },
+        "max_abs_principal_aggregate_error": 2.220446049250313e-16
+      }
+    },
+    "same_dataset_id_sets": true
+  }
+}

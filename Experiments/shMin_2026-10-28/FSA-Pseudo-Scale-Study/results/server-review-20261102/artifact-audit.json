@@ -1,0 +1,62 @@
+{
+  "archive": "ins-cod-code-results.zip",
+  "run_root": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/",
+  "method": "SHA256 of decompressed ZIP member bytes compared to every hash in each metrics.json artifacts.sha256 map",
+  "runs": {
+    "native_conv__asff__seed3407": {
+      "recorded_artifact_hashes": 6503,
+      "verified_artifact_hashes": 6503,
+      "verified_by_kind": {
+        "curve_png": 12,
+        "curve_svg": 12,
+        "curve_csv": 4,
+        "metadata_csv": 1,
+        "prediction_png": 6473,
+        "metadata_json": 1
+      },
+      "decompressed_bytes_verified": 113358763,
+      "prediction_member_set_matches_manifest": true,
+      "errors": []
+    },
+    "native_conv__sk__seed3407": {
+      "recorded_artifact_hashes": 6503,
+      "verified_artifact_hashes": 6503,
+      "verified_by_kind": {
+        "curve_png": 12,
+        "curve_svg": 12,
+        "curve_csv": 4,
+        "metadata_csv": 1,
+        "prediction_png": 6473,
+        "metadata_json": 1
+      },
+      "decompressed_bytes_verified": 111194941,
+      "prediction_member_set_matches_manifest": true,
+      "errors": []
+    },
+    "single__seed3407": {
+      "recorded_artifact_hashes": 6503,
+      "verified_artifact_hashes": 6503,
+      "verified_by_kind": {
+        "curve_png": 12,
+        "curve_svg": 12,
+        "curve_csv": 4,
+        "metadata_csv": 1,
+        "prediction_png": 6473,
+        "metadata_json": 1
+      },
+      "decompressed_bytes_verified": 113350517,
+      "prediction_member_set_matches_manifest": true,
+      "errors": []
+    }
+  },
+  "errors": [],
+  "limitations": [
+    "This verifies exported artifact bytes against recorded hashes; it does not authenticate the producer.",
+    "No original GT/data or checkpoint weights are present; no inference or metric rerun against raw data was performed."
+  ],
+  "total_recorded_hashes": 19509,
+  "total_verified_hashes": 19509,
+  "complete_runs_checked": 3,
+  "passed": true,
+  "completed_at_utc": "2026-11-02T04:53:18.677433+00:00"
+}

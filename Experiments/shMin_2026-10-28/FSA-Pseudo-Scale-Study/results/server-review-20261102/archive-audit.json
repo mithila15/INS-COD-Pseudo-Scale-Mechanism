@@ -1,0 +1,2525 @@
+{
+  "archive": "ins-cod-code-results.zip",
+  "release": "https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102",
+  "archive_bytes": 988952989,
+  "sha256": "1d10d89be1aa34add4aa68c60f1b4445e905fb48aa5e86bea4468ecf31735c6e",
+  "sidecar_sha256_matches": true,
+  "github_asset_sha256_matches": true,
+  "zip_crc": "all entries passed zipfile.testzip; no corrupt member",
+  "entries": 55519,
+  "uncompressed_bytes": 1093803407,
+  "prediction_pngs_in_release_only": 54995,
+  "browsable_result_files_imported": 372,
+  "existing_result_files_preserved": 38,
+  "existing_result_status_counts": {
+    "existing_line_endings_only": 33,
+    "existing_byte_identical": 5
+  },
+  "imported_result_bytes": 166029500,
+  "source_merge": "No semantic changes; retained repository sources, server CRLF byte hashes preserved in original archive and reports.",
+  "limitations": [
+    "Historical absolute paths describe the server; no training/evaluation was started.",
+    "Weights, original datasets and environments were excluded by user request.",
+    "Prediction masks are available in the Release archive, not Git paths."
+  ],
+  "files": [
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/data-overlap-audit-20261101_184227.json",
+      "bytes": 7628,
+      "sha256": "9bf8b0ce54836f67c4dbdd3bd201923c207726bebb90aec110c97a6aeec3720b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/checksums.sha256",
+      "bytes": 1536,
+      "sha256": "1d69652dbe24a9d20419c02dfbab86a96b3e0ceaacb907dc004d35bdf5f010d0",
+      "repository_sha256": "59729596122895196f81094733ef77d6c52bb91ebe55bc43f1be5474c638c59b",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-native-asff-cpu.json",
+      "bytes": 6131,
+      "sha256": "b827ac7eb2dc80d40e9880f51103e88a2745aed1d141b4c8e9cfe221348de5d8",
+      "repository_sha256": "0cedbbd16f73f4ac55418873c50daf3795bdae0e93fe1d1eeea5af82d01077a4",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/tests-final.txt",
+      "bytes": 1715,
+      "sha256": "3f18065d6df4357a601c65741ac51fb53983a94ae20f80f90d26f4dd909bf92f",
+      "repository_sha256": "1603c35101c754dfdc13b9326de6875360f8698e87890ffc86d9c56f04e372a7",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/migration-verification.json",
+      "bytes": 412,
+      "sha256": "e901a7086b402ef89e4ab635c1a6946cd6ad2fb44f34c06848c00c70423869bc",
+      "repository_sha256": "f30fab69c0b9e551fd081be3e8af999cfe7bb3d1cdbbeb7d40cffdd1c602f935",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/source-sha256.json",
+      "bytes": 1615,
+      "sha256": "ea419ac0b4bbe4df5432ee03f906423b86b71d51ee702cdcab8eacbcb23dfc8a",
+      "repository_sha256": "9ebb29e9d02299969adb6e02d36d785a174ff58914ba4ba15be695d8a1645a54",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/tests.txt",
+      "bytes": 1715,
+      "sha256": "dc08cdd0479198923659a1c03d0302f788e9d10b9cfa15017987719715b2e191",
+      "repository_sha256": "11b488327d86378513b9e0c8a79d4fbaf36adb5a06deb0b7f2798a01c47260eb",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-legacy-full-cpu.json",
+      "bytes": 1978,
+      "sha256": "4e8d6d02a6f08662481b61892bda4e2e7d930e3d0d16d9b164e3704a253934d0",
+      "repository_sha256": "0de2e2b107d2972d89e04aa1f892346e4369dd9bbecef2ae72e9cbfc0c1a7c5a",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-dysample-asff-cuda.json",
+      "bytes": 6630,
+      "sha256": "4eb14f553f87d6efc0949b522997615662d4c9050cbc7569595e91a458a6491f",
+      "repository_sha256": "99edba58c8d611bfe2d4c43d22507719858e1e90c7ec6dd3ff169be0fff62359",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/migration-verification-initial.json",
+      "bytes": 802,
+      "sha256": "2eff2d3afab11c18e27188c9e4d0602709b6cdcbcbc3c7e61a59b016a4989ee1",
+      "repository_sha256": "61fda887279ad605e6980db2912a976262f5ad71dc2e9c6da41cebd1c58b7d78",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/tests.xml",
+      "bytes": 30850,
+      "sha256": "1804f7362322c79b2edfee3bc2bda6abd6ded0b54d8a8735b023944984e7eedc",
+      "repository_sha256": "1804f7362322c79b2edfee3bc2bda6abd6ded0b54d8a8735b023944984e7eedc",
+      "status": "existing_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/validation.json",
+      "bytes": 825,
+      "sha256": "41be7521a790bb06f98a35309ca94f54c0af78e7b9d91bb6234ac8e1477ac9f5",
+      "repository_sha256": "5557d32cab3832850f7cb31d168d64a2fbaf821945abc5e5f7b0cd744cd0e3ae",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-legacy-gated-cpu.json",
+      "bytes": 6384,
+      "sha256": "ba6e966ce5972f023ce5992cc5d9e5a0504c0c9c8a3cc34909b2e2227c53fcd4",
+      "repository_sha256": "be30a610b2f30860a0cde66af276cad788dc386a0785e04f154720585f70ed3b",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/tests-final.xml",
+      "bytes": 33442,
+      "sha256": "b3841c7bbbfc3add28324b30b268e3370c08da38d0107b0084431cd2032f81d7",
+      "repository_sha256": "b3841c7bbbfc3add28324b30b268e3370c08da38d0107b0084431cd2032f81d7",
+      "status": "existing_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-carafe-aff-cpu.json",
+      "bytes": 6737,
+      "sha256": "d8a12bf77a27404ece5ed55e6d77be09dfe681d75f8f6fbbb4ce52ac054c3536",
+      "repository_sha256": "ccbf7f43d651a76c65ec7ae5d2224f4ff424468aced309ba448425a55e7323ea",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-single-cpu.json",
+      "bytes": 1896,
+      "sha256": "0af3e85872db6a045da86a25a460eb2f7020a68b17e598947d5a6bffea88d085",
+      "repository_sha256": "fdc8b1b03c3c8e0888eefe750d2b9c51a2edb4b8c2263bab7d62bd678124b345",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md",
+      "bytes": 4440,
+      "sha256": "af1d8da0447d3890035197b344a982ab1dfe6a956f02bda7a620a4d671740a9e",
+      "repository_sha256": "b5cf18986db231dcce53a8cdbb7b7d7a8333f3e88d1c9401bce072972e4ca39b",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-single-sequential-cpu.json",
+      "bytes": 1987,
+      "sha256": "4b6a15e262dd37a72aeb1be7f375230c6014096514724885906805f301ae3721",
+      "repository_sha256": "479012b386dfe8e2f758fdd0d0727276de03a5be92831a14bd2df92add4af344",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-dysample-sk-cpu.json",
+      "bytes": 6677,
+      "sha256": "19afa6c7b3d69c87a9facdf41571b84519c2de04347ed668fe9f0f8879f49a07",
+      "repository_sha256": "7e300bc641a9198879c214aef6bb00c8d7445b53c724f819e81d98eef11e3c89",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/run.log",
+      "bytes": 5585062,
+      "sha256": "daa504ba714c8c78d32a4215d3cb62695dedc0d5889ebd96970615efdd634758",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/manifest.json",
+      "bytes": 4667554,
+      "sha256": "a9db048b78173297c0a2b3e75beef0dee9abfbebd76518f7eae3920589077973",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/plan.json",
+      "bytes": 51320,
+      "sha256": "d87b7cbd293d0314e3bddff6f07d78f5fc608cfcb24dbd04f638380986cee95e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/source_plan.json",
+      "bytes": 30970,
+      "sha256": "fdc7661b9dc33504c34ab2bf47dcdc41bf30b77576346a841aadfb8656e593c7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/run_all.sh",
+      "bytes": 457,
+      "sha256": "02b4065ea55f9dd216cc01ad24410b2082cf14ebe60fb092b66ddfc55660c343",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/train.sh",
+      "bytes": 440,
+      "sha256": "1f469b63ad39a72bb5102bcf14e9228f061f2813f51ab1e42ee405852bd01147",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/leaderboard/leaderboard.md",
+      "bytes": 119921,
+      "sha256": "4bffd6aa9fe4525e0270f803dcd7ab097a4748a307e3b6f44afd9a38410317ab",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/leaderboard/leaderboard.csv",
+      "bytes": 4127248,
+      "sha256": "f103de31a5cb70c9b4fbb89e7ca6729aa161ff9b9107b26bcf8ddbb6a7a1ef8f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/leaderboard/summary.csv",
+      "bytes": 4081456,
+      "sha256": "9d397572f910d1f92ae5f09bb568879b91e0e4634daae4c06f474d1fc015a709",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/leaderboard/leaderboard.html",
+      "bytes": 1459852,
+      "sha256": "925ee54be3d0af34a2215ad6b6ceb5782d63162cf7481566e4ce56c167a8640c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/leaderboard/leaderboard.json",
+      "bytes": 1851078,
+      "sha256": "9122a6d3f3f4823a0f8482beba0b01719fcf6ffd057cf2c15387bef9e89e65ba",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/plans/priority8/leaderboard/summary.json",
+      "bytes": 4665574,
+      "sha256": "32422bffbf7694f6a2609b94faca134f419cdb697bb6e60bf072c17dbac98f81",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__mean__seed3407/config.json",
+      "bytes": 121802,
+      "sha256": "8657353cd299ec9761d8184a2177107829138284dbe31c58d641a8f17073e07d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__mean__seed3407/history.jsonl",
+      "bytes": 5764,
+      "sha256": "7fd7d8b001240cc43a15982a95aa6f283bbc2037715eb51e2214eb5a99fd1c00",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__mean__seed3407/manifest.json",
+      "bytes": 4667554,
+      "sha256": "a9db048b78173297c0a2b3e75beef0dee9abfbebd76518f7eae3920589077973",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/config.json",
+      "bytes": 122106,
+      "sha256": "671c814bd49dedb5048ca9fc389ac400e3ca0c7b3a779abe0652c64428eeb838",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/profile.json",
+      "bytes": 17100,
+      "sha256": "361dcf3022e3b638da007986889a876d1187438663f128ec7cf7e3048ac3ce8b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/status.json",
+      "bytes": 255,
+      "sha256": "56e236fd7dffbc784ad858d8aa5b5542b227d4f6e8bbe59b228c713aadc20ac5",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/history.jsonl",
+      "bytes": 57970,
+      "sha256": "bbadd3ce65b7e470eba870c2c9321d65126329d4d31bd2747c2b02e2a0a06dab",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/manifest.json",
+      "bytes": 4667554,
+      "sha256": "a9db048b78173297c0a2b3e75beef0dee9abfbebd76518f7eae3920589077973",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/geometry_audit.json",
+      "bytes": 1290,
+      "sha256": "d0f9ec7a0b28a27babc82dd271494bc2dba14a8b514f577b3b1685836914e278",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/per_image_metrics.csv",
+      "bytes": 4537561,
+      "sha256": "fd3fe664f4971534ddc8d97dba2e5b17980939d38d56584c20e63482d024d7b8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/metrics.json",
+      "bytes": 1788962,
+      "sha256": "90c7e9c9728a0e1052ef576e7d8216a5edc1025b4ec045466c35e798c33e551d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/emeasure.png",
+      "bytes": 8342,
+      "sha256": "61918fe2f8ba060c17858aeb8119f60b4b9ea01a702e8bdddd9989967b23fb77",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/emeasure.svg",
+      "bytes": 6540,
+      "sha256": "facd03c0bb4ae7caa6907dcea0e070573929ddc27c0eedbd5fa75a98e0ddfb48",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/pr.svg",
+      "bytes": 6803,
+      "sha256": "f8f999cf571b5968ce6041ece937ddedfa16bbc517bc9a471da4e68a8a490b50",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/pr.png",
+      "bytes": 8476,
+      "sha256": "3b2fe79696c6a90852105f09c13de2b5e7183422b4a434a79c6947c3d661d44f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/fbeta.png",
+      "bytes": 8949,
+      "sha256": "771f9c3c85ccb8a7a2db7c5b38bbad5da01a47e616e021283447109528e93818",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/fbeta.svg",
+      "bytes": 6808,
+      "sha256": "0b494149dd434ed907c4c22d25b42138eb7ef2f608c1ed964f368812c9d817d1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/threshold_curves.csv",
+      "bytes": 25389,
+      "sha256": "d902f5ae7f2c8a8a51989e9ba52fcc2bf183afd98cb92091bf0ea5b92b48b0cb",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 7972,
+      "sha256": "c60ac7eab66c898d5b09a4349a68e3f9d225139799fce17470945189a2b9be8e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6543,
+      "sha256": "73e3122d4b9d9a48d1c46d012a1ecdcf7f4d7fe41b620f0065ec1d661ccdef19",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6795,
+      "sha256": "2450e324a5666fc1d64d74ca545bad020a1ce74dcb2eae758fc047bb3c3994b1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8193,
+      "sha256": "04c2b0889c9acdef73e07a66aa7e1fe63c0ffc8f691f9602e26d6e185908fcb0",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8859,
+      "sha256": "781b2da435b5ffa9ea58393fe401be71c85c61b69597d4ecf9249412c466681c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "1a289acfb9a9d0db8116c01dc9b30ea4327aafc7a652adca69e9c32c4e15dcf9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25393,
+      "sha256": "3b40e5eec0ae857f6e82ce3096baf238a718cd039b70b6b2f553ee10f45b8aa1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8199,
+      "sha256": "59fafa6a956f876b1c3b31735a9f0008c1071ff3ca7aeb01d53c35e4c9c6b71b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6542,
+      "sha256": "cae0b502cd1378a21bb2ecfe67f39a77c75989f8ae0c10d59912d19dac1b8723",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6660,
+      "sha256": "d2bdede34055c4d4e1feff475bc4bcc6e494c2529f21fa0c746a9b3834c90fcf",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 7995,
+      "sha256": "d1c1e58de20537545efbf22541d44ef4f3a99cb48483fde627b29adcb34466ff",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9139,
+      "sha256": "76a3c1b2870ca244a62acf57eeceb016da2dcbebcfb9be50c1f0c074e42b583a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6692,
+      "sha256": "89cd37a016146fac4cc29e5254fee6a516597ab0390337d1bc1f8f4224bff76f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25416,
+      "sha256": "d693e105116ce3924e0f72a608c31f305326be5723a8eae730ce631c30085d30",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8080,
+      "sha256": "c5064e459d43f885594de7db125ffd3996f62754cdf4078b38386391b14133cf",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6537,
+      "sha256": "4d3fbd47a10e8eb20eef97ef7e7b2cd1d6d5930e7ce4649e31384740471c6900",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6761,
+      "sha256": "042829d64d54904886e9164a57029a8c340354d963ee002f070cfdd29b14f593",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8089,
+      "sha256": "3d4da0c318f3248e2f08e0e55471d3c41a52895ad2ebd79a6a1656345e70d7e7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8926,
+      "sha256": "4330a03ced8fa19fb71b9e35261e47761343541cbb0eb38d527b42be2dbfe080",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "b8034060714aae2fd606c142577202c1cf3109a18ec269f1439179967c683bff",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__sk__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25399,
+      "sha256": "07f2e40a03a9ea6d5f6685630328a0c7b7bab76dc354f04430e231ffc99d89d2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/config.json",
+      "bytes": 122034,
+      "sha256": "74bdf76d77676e13a710d765fdf8105618dfa1dc3fbb2d85c5efb3dd5a1576f4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/profile.json",
+      "bytes": 17535,
+      "sha256": "0ef4fabbd875343b3396940a627dc3188acf797b05d79be9d474cd824589f1c7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/status.json",
+      "bytes": 255,
+      "sha256": "56e236fd7dffbc784ad858d8aa5b5542b227d4f6e8bbe59b228c713aadc20ac5",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/history.jsonl",
+      "bytes": 57913,
+      "sha256": "8e8cb693455f7feeeee75eeff68ef7e79d416083b959f2cc46e8475026d3a3aa",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/manifest.json",
+      "bytes": 4667554,
+      "sha256": "a9db048b78173297c0a2b3e75beef0dee9abfbebd76518f7eae3920589077973",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/geometry_audit.json",
+      "bytes": 1290,
+      "sha256": "d0f9ec7a0b28a27babc82dd271494bc2dba14a8b514f577b3b1685836914e278",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/per_image_metrics.csv",
+      "bytes": 4539238,
+      "sha256": "5710b50651dc563a6775db30c91c39076278d0df5a28a080a6b6c6c3433ead9a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/metrics.json",
+      "bytes": 1788962,
+      "sha256": "ad1d0023b5e4d51487f41f33466993a2739ddc02c753c2c2759f2e83f41a6bd0",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/emeasure.png",
+      "bytes": 8344,
+      "sha256": "2d86eedb50490bce8de9e04b7f2c9cc42bf386eab14497495cbcc73a292050ea",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/emeasure.svg",
+      "bytes": 6540,
+      "sha256": "25fff1a7c183285feb622dab2387bf957e85d211963ad119349116bddd220542",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/pr.svg",
+      "bytes": 6803,
+      "sha256": "653a8f8f4ea5e20875ec28f86fb3a6ca4bb2e5ef60cdc1d93043c471eef3eaad",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/pr.png",
+      "bytes": 8450,
+      "sha256": "43436bb4945d04199debbd6be1bf9e482566ddea18a9be93481098e58e315b56",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/fbeta.png",
+      "bytes": 8956,
+      "sha256": "4ea831aa33fd6541adcc08f5f9287333eeff38f3a94ebeb9edc08d3e0c308697",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/fbeta.svg",
+      "bytes": 6808,
+      "sha256": "23911c040795a4c16e7e0af4ce9066297e81e045ee2273eff7dcb8780137f5c0",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/threshold_curves.csv",
+      "bytes": 25393,
+      "sha256": "d1dac564a1e82cab155dc80b160cfbd7c2fe64d39cbf15a3547d6ef41ec66e05",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 7975,
+      "sha256": "a1160378848d2f07ee493f4cada624fdc30678daced1c52ac1b0ab93a367adfb",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6541,
+      "sha256": "65e91eebbd035822d31f6913fdb8c9b399b4ec9003dcdc687e649f689294c193",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6795,
+      "sha256": "f100103745d0c0d6d3d4b4a70532f81aeecd92a3dccf4c2c473bad9b5da47420",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8135,
+      "sha256": "255a05fcb21d8871731517892656e3594d08331890cfb65d87e8834a247dfba8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8880,
+      "sha256": "a2938b34fa2108516b56a940c124a46681883e0b2a0d3dd0ece50675029567ac",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "6bbab64d70d591f961a0712e8ac5a0516f6e9788c18fa1bc50af2272172bd707",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25405,
+      "sha256": "0f830086409662042a7ebe63259e56fd75fe226f4686143030461bdb819894dd",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8176,
+      "sha256": "c3d037e5ea4eee5d178c343a96d06c26f87039b2301ed966642586b393c4926a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6542,
+      "sha256": "61671d7e3bd9123ec34cc194273475c2b4e10bbe98f92979ac927a877b344032",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6698,
+      "sha256": "3cfd9cf96c7960724949a199d36331641c06f2ddafa8d2f0a82af26ccc3e1c57",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8063,
+      "sha256": "5cf126e9db08f809d96a586829d52a913e21867e5b953b4821134a3b968581a9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9107,
+      "sha256": "c311df410b3d1ddaf0aada76cd896924a997b826d3bb422ba3349d35f370daab",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6811,
+      "sha256": "ea043ae12bba08ce722c5a33c544f912e9e5ddcb9ddb8f4045d50182e5525a81",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25380,
+      "sha256": "be1ea209c909f622a0a36a71d3047499c81fb6ef3d218b12e6fbe1f0c7808ebb",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8094,
+      "sha256": "97b36acabd5c606b7a82aa31613a4ee68c32f1abd39829082daf7e64bb925e57",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6538,
+      "sha256": "a979f57456ef2da125cff2cdbd1617034babbf519aab13d3a8b29f1c4207c690",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6775,
+      "sha256": "eacaf784087a86180004dd2c3ab7caed50932d8b2346a852c47f421927eb3850",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8113,
+      "sha256": "ce985e241255e089347a5d86a815309e58b9422996d961cbf8e7c370bcc9a17d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8893,
+      "sha256": "9da28f4d2d55bcfb566e61bac50723cf3b7fb7dbe98d53c6d9a9fd1264bbbc18",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "1da6a9e254006ab9d32344ea5518607a18dbc3447d01ef0069685a904b85caf2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/native_conv__asff__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25396,
+      "sha256": "ea8a95e938a54b7959b141c5bc3b9f6bec0f7ebe6687c14af9c54c3b17ade67b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/config.json",
+      "bytes": 120722,
+      "sha256": "8895fe0ecdea7270a3645d7a6f4f035eed37901b91885912cf6bb4ce8450d5a6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/profile.json",
+      "bytes": 12274,
+      "sha256": "ef0f63e58f4b11ec1587bc0560e46820306f90e672d78e780c22eb2a86568d5c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/status.json",
+      "bytes": 255,
+      "sha256": "56e236fd7dffbc784ad858d8aa5b5542b227d4f6e8bbe59b228c713aadc20ac5",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/history.jsonl",
+      "bytes": 57920,
+      "sha256": "470f98128cf25a0a233b329823489838357a73cbcc1257283a40bec8dddb89e0",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/manifest.json",
+      "bytes": 4667554,
+      "sha256": "a9db048b78173297c0a2b3e75beef0dee9abfbebd76518f7eae3920589077973",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/geometry_audit.json",
+      "bytes": 1290,
+      "sha256": "d0f9ec7a0b28a27babc82dd271494bc2dba14a8b514f577b3b1685836914e278",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/per_image_metrics.csv",
+      "bytes": 4540560,
+      "sha256": "75f187629a3b39193531e2264036b441f7142e0d186f0695b641fbd90b52dcfe",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/metrics.json",
+      "bytes": 1788939,
+      "sha256": "fb584900e4b2c1a737f21d70ad1158b8df1542fce5f71d11eb8395b673bdbe27",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/emeasure.png",
+      "bytes": 8340,
+      "sha256": "8c1b583da8fce2b13cb4c06de637f9febc6ad999cf7209d505d1281e5098dbb5",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/emeasure.svg",
+      "bytes": 6540,
+      "sha256": "f809ab55a58490c6cdc7ca1adfdc55e28d003054958e2f15c534524440ba4103",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/pr.svg",
+      "bytes": 6803,
+      "sha256": "de1d5b2c65e33a5f66990033832e4d74f6d07892c7f4bc8b29d132068ff8f15e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/pr.png",
+      "bytes": 8442,
+      "sha256": "9f3b7b13362ff90e8368cad21311e6a360e60aa4c1e563f9f432ef2937397f0d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/fbeta.png",
+      "bytes": 8959,
+      "sha256": "0e8e82b33c8c613dfe5247f2f01f3105688a572921fce0a527207420258dbefd",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/fbeta.svg",
+      "bytes": 6808,
+      "sha256": "443d5bc11e8ad2a548b67cda91e2b2764201eb9ad1b5612cb764ac1b581c53f8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/cod10k-390c36c6b1f3d137960a8e3efd26ac92bb8233d54a48d816ad4bef5776253256/threshold_curves.csv",
+      "bytes": 25390,
+      "sha256": "37899690e13a9583af56dd4d0f0e6bbdf79e5fa6cad996c96b0a226f0ed9dc4e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 7967,
+      "sha256": "73f56c5a9a66100c3469a75a579841bf847f0cf22a650a80f7e7053c3757dc45",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6542,
+      "sha256": "564d0823b2935a8510ffbfdf7831c21dee9e93b246c6a99aadea0737e0edbabf",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6798,
+      "sha256": "09f8a552e54af79f81c2d78c4ac0f99d700151ec707c619eb5a95cfe2af46edd",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8167,
+      "sha256": "f0578a9c29ea9113beb4189cf0ed568869f04c3c06802db3aa12cd596b443cf3",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8848,
+      "sha256": "44f24a2861d1ab880fd84c1032a2d7c7385f3aab6700511a94db6781e27454a8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "d6db0893dcd4f95f42ffc5af410e75547a441678dad8101aede100e1446a319d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25394,
+      "sha256": "35ef19a3c6f3e12477c5d22a3170310f40728280958a4245033e40cf54c63f8d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8179,
+      "sha256": "03a9dca9955f0e6f3446ff3205d197d57970210010d97b637118d0f074607776",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6543,
+      "sha256": "85058dfcf76c916dda116229abd85306c02b08483e2edee3aac537469b3a5855",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6682,
+      "sha256": "9fb6ef672cf019a935bb6cd2b5053f07e6edf3e7a1ebe40071bd173323f2df1e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8070,
+      "sha256": "110c5ca80f982c67b6472e7b44475400b9a8c015d01a12f80a79df54590d3a0e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9139,
+      "sha256": "fb11c11c519ad7419087895bd239b54efb7d1ec9e9b6824442d671325c467bd6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6811,
+      "sha256": "81eeacbc6127001d5930b5734cf25318b5dc8cdf1bafd950f42986842b43e1d6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25390,
+      "sha256": "db08a88776ff76c451dca931f288bcb1c11185ce4a7ccd04ec84fe170f6dd2de",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8088,
+      "sha256": "bd1e7b388f3ab2ed1b8753b71b6f31852e785844723edf4082245e4a901ab1fd",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6538,
+      "sha256": "d0e9ebab71c2bd4a1ccdc77d3ddbf5515963bb518b21facaac4b0a0613621785",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6777,
+      "sha256": "389ad32a59ed17cb63935234379d908e8ef3ee814866f63443f0fe79b2ba5e76",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8102,
+      "sha256": "8dba53a94db8ccea0ecf883b2f703673901817f74b1616624e7497d18770ceb1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8918,
+      "sha256": "30c6328447ca7ab18e3be69e8b9464b79968dbcc2c616a12b1765cd3ccdabf5b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "7b49c5a338f0ca76e0d9c186f30521b1668e9a83ceabcc3d4050c9de862df0d4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-full4040-fixed-20261101_200834/runs/priority8/single__seed3407/test-four-benchmarks/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25387,
+      "sha256": "d603b8446dc0ee3b4e1a17644d44aa409c1359f11117403bb8b39e32c1cab7d9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-30-geometry/tests.txt",
+      "bytes": 2176,
+      "sha256": "1df98b129a219a22ddfd480f4346843d330d2f56fc011f1c39c4561ebbb831a0",
+      "repository_sha256": "dc4525a28f5b4608b45ba4c1256d602c7c52e5f2a802302d7b9bdbbe06ebbbfc",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-30-geometry/tests.xml",
+      "bytes": 72282,
+      "sha256": "b260977ff6b5398d6f440622d299f64cb49d9442732dd65596fe2952ff792b64",
+      "repository_sha256": "b260977ff6b5398d6f440622d299f64cb49d9442732dd65596fe2952ff792b64",
+      "status": "existing_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-30-geometry/validation.json",
+      "bytes": 2390,
+      "sha256": "a73310c484dd620a74309a75e9ddbc2a009de020b0343d53ef032853f198afdc",
+      "repository_sha256": "e1e845e6212d92e6f62716335c70243efb9964015d3381f099bfff3c04f81078",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-30-geometry/README.md",
+      "bytes": 3966,
+      "sha256": "b9ae52bc281e0c2b4ca25d50bd97e00833088623a68f1eeb40ff6f491ff7a7cc",
+      "repository_sha256": "173d61648d94596802732e4854295044561c3cd07f2c2bae11e93ce8c07fa6bf",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/run.log",
+      "bytes": 9509176,
+      "sha256": "0f558fec060823de1ab14bcc3ccf7a83de5fc436ab6030a68538249d378457bb",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/plan.json",
+      "bytes": 41723,
+      "sha256": "905f2affa4ca478e7645e96892a206c9e878b8f45b8c27744c1bc2724339eeb5",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/source_plan.json",
+      "bytes": 30970,
+      "sha256": "fdc7661b9dc33504c34ab2bf47dcdc41bf30b77576346a841aadfb8656e593c7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/geometry_audit.json",
+      "bytes": 1290,
+      "sha256": "405321e0d279d310f84bfc0b0ab5389178512ad7cb8ec1c377c2d31fb6a5f6b6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/run_evaluation.sh",
+      "bytes": 410,
+      "sha256": "ffe96c4aab19ef883d74de0458d7671284dda3b4b69b5b06f0bf805be5e4ccf4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/four-benchmarks-fixed-20261101_200834/manifest.json",
+      "bytes": 4663448,
+      "sha256": "af6c31d2444a7d8111c6058317b5f29462e6248e130e78722f196bb138ab4776",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/plan.json",
+      "bytes": 30970,
+      "sha256": "fdc7661b9dc33504c34ab2bf47dcdc41bf30b77576346a841aadfb8656e593c7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/source_plan.json",
+      "bytes": 29519,
+      "sha256": "be32e9989ba5f73123d47f741a2d3e2323c8ecb865c34e06af11e4bbdf10b062",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/run_all.sh",
+      "bytes": 398,
+      "sha256": "44db2abd718b4505fddb6184bf9d37f436c10e8bd53f097b160496f7ff88783f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/leaderboard.md",
+      "bytes": 154604,
+      "sha256": "825b18ae5f7ab85bb248399c7ded7d5fb2ca783ad5ada3acb451e08cb1105a6b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/leaderboard.csv",
+      "bytes": 5732380,
+      "sha256": "96e270134495146c0a9c626e14e1e802d109e140cf7bf0ea4a89e14395ee0550",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/summary.csv",
+      "bytes": 5655337,
+      "sha256": "0df4816d986400b897ba72a3f98cf5ab6e925a4fdd107c85e486335910e9b440",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/leaderboard.html",
+      "bytes": 1614348,
+      "sha256": "604848ce9157cfdb47e1eb68c887dfc33054636092d48aa901e7f79bd9eb2641",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/leaderboard.json",
+      "bytes": 2072680,
+      "sha256": "307bfbc35d3a87c5646526949a21b5ea4833dd65caabd2404347b31b8d01d991",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/plans/priority8/leaderboard/summary.json",
+      "bytes": 6375655,
+      "sha256": "1971910b1622318e77ae9c51fbf18f31f2eb3b82c3c7831f117bfef0bcd3198b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/config.json",
+      "bytes": 8047,
+      "sha256": "2e2b204506f2d271a19e7ae7bf2a301873e1c26ad967fa68cbca1bb0df42ae45",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/profile.json",
+      "bytes": 15677,
+      "sha256": "0e7c5e2ded19a3dc76397359fc0d70d74763fc7f04495b0d9869ce53761b8608",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/status.json",
+      "bytes": 154,
+      "sha256": "a2f449ff3aaef8d570321c8825a458c36b1486d752641619fc08b6ec6bde93f8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/history.jsonl",
+      "bytes": 89597,
+      "sha256": "b9a61afee7f7e9317b71f983cc7de4c6d426bd104dbc0b3f270581c08732841b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/manifest.json",
+      "bytes": 3646684,
+      "sha256": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/geometry_audit.json",
+      "bytes": 1270,
+      "sha256": "aff7577d384ec1957271b22000306894a9673bb91cbdff8ee10aa034d6e958c1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/per_image_metrics.csv",
+      "bytes": 2953313,
+      "sha256": "a44d4b5300487ed915cdbb3422474a8fc2136e7f78d1b4817f34b152a29d9a1d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/metrics.json",
+      "bytes": 1103607,
+      "sha256": "1229beefdea2268447c18bf4bb8d995f025d82d4856883397cc4463df572be7a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 8072,
+      "sha256": "bfe995446136b9bd32f83330db38d9918aea70d98d315dc0f3f572e801f50249",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6559,
+      "sha256": "5be34aee81c7dd1681473812b0b8d3b9272ca14f43d6ae328e1033e643136099",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6786,
+      "sha256": "882ea6ef81a061493645a63d94104268c88c2c9de7d5e66b4d4d73f993152938",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8254,
+      "sha256": "6ab538daefd54011a5ef4d1c0c036b12ba94be741026cc5295a4f20dec1b7070",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8865,
+      "sha256": "042b1f2d50c308ae11ba2654eb9bd3212619e8c8e57467131a04096e7874354d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "92952e0d055046464db2cfea102af88bcf4a2816be024150bd14a032d2b17c34",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25402,
+      "sha256": "f19656914b282567140b90162f8418938daebfc5fdde68d9f162f60e9f15f475",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8237,
+      "sha256": "4a3c892962ece5cb7ec42572351b78a8c62ef23be00ae84cac34e552423186cb",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6544,
+      "sha256": "3ea7cb8184f646acafcc4e63d36e4cff8521a155bc21e16940b55c28f2de4278",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6678,
+      "sha256": "4fe4a4f4fbbaff33d7e828bfe12c04c8c0087609840db631df5ac9bc311a5178",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8106,
+      "sha256": "1e1adaf5b0fdda4679f496af8da2f677b0ef56532e7453fcc28858053980dfe9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9177,
+      "sha256": "4cc5c564f095ac195ab011819fccb5cba35f0d0a1b19693d747b92f5d6e040b6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6811,
+      "sha256": "f60c7244b8a3d5908add44804d874d09545860c6544e4a840124c2b9a4844827",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25391,
+      "sha256": "7772d417a93fa1673998341ca7c128b743718245cdedbf358f3e350bf7003281",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8170,
+      "sha256": "797b30746ff181ffeb068aa30c1671e2d814ae00a1346b8227cfba7b46a66089",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6539,
+      "sha256": "cf2c7e236912ece031abf4cc0675b0506d38da4fc3419fd8fa8bfcf76c516446",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6745,
+      "sha256": "ff8f1e75ec729029d7a19c3530cfd0468a7c5e8d5ed354a9285fcfc98e7760f6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8070,
+      "sha256": "f8fc216378ac6db3e11c486af667a98d31ef58d7966e838583afd319b9d3e1a9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8975,
+      "sha256": "8ff169860df49ac84a9c8f047f600cfed5d92aa8b5a90581ffe46a729977ce76",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "e6101f1b38d75c7b26ecb79a2f07f44d4709e58224b335dac598537c8fe5603b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25402,
+      "sha256": "843b1dc6d22b6bf3c813a872bc5aebf3335011ca50e3e183142597dc9d435177",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/config.json",
+      "bytes": 8497,
+      "sha256": "1fa0f161703d4ee5b9c654b83740ddbf044be0e3f5a60e21f4d642f0ef55f149",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/profile.json",
+      "bytes": 18391,
+      "sha256": "6986dcace4ecf11c7b6afa5564ab4816e4616600723e8566030aa7937da39bb5",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/status.json",
+      "bytes": 154,
+      "sha256": "f6f02927745780ca81171eb010403fccb5354f1f2df6e7b3f61b12a673ea0666",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/history.jsonl",
+      "bytes": 89547,
+      "sha256": "967d06b59a8f56b95105c73a8672b9d8a93f6ccefee44ed066ada1d86ff81c66",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/manifest.json",
+      "bytes": 3646684,
+      "sha256": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/geometry_audit.json",
+      "bytes": 1270,
+      "sha256": "aff7577d384ec1957271b22000306894a9673bb91cbdff8ee10aa034d6e958c1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/per_image_metrics.csv",
+      "bytes": 2951818,
+      "sha256": "b5c2009b686a83d521d2755b42122258bb797c5097e215391d4ee24b96895198",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/metrics.json",
+      "bytes": 1103598,
+      "sha256": "8d992bd636e322b92101ffd2267e56824d7022679d9d6ad943458a99e47d49da",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 8048,
+      "sha256": "1ffc183f1319c858c1592643efc6c9b93778ae2dc7b9360ca32fd3b753a9e472",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6551,
+      "sha256": "e639f94507e2c9144361679e46d49b5b8985699659ea7837301cfd785cf0e6c4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6777,
+      "sha256": "7591117e982275365c5a3682d420617dde2dd5aa58e7c7d1bce59004e4f7545b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8199,
+      "sha256": "9d9685643379574fc988511ab121f7559836db664b6d292b244c9ae415850847",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8897,
+      "sha256": "23b2148f94e77864a3c9138c3842c27eb3c24df5462a8ae2fc5bdf6b324c65e5",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "3463c8ea0f6c23f6123baf0b9a7508949a5505c72bf71e06ea6c93f3cfcb616f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25401,
+      "sha256": "3cdc920a06032bf3fdce12db6f93ca33bd457b000de69a0e0e97f5000ad068ae",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8253,
+      "sha256": "c218fe1aecc5aabc752df828fe3b4e239417257a4055d541eae07327e6cf4761",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6544,
+      "sha256": "3abad83e48869e5ad352d2a32b3afd01d759699a147ab0f3eede53223cb95aa4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6665,
+      "sha256": "d693d8305ee8786a9211baa4c7a88b168605eafe4c239396db468f0da094b836",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8097,
+      "sha256": "2fb2367bf5df51184eecf53752bae76bf3b7679414a35a07350e549f44cf38a9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9200,
+      "sha256": "c57a399afaed099710d6b6a8208c3c81eb6818b739d6eb57ad848ef6a2d4441a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6760,
+      "sha256": "3168b36fb4c1070c242ffde4cf941f16b569555386c9cff987b87bd3316471eb",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25384,
+      "sha256": "9690f896f7136bc280abb3b65b61dc8ef3586efb813426b6ed005921a48d2cba",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8170,
+      "sha256": "6624329030ef7fc43d6a9f5a40afe11e8e0d33562f53330a6aa935754acb2729",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6539,
+      "sha256": "495234c8de01520e342e517fb9ffd7efe498a0e8659c1b47c911532b518ab8c5",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6729,
+      "sha256": "3043a8306f4715cecff658b58ed82ae45e2064b5592131a031d80ab159532252",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8150,
+      "sha256": "edc4ef017d7ba330ffad9dfe71ffb3f2712b9e06d9d94376df5c7802f3a4e0ae",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8980,
+      "sha256": "ab500c99afe1e167c99708f077f763a551924aec451eb6936a618755fa902c15",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "09ecb3c23350318d0c1f5aed36d2b1478064a0b36748a377c82b3effed241b7c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25405,
+      "sha256": "f7129496e6321e5896c9af2290bddc0ee4ac32db29617416079dac1f765895e9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/config.json",
+      "bytes": 8351,
+      "sha256": "c8985dd3e1fc7768c0dd5ffc165a7e72d98bea5fe30d7cf687ef0810e9d1b57d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/profile.json",
+      "bytes": 17120,
+      "sha256": "437aba565d1af1373e93a8c940c093e0f30566d4677958b51296aec0ec6bc06f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/status.json",
+      "bytes": 153,
+      "sha256": "58dde18bdfcf75810e36c4b184e9029fd68f6ed341c163ad7761b19732068139",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/history.jsonl",
+      "bytes": 89469,
+      "sha256": "b92e00d6fd32f482e337a419565b990090e1824d97409dd5855a660dab84f7c0",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/manifest.json",
+      "bytes": 3646684,
+      "sha256": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/geometry_audit.json",
+      "bytes": 1270,
+      "sha256": "aff7577d384ec1957271b22000306894a9673bb91cbdff8ee10aa034d6e958c1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/per_image_metrics.csv",
+      "bytes": 2952199,
+      "sha256": "b5179d75f85238e621608c460037f6e5eb3346590cb3094c7773a180252a1790",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/metrics.json",
+      "bytes": 1103600,
+      "sha256": "afbb0a5f076fa3f804fa4c3034a56a7c08a7e19f7906cdf151629cb29e8f2d25",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 8032,
+      "sha256": "9ab223f2ac745a8598d5f7c732425634e1df10e75e2f232ba211ac00d86580a7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6548,
+      "sha256": "00cf20f201f55db080f2a22b7a66f0296ca11ef4fa9146f1ae7febde3eb9e4e4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6789,
+      "sha256": "b0847c8df772a14dbab046a3c881c293c527cfe88c159b313a854790d359c1be",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8206,
+      "sha256": "a962acb596d713415bb2899e35e5719878a5811966c99a94a0d4b656b95c5bb2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8865,
+      "sha256": "e9889a0cb15bfede2a850a6424ca0bb10306673c27296dc2d3f756a1ec653d72",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "caaa46ab95742059030ae31ca442be967f58ac1bacf294196d12f9bb63a05285",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25398,
+      "sha256": "904b8f1f78e050f90cbbd1e844cdebbab0b079f7d6d1bee482f562c2cba99723",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8228,
+      "sha256": "7a5c04cbb8d4af721204957057232fd06f83d8255a51fcd70184a1808b501c3d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6543,
+      "sha256": "89416efd93f7d77b1577818388ee51262d0ce90ea235481084a2396def2dc73c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6677,
+      "sha256": "5859d2ae3306683b30ff103ff12cd2b62554e6531e2c083f1c765cb346c82258",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8079,
+      "sha256": "52c26ad55bc26e8561e25ae6ebcb81c745f735ab8f62c14810dee4a699e62ff1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9143,
+      "sha256": "dde478bc6f891148488e1a098af0843cdee28f6963264dd8a0bc2c04c39bc519",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6721,
+      "sha256": "d5198695208f9516f86fd935c71e63a84de0d9c807aee71a71d3c83bdaaa0814",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25378,
+      "sha256": "cd558de5cc597bd27a52a76097327dddc904443d2d9964e32354d6475658eaa6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8112,
+      "sha256": "c446368462a9ebd651571447934b6859fb52974d8bbb3a66340134cc0ce2fce2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6538,
+      "sha256": "ee979915ffcd5b2ff2ac62338819be9f44de285c2b4e75fa60f50e48179e9a80",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6764,
+      "sha256": "0db2de100c825490865ae40d29944ee453ec09be5ee1911a2fd3bd7019289953",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8107,
+      "sha256": "ea76b0caef2d61d1e5d0538993040e66aa54c5b51a5ccead0bdb9d1937b35583",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8937,
+      "sha256": "749eec7e0a9cb67efd1edcfc95de89b1aa8c73eee310b145ed9e26e408de96ab",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "037fba5536382c8a06679208934b9b5c9f1d4396f36385ca3a2bbdcee4288bc9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25397,
+      "sha256": "03dafb7263ab7dc306af231d5bc5a71ba5a2c26b5be3d8159dbd216d8c800736",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/config.json",
+      "bytes": 8279,
+      "sha256": "8a8a2c2b37fe51321bde942c158c648fb884650cc5d5e305fab6af89555dc322",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/profile.json",
+      "bytes": 17564,
+      "sha256": "7c5225e6206da3848664ac34fd5298197238adbbda597070c5bd789dc6b4bfaa",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/status.json",
+      "bytes": 154,
+      "sha256": "ae9220fb77aee95433b43cfb730a2a17365fd846cc01736ce0e1a464959b14ca",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/history.jsonl",
+      "bytes": 89533,
+      "sha256": "c2be1dd76b5eb39215c6bd2c99e9fffbb64fea351f94f6e02906625e81fa00aa",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/manifest.json",
+      "bytes": 3646684,
+      "sha256": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/geometry_audit.json",
+      "bytes": 1270,
+      "sha256": "aff7577d384ec1957271b22000306894a9673bb91cbdff8ee10aa034d6e958c1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/per_image_metrics.csv",
+      "bytes": 2951398,
+      "sha256": "787643a50ffd094eacb81f5a80370e786e2833ce90ebcde8c308f4c80c2bf3bf",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/metrics.json",
+      "bytes": 1103598,
+      "sha256": "29d99321b35056c2f33d6036da4b147d34c903604b705b349f8aca615c383b33",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 7965,
+      "sha256": "ae1ed15676c89a86bf79b388b81067b45627e0b36ffee668c3c758fb8c91298d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6544,
+      "sha256": "32937b6d51621bbe24bfeb01c4c23e2933f4c1259125ca61b5536bcf012d377e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6795,
+      "sha256": "4d8d2af4e4afb13469bd50e95bee7aa5419dd75295aa58f10a079721cbb91ddb",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8179,
+      "sha256": "fcf343e9d33c71aaa00fe7c5c21101fcbc50e39c45c61b93aa08173173b710d9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8826,
+      "sha256": "7c49cc79761a0fa0b5946e9c66810ec1f270b7c2166186be36930add2d23f83e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "8178f6c94100a03b00515795bcee89081b93146c4f15ffd587d738a8fddd5907",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25378,
+      "sha256": "bda263a4afe99300c0fc3e400dc139dc9345e6e7658b5eb155fbcf468fc74efc",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8218,
+      "sha256": "495adf50965334603526931fc86e2a4263410dbe5bf0a811203c3b90718ba04f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6542,
+      "sha256": "a8a5211cf30e24d94c885dd458a4525cd73bb91602da11f76cf422f033047bc2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6729,
+      "sha256": "753ba570c718cf535c03b7f5b8b33c556277541cef161c67d5ff4ac4573e9034",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8058,
+      "sha256": "dd424964c1f6e7b5bd118ed0c2950455ccd510cb8511ed701fbc15c365f4a557",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9107,
+      "sha256": "b93d378c73103edce42970faf408e073e5f099bab8e01b6d31d4b0321cfd3a00",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6811,
+      "sha256": "5158908b0d7788eb67d8ddb6293a51d1822a56e129551fbe0e56bd454a72499e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25399,
+      "sha256": "c3d293c7286a00855d14d27c01b8db3f5d89710fa96b030dc5bf6ae9fc869e12",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8109,
+      "sha256": "e6217e68f3b805a4f0a7769d74eba60aeac81532ea938be9e9f9f29cd4edca27",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6538,
+      "sha256": "cfeb9e0e89ce70f940c08b941679542ba8f517534848dac640352f50dd520bc1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6776,
+      "sha256": "4a68d2e312bc63f21c7a177c1db3b607fc7382ce632e3a870e8bf053604a9685",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8099,
+      "sha256": "7dacf2eeadc18e9cbe63a30fc94cae119f40c6312ee321fcb0e47599af0178a1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8916,
+      "sha256": "96992106b82c6f61e535fe23007a55dbbf0712630f666d543f99a1dfc69df32a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "5ff9a4222e0666404618e3000a1937d881f10659dd1d6f1b3cc5e4054e4e9655",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/native_conv__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25370,
+      "sha256": "109c3dca6b186811d2a72ded8cfeb854503fa2113e2b2444c4a061a75a7fa301",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/config.json",
+      "bytes": 8729,
+      "sha256": "9df33a2ae5757d4501fdb2969deb6f5249a587415f2338ac0002287a547e44f0",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/profile.json",
+      "bytes": 20039,
+      "sha256": "6ffafd094cc9de4dd3d3acb39381f47a1eab6dd5eff09108e895317f907cfd3f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/status.json",
+      "bytes": 153,
+      "sha256": "c65b387bdea63ae45fb76d32aa66ad550ef4f2fbbae12be4ee9bfe2a776e53a2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/history.jsonl",
+      "bytes": 89520,
+      "sha256": "16b1349952e2ccc5f153c58b74db1678fc821654e364b24a3f21bf653274d65c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/manifest.json",
+      "bytes": 3646684,
+      "sha256": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/geometry_audit.json",
+      "bytes": 1270,
+      "sha256": "aff7577d384ec1957271b22000306894a9673bb91cbdff8ee10aa034d6e958c1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/per_image_metrics.csv",
+      "bytes": 2951114,
+      "sha256": "cbb2f586ab12f2b6c04fac8791c39e90230aeadc6d5d2a37d27072bcb34d547f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/metrics.json",
+      "bytes": 1103595,
+      "sha256": "8a2d31bc691b5a136b789a2617052b9ccc4342e5a27d768448e0fab14368172f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 8150,
+      "sha256": "5586c17b7c7bb2da2d38cbcae085cc198e52d8c3117e1328b44a6ff4d5629ebd",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6561,
+      "sha256": "f8f3f000524fdc1698add9ae60efcb4a9f7ad8d2f74c15f3105096abf023bfe3",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6762,
+      "sha256": "b8656b0e25ba7450d32b7fe0adf63fffbe9cc0bc96c47abcd5adcbe48a9877ae",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8190,
+      "sha256": "3d598b1b41defa08494353340a686c9e3866965167f11e454d5e93403f9c30a8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8971,
+      "sha256": "536390eb1bdd55feabfb57d909f11ed80ab093aefb878b787de44699f19a2c22",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "da26e50df87049f01a81e4d04674a8d830ec07900298083866bf8c7ef4942916",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25396,
+      "sha256": "5659d9bb1aab708ec5cc50d005a941781d6e5af9bd5541ff93c867669b4c7390",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8317,
+      "sha256": "941fdc3dda38d338f06fda55b155f54a143293a89ed840a5c00824037c14426d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6545,
+      "sha256": "6b2b09d39ca2e2eeced88bca192b929a6f1e66f6ee60ff52ccc218a2cac1cc1c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6703,
+      "sha256": "1d612a52ac9fb0ad0d6e0f463ff057c502e4fbc40766d133b673d6e72af41899",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8069,
+      "sha256": "b5586fa0ec1833c54167193088219fedf84e35bd4c0dc3dc15144aa553cbcc1f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9242,
+      "sha256": "e8615c3bb5bf200118fd48f1870d4aa049a1061b9e6abcb3e9e09dc9daa65e7c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6811,
+      "sha256": "4c2d3b66721978847b7662ae78acb9991d3c31cde229f55c4ca446e3f7bccb2a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25388,
+      "sha256": "dcce236380816580d9a252ad8bd7061303d99efcbf2981dba7a0f184a11d54be",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8214,
+      "sha256": "6fe67c8a00454de408e5abafc3874c19c1b692d66d983ab5eafa7377b668610d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6540,
+      "sha256": "193c97a685249324681ad988d7cbdf339bc941a6bd2ec0d19a22ed47a9d8a6dd",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6742,
+      "sha256": "5e36e241eae24c8c78a714f399f7b96943d1742f835ac98fe448949d546fb25e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8060,
+      "sha256": "96fe7f0be9460cf5129837b7dd1a8da8da1c50223cefec63d949a3d467b5d0b0",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 9029,
+      "sha256": "7bdaab6c0b5e0be2c5cbfa8b4102264bb6090c7acfd7f05943d726e3b67e575d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "b242a46cf97fa1c54e5193326d77cef1642370c6750b250572a51c000d50164e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__asff__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25400,
+      "sha256": "35557f8660166f7379aae2e82a7950ab2e9cf51e910f84fb8cb7045650dbfdcc",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/config.json",
+      "bytes": 6666,
+      "sha256": "1577c6833480bda8a54efba07c05f575c26b8a80166886a7de25f441a64dd839",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/profile.json",
+      "bytes": 12291,
+      "sha256": "3834b18f070eac9be8de05b8433e89cf9c41e3d6d87760ab85bea5ecf0654932",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/status.json",
+      "bytes": 154,
+      "sha256": "011b901af6f62fb4940421f25abd5f3048dc3b47cef45777be1882ab4ec571e4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/history.jsonl",
+      "bytes": 89610,
+      "sha256": "c1d98e5bf6494f4e5bb33968dd2b87be03e97ef6dafeeb457c7ab87113b1398d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/manifest.json",
+      "bytes": 3646684,
+      "sha256": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/geometry_audit.json",
+      "bytes": 1270,
+      "sha256": "aff7577d384ec1957271b22000306894a9673bb91cbdff8ee10aa034d6e958c1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/per_image_metrics.csv",
+      "bytes": 2951349,
+      "sha256": "055e081cef081786b97cb660f94baf54b37e6d8c61cedd631754818ed3db60fc",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/metrics.json",
+      "bytes": 1103588,
+      "sha256": "b8115b4a224ca64282466dbb7107f0a8826e0ef98bf12e3b60726763f93d1729",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 8032,
+      "sha256": "6a70e37db71f417399b636869e55acae9e362dccef35466e490efca7a3bc1d2b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6557,
+      "sha256": "a1c77c279d94d866186ff0cc2219a3c6a5190a69b923a29baee48ca302128eae",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6791,
+      "sha256": "28c44b17263c2ff7dd2ec5fbad0efd55d2b5f0896800babc708d861ed0106c2c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8186,
+      "sha256": "430cfb0e56a740318f3f1ba852d78d830c8e80b727686b95e976b1ff3f59f467",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8894,
+      "sha256": "a1625eb49f6591ff81520985e1de1669308440d96748802fd2109943bf201d89",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "289e87c31d670b1449d887726dd812561132eb2dc8fa54586f9f38899dd0b1ab",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25402,
+      "sha256": "815005ccc6252722ff3d8c5fb9bdc44896fc1598c5d289bee59436990d6dc9b2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8202,
+      "sha256": "9d41ceb64ae22905b3b87f4a03ad4ca844f6f3f369abe3a85ff89410b00910e2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6544,
+      "sha256": "2148d89beeba1590d978ff526e90b5b97fb00c798f9d3749c6f2c8fa695da085",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6724,
+      "sha256": "9f37940febbe8deff55f71c2aaf15747d2b0f80bd827c1c42b7cb0ad2c1c40cc",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8093,
+      "sha256": "80b843d04fbe0da0272d52c843f8dfe6f218a185e006b49d70a6c3d0c4d32ec4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9192,
+      "sha256": "5a9502312491204afd57761d52cf08b6f1d904cb3c5be9ba0a63ecd3c19490da",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6811,
+      "sha256": "d2f86509deafd45eb137a7b6e6f404d05bb10bdbabe42094f944d2268272e035",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25397,
+      "sha256": "065a0ba64fb9fbc88e09888d1cd9a0f65dfe544b3ae39320c9101f9bb4c26f44",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8191,
+      "sha256": "c85f438fc4cf984d6c49578dc59d8bf5755b60d9c7513bd9be8c31dff076bddd",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6539,
+      "sha256": "a1e5ef84889a12cb2e706dacfae75070e171702ea12d36a42bdc682404ef7a36",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6745,
+      "sha256": "6606c3bf24e7c0f8dde4e737dd928f7d731c4ca22b8eb5975b1d35de31ddd195",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8153,
+      "sha256": "1cea68546c9e5416ca5e2f6fdfc3992faf09e7d22830c13aa34d602516e2c7be",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8979,
+      "sha256": "4565e16b3ecbc8871a1c8f0fe8385838ceeb018f99f47029f6c4b6e55f52ef1d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "006a7db09dfa1ae9eed28ca15c30051024c12a17cc8f01af2ab7650642da49cf",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/single__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25377,
+      "sha256": "455f173faa3b7df43c9dc511e45b010a7cbef2a7f8bbd94598db5755fe9af242",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/config.json",
+      "bytes": 8801,
+      "sha256": "e6ff44a5ac6a8a7296b535d9ba002f216aa76bbe630e80fb5fb9b37d8e9a29ee",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/profile.json",
+      "bytes": 19862,
+      "sha256": "fad7ef2eeacf54a3fdeefee06848c6f209bc7bbba288b7fcaa6458d35fdd10d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/status.json",
+      "bytes": 154,
+      "sha256": "e85ed368fe82f28d35e72b1d4ae5ddf84a0129ce0b78f09628e129acba36ca07",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/history.jsonl",
+      "bytes": 89570,
+      "sha256": "b89590f28d969d0b8e1788318773fb54d905742378f883d2c6ed6a435c965ae7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/manifest.json",
+      "bytes": 3646684,
+      "sha256": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/geometry_audit.json",
+      "bytes": 1270,
+      "sha256": "aff7577d384ec1957271b22000306894a9673bb91cbdff8ee10aa034d6e958c1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/per_image_metrics.csv",
+      "bytes": 2951259,
+      "sha256": "eb985e3bc1f477248563ec6e95c628977724682bfb341b359aa2d0d48a07171c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/metrics.json",
+      "bytes": 1103595,
+      "sha256": "57686f647d44652589a4d8adba04759dd6dd69acb4dd53e986113103800d3237",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 8102,
+      "sha256": "9bbd8ede6eb4d363f7497b8088f9253d413f1943a5be9ed99662ece2dd4be437",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6556,
+      "sha256": "8a40739a7d615a167d1e00d34a87793d96dd7df54d62f771f96e6d9924f95a89",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6785,
+      "sha256": "55a3d26a8813810e9e0089be501b62f7898deeb7503c6359a194164ca0ca25c8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8171,
+      "sha256": "7c484b29a5b53a621bdeb32445ac4e384bbf4143f385d662ba850c2500eed432",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8899,
+      "sha256": "f43df023b7d91af6870b2125f9f17480ed0f29e902cd2feecac65352a468c950",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "a57290c110424574b7c2073a3ddba10015ecea49f39400a7b1c46d560311b431",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25384,
+      "sha256": "921ababb4ee44618dc5c248475f7c58a4eca51859bc88659d5c099026f092716",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8271,
+      "sha256": "0fca191136a8d3cd5121d32083d2cd185316b86b18bbe06a37d89c94e00ab295",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6545,
+      "sha256": "6e9b7b811f5e9d6c92d36324be46a2736eb665b5d022023d30cbf7c39e85908a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6742,
+      "sha256": "137b620c997f12ec80b1dd9616ae6d2955534d4ba863277367cda3c580cf63df",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8145,
+      "sha256": "719276b97d5f50587cfdb1e9b4b71a02fa76bf5f9bfb614aa819db92c2a169b9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9202,
+      "sha256": "d683e862f244af2b5dffde895dd96d7f46c7303b6756b29b772fcc3fbcb1889c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6811,
+      "sha256": "b9b6b646e92adc89374d406bc47c2ed8c4a3529d805cd92ea00b5ce9f2cb3bc6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25374,
+      "sha256": "0352af879677d69658192565fb42d1f9c77c23194202d0ee4250e54d962e551e",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8204,
+      "sha256": "45365f667ecbcafeea1ad298d773d0fe86c7430b0fee809158ebc43c65ce89e4",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6539,
+      "sha256": "755390e48243fbdfb5b110996de99fb2db2638f50d90b62aa60dbcd523d9f966",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6761,
+      "sha256": "7d0830c485dc28c53a0f0d452d42bbc5ccd5107536b7a0fb25c2ec8199217477",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8143,
+      "sha256": "c8c1535fe5768c90d7abaaca723274c79ab9f3b77b042f1a0cdcb5f011da5460",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 9006,
+      "sha256": "9946032378bbe2d6c7ec376aaa1154c066cf473b2108a05c0e6d1d5277446d5b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "6aadd148240f4e96db21f8114e8b34799bcf1d41bed3af706419a5af7cf986b6",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/dysample__sk__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25386,
+      "sha256": "e75cee3b234cf5fdde2420fb442cb89dd2e42729314e83631c9511f156f16530",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/config.json",
+      "bytes": 7959,
+      "sha256": "4d11e7d56158fb559364fc892a62dea0361215421cc5c0ec28f6da5c9d481bd7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/profile.json",
+      "bytes": 15591,
+      "sha256": "67fe61797225e856555046e1c80955d18be2f64b59b486758a41ae58b033652d",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/status.json",
+      "bytes": 154,
+      "sha256": "eb5260b60aed82990fe149111bb174ada41eb156e40d75e4f1a83da5398de413",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/history.jsonl",
+      "bytes": 89576,
+      "sha256": "f1f4b6b2c7a5f317edc7b6ea75374a9c6c33a3819d38d9ff252b603c7c6a7719",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/manifest.json",
+      "bytes": 3646684,
+      "sha256": "dd5dbb3f02628be8786ea9b1f9f515322bba3188c82da9caeac49f235bcdf0d8",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/geometry_audit.json",
+      "bytes": 1270,
+      "sha256": "aff7577d384ec1957271b22000306894a9673bb91cbdff8ee10aa034d6e958c1",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/per_image_metrics.csv",
+      "bytes": 2952021,
+      "sha256": "009ae509ba82da5bf084d605f018f45314ef5310a9e490651665da3b7ca8474b",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/metrics.json",
+      "bytes": 1103597,
+      "sha256": "6727c0e4355c7c231ec8506372d4ce4e005d21bde6077692a805a28f8773030c",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.png",
+      "bytes": 8048,
+      "sha256": "b122e9f0688f045ec35e940f060630d24647a1efba367ddd2203a6c9b82ecfe7",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/emeasure.svg",
+      "bytes": 6549,
+      "sha256": "4e6ce12b27d2fdf084d13ab665576f0656ebed90a616f5a626e73ece7c8b3361",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.svg",
+      "bytes": 6781,
+      "sha256": "2a03185cf04c1b35bcc17ff6bdf3efc85db921695274810c45f2269cd760870a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/pr.png",
+      "bytes": 8203,
+      "sha256": "0bdfde6c6b41c5f3e8b286e9da4de156938d8140dbc046d2bb6157376e7f7c3f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.png",
+      "bytes": 8951,
+      "sha256": "62e19bd3471d3d0c621b61131e5ca9e30ecb72fd24fb44073b9dbdd794823c0f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "0f2825df001cfe67b42d7a3f43a9b126dec6e469b84e0900959713784d2817e9",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/camo-b45058f5a6d1f9c1b5eace28a0595657f448eaf0de420680275bfcccfc7fe785/threshold_curves.csv",
+      "bytes": 25414,
+      "sha256": "f14eb6f53fdb2b64ac53d6b7166a7be00c2694462a3d89268b4973f67baa28d2",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.png",
+      "bytes": 8200,
+      "sha256": "5bd8b5dd1226cea2e35a9f576955233a7d31643db6b6e6f44a2b638c2bcc0f67",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/emeasure.svg",
+      "bytes": 6544,
+      "sha256": "4f3dc19406848cc77253e8e83cfd1b1b9893c09c30042d636e0552787d854aef",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.svg",
+      "bytes": 6712,
+      "sha256": "ea10b5068e973e722682d24c7d766c6676bfe8569cb65d2a484bd4d0ede9f696",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/pr.png",
+      "bytes": 8216,
+      "sha256": "7f0212dfbef6b8ca43a09ca657d737198226ddcb7b0272b48adf118469452a6a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.png",
+      "bytes": 9161,
+      "sha256": "07382290e99c8da0e531d57dc169eb37149fe6da9177655819a639e03a77a554",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/fbeta.svg",
+      "bytes": 6811,
+      "sha256": "04abe62caedca611639ac8a9a2b6c655a51e1fa4326175c3add6230a8e109c1a",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/chameleon-ef58ef3c1e321df6d41ed2fd179df253ccd966a3212cb97eedf9b369334786af/threshold_curves.csv",
+      "bytes": 25395,
+      "sha256": "025073467e4055a9345d2fad7cb2ec0015cefca5452437eccf64389ae7e3e846",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.png",
+      "bytes": 8170,
+      "sha256": "bc61dc8f3dc276f7a401ce5e0fe32a2a05c5efe7c41ff81ba0660d97ad5e23fe",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/emeasure.svg",
+      "bytes": 6539,
+      "sha256": "05551ec3ec6739dc9e6101118798a74acffebeb5c44ce52e167115999633a877",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.svg",
+      "bytes": 6755,
+      "sha256": "00eb564b8444ed7865f84da799bbc50f8cc19a867b9247a069144bed7687baab",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/pr.png",
+      "bytes": 8119,
+      "sha256": "864ab8ab993215e9bff60d7b027179cd2667d4505679e883c34da0aeebfc0950",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.png",
+      "bytes": 8982,
+      "sha256": "b07e82d3cb344514eea5ebab738bb9a8473911ad974bfab81877ad6287e5e306",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/fbeta.svg",
+      "bytes": 6806,
+      "sha256": "fcd43c9633d974aad57ab1f50c9718a5f460aca4d174e06b9ebe7e7033c0b94f",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-separate-20261030_204647/runs/priority8/projection__mean__seed3407/test-geometry-v1-20261030_204023/curves/nc4k-d2ddacffd581baac0a521f49c7ca1d81713451ec7790d7607ad834548b21b3d3/threshold_curves.csv",
+      "bytes": 25419,
+      "sha256": "fe3d4a2a652e57d2793b78cf29c4d018c72ff69d100ea4949dd500f2906d0652",
+      "status": "imported_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/checksums.sha256",
+      "bytes": 1286,
+      "sha256": "e975a0d45345a1279188be02e0a8f180b00bb2f2eb474afac36d662f4ca39314",
+      "repository_sha256": "960e953b569824df7779f8da932cebd8ea9e5e8a3891402137aaf971b94c94d2",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/tests-final.txt",
+      "bytes": 1688,
+      "sha256": "23f9c50e9e383fd46595457cb07b9039d650d2d73348db28e5fe29568a9d906c",
+      "repository_sha256": "d7ba2760f95b4bd5d2e02892610dd74d8bfc4f1cd078c5b65860d6616e371e03",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/migration-verification.json",
+      "bytes": 412,
+      "sha256": "38db3572e3536019aeed1711434a66aec6807d471a4795b6ce945f23e47654b9",
+      "repository_sha256": "63c22b379fff764b09a3516cadad2450cdcdda8a9968fcb7259eabc736e80689",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/source-sha256.json",
+      "bytes": 2385,
+      "sha256": "5d7bd202ca6dbe9887d78b9dd04b7e44050dad2a55a46cf4cfcddfcf1357c669",
+      "repository_sha256": "caa37fd15fe5f701cd06610009b0b6c456853490524f3c2c81d7473909579466",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/tests.txt",
+      "bytes": 1679,
+      "sha256": "b1df56d888f062b88041af1f6fefe725b130eee2e5ec70e63c4c88390690c8c9",
+      "repository_sha256": "e4529f170cce9d3a9a35abb3e2124e836c79cd2ffb22156fceaf98baad24aa81",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/verify_browser.py",
+      "bytes": 4256,
+      "sha256": "9171b42a500a4d8f7d7bc8c943b77ca26856c24177a1af0f0ee34f223aca32bb",
+      "repository_sha256": "bd1bc703ca94fdca8f40bd0e894beda179358508c649a2fa6b59bbea4f562db1",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/documentation-checks.json",
+      "bytes": 1869,
+      "sha256": "c414ac9aeb5770bcd6650e8fc5fcd8a9ac2d59ca92cd6308a1eedb492f65d898",
+      "repository_sha256": "10d61dc7fc06e5a8160d9052481457e4e38026a8769570015d2dc55a01b08da5",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/all158-fullmodel-coverage.json",
+      "bytes": 92922,
+      "sha256": "217f5b674068499d10bf24e9e48b0427d750e25a281c636371c59beceff80fc0",
+      "repository_sha256": "b52d916f91bfe9f57bfbe82dcbc23504874ce8fa253d7861fdf260aef4fe219b",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/carafe.json",
+      "bytes": 17972,
+      "sha256": "fcd278cc095884793d3bf66cef4b6aa0481f949ec03474dde1f71bb84a3d4d41",
+      "repository_sha256": "b8cc9c861f8e0534e6a56ce3bf5ec1fa54430d25cdd4133916658e2caf89b2bc",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/tests.xml",
+      "bytes": 66214,
+      "sha256": "b4b43a9bd15b10e87e0091edce4c81a42ffc612a1254d5681081a378009134f7",
+      "repository_sha256": "b4b43a9bd15b10e87e0091edce4c81a42ffc612a1254d5681081a378009134f7",
+      "status": "existing_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/baseline.json",
+      "bytes": 10905,
+      "sha256": "348c9ef5841fc7231f0bd970f6a20a6c3448853978cd295eb3f12e9328b25333",
+      "repository_sha256": "f40b7d5464563c1888fbe86f26e16e8357e4fb1017b25b64b09d5ef71648f437",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/tests-final.xml",
+      "bytes": 67373,
+      "sha256": "852f22b1776f83a6c6c5fb4cff41fd5ced9b786ffe4282d64795aa76064a994d",
+      "repository_sha256": "852f22b1776f83a6c6c5fb4cff41fd5ced9b786ffe4282d64795aa76064a994d",
+      "status": "existing_byte_identical"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/dysample_cuda.json",
+      "bytes": 18979,
+      "sha256": "4924627ed7176b2887435f403a29bfb03d2368cd1ef431b21171973f93b9a95d",
+      "repository_sha256": "1e31d8386a13c6985f488c4107eb4956c2141bf9b68b31c536e944aa20e5422e",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/README.md",
+      "bytes": 4304,
+      "sha256": "94ec24253fdc38744f84e1b23a550cf7a0d5d09d77a1291c3197393c127833e5",
+      "repository_sha256": "6c216451e8185c79ca4a11a92ec9ed36d6aa48496b2df524f3f77a16c6458ba8",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/browser-verification.json",
+      "bytes": 867,
+      "sha256": "54ebe1722be1e88e7455c74655e4e1c4086dd2154091a326de90a58c88d2b92b",
+      "repository_sha256": "3bd727b2db717f660d78995186c769c38a1a675da2d32ded00066d31c509b96e",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-29-metrics/verify_complexity_grid.py",
+      "bytes": 4847,
+      "sha256": "c3e2f01b8b2be7f9be6e8ecde3965c4fdcdfd603368350481193f916bb9896c5",
+      "repository_sha256": "7c4f76bc52b312c6d3fe5e5aa57118c388dda6712564a95ce82b6f67a442013a",
+      "status": "existing_line_endings_only"
+    },
+    {
+      "path": "Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-export-20261102_131605/snapshot.json",
+      "bytes": 713,
+      "sha256": "ef0934e9ba9d0e4af95e79a0bcf1c56dcd7542e157a2fb6382d4ca563bcd045f",
+      "status": "imported_byte_identical"
+    }
+  ]
+}
