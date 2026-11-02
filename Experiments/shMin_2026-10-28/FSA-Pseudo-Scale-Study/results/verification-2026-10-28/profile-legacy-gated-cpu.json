@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "config": {
+      "generator": "legacy",
+      "utilizer": "legacy_gated",
+      "channels": 48,
+      "seed": 3407,
+      "baseline": false,
+      "legacy_reference": false,
+      "generator_options": {},
+      "utilizer_options": {}
+    },
+    "architecture": "controlled_common_decoder",
+    "generator": {
+      "name": "legacy",
+      "channels": 48,
+      "num_branches": 3,
+      "branch_order": [
+        "main",
+        "large_or_local",
+        "small_or_context"
+      ],
+      "output_alignment": "input B,C,H,W; bilinear align_corners=False",
+      "family": "existing_fsa",
+      "description": "Original FSA PS; small pool then align then project; large projects input",
+      "papers": [],
+      "normalization": "BatchNorm2d; singleton training uses running statistics",
+      "checked_date": "2026-10-28",
+      "full_paper_reproduction": false,
+      "exception": "Only B*H*W=1 training BN differs from old code, which raises an error. Branch return order is main/large/small instead of large/main/small."
+    },
+    "utilizer": {
+      "name": "legacy_gated",
+      "channels": 48,
+      "num_branches": 3,
+      "bank_order": [
+        "main",
+        "large_or_local",
+        "small_or_context"
+      ],
+      "citation": "../../../FSA-ZoomNeXt/methods/zoomnext/fsa_layers.py",
+      "checked_date": "2026-10-28",
+      "adaptation": "Original integration fused branch only, including out_proj; residual_proj and full legacy decoder are excluded. Not legacy_full.",
+      "normalization": "original BatchNorm2d; train B*H*W must exceed 1",
+      "output": "one fused B,C,H,W tensor; no residual head",
+      "gate_reduction": 2,
+      "formula": "out_proj(M + gL*(L-M) + gS*(S-M))",
+      "weight_note": "Two independent sigmoid gates; effective main coefficient 1-gL-gS can be negative."
+    }
+  },
+  "parameters": 25396115,
+  "encoder_parameters": 24849856,
+  "latency_ms": {
+    "median": 235.8850614982657,
+    "mean": 236.38736279899604,
+    "stdev": 5.345498864003174,
+    "samples": [
+      249.17241799994372,
+      232.86892100441037,
+      231.64810599701013,
+      231.0910119995242,
+      235.65358800260583,
+      232.46226899937028,
+      237.44528200040804,
+      239.91492699860828,
+      236.1165349939256,
+      237.50056999415392
+    ]
+  },
+  "images_per_second": 4.2303445842420775,
+  "cuda_memory": null,
+  "diagnostics": [
+    {
+      "level": 2,
+      "mean_rms": 0.39692991971969604,
+      "branches": [
+        {
+          "rms": 0.032305050641298294,
+          "relative_difference_rms": 0.9777594208717346,
+          "cosine_channel_mean": 0.32122933864593506
+        },
+        {
+          "rms": 0.011864490807056427,
+          "relative_difference_rms": 0.9907557964324951,
+          "cosine_channel_mean": 0.33036962151527405
+        }
+      ],
+      "fused_rms": 0.005132271908223629,
+      "fused_main_cosine": 0.3171597719192505,
+      "mean_branch_weights": [
+        0.00836098100990057,
+        0.4893268346786499,
+        0.502312183380127
+      ],
+      "weight_min": -0.21751052141189575
+    },
+    {
+      "level": 3,
+      "mean_rms": 0.3882170021533966,
+      "branches": [
+        {
+          "rms": 0.028343573212623596,
+          "relative_difference_rms": 0.9808319211006165,
+          "cosine_channel_mean": 0.30527859926223755
+        },
+        {
+          "rms": 0.014547983184456825,
+          "relative_difference_rms": 0.9895371794700623,
+          "cosine_channel_mean": 0.29991504549980164
+        }
+      ],
+      "fused_rms": 0.00475034536793828,
+      "fused_main_cosine": 0.30108878016471863,
+      "mean_branch_weights": [
+        0.0019970887806266546,
+        0.5016739964485168,
+        0.4963289499282837
+      ],
+      "weight_min": -0.21673959493637085
+    },
+    {
+      "level": 4,
+      "mean_rms": 0.37434977293014526,
+      "branches": [
+        {
+          "rms": 0.013923067599534988,
+          "relative_difference_rms": 0.9908452033996582,
+          "cosine_channel_mean": 0.2742499113082886
+        },
+        {
+          "rms": 0.010961546562612057,
+          "relative_difference_rms": 0.9920137524604797,
+          "cosine_channel_mean": 0.2933417558670044
+        }
+      ],
+      "fused_rms": 0.005112092941999435,
+      "fused_main_cosine": 0.29820892214775085,
+      "mean_branch_weights": [
+        0.008109943009912968,
+        0.4935225248336792,
+        0.4983674883842468
+      ],
+      "weight_min": -0.17088967561721802
+    },
+    {
+      "level": 5,
+      "mean_rms": 0.03039718046784401,
+      "branches": [
+        {
+          "rms": 0.0019881303887814283,
+          "relative_difference_rms": 0.9830636978149414,
+          "cosine_channel_mean": 0.30300813913345337
+        },
+        {
+          "rms": 0.001117296633310616,
+          "relative_difference_rms": 0.9874417185783386,
+          "cosine_channel_mean": 0.3681138753890991
+        }
+      ],
+      "fused_rms": 0.00044765943312086165,
+      "fused_main_cosine": 0.3687814474105835,
+      "mean_branch_weights": [
+        0.0069224098697304726,
+        0.49270784854888916,
+        0.5003697276115417
+      ],
+      "weight_min": -0.09201937913894653
+    }
+  ],
+  "protocol": {
+    "generator": "legacy",
+    "utilizer": "legacy_gated",
+    "baseline": false,
+    "legacy_reference": false,
+    "checkpoint": null,
+    "image": null,
+    "size": 384,
+    "batch_size": 1,
+    "channels": 48,
+    "seed": 3407,
+    "device": "cpu",
+    "threads": 2,
+    "warmup": 3,
+    "repeats": 10,
+    "output": "/home/robin/shMin/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-legacy-gated-cpu.json",
+    "dtype": "float32",
+    "inference_mode": true,
+    "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
+    "input": "synthetic_uniform_RGB",
+    "weights": "random_initialization",
+    "interpretation": "Execution diagnostics only; random input/weights cannot establish COD quality or learned branch utility"
+  },
+  "checkpoint_sha256": null,
+  "image_sha256": null,
+  "environment": {
+    "torch": "2.11.0+cu130",
+    "python": "3.12.13",
+    "device": "x86_64"
+  }
+}

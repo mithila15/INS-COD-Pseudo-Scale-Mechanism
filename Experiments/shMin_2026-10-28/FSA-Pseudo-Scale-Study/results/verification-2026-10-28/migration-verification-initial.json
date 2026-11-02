@@ -1,0 +1,19 @@
+{
+  "source_commit": "d3a482289f66921487a33c9965e6c37cfdab3cb3",
+  "counts": {
+    "kept_in_cod": 1212,
+    "local_document_links": 141,
+    "moved_to_ins_cod": 1077,
+    "pinned_source_entries": 2289,
+    "python_syntax": 866,
+    "shell_syntax": 127
+  },
+  "errors": [
+    "README title format: Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/.pytest_cache/README.md",
+    "Broken link in Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md: checksums.sha256",
+    "Broken link in Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/README.md: migration-verification.json"
+  ],
+  "model_initialization": "not_run_missing_research_environment",
+  "training": "not_run",
+  "dataset_download": "not_run"
+}

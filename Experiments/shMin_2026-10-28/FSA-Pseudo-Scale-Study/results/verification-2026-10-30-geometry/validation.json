@@ -1,0 +1,48 @@
+{
+  "date_kst": "2026-10-30",
+  "base_commit": "0831fa4337f1560fdca51364f8df0b141a210f87",
+  "tests": {
+    "passed": 557,
+    "subtests_passed": 67,
+    "warnings": 13,
+    "optimizer_steps": 0
+  },
+  "unchanged_function_ast": {
+    "train": true,
+    "study_loss": true,
+    "_optimizer": true,
+    "_freeze_encoder_bn": true,
+    "weighted_bce_iou": true,
+    "seed_everything": true,
+    "evaluate_model": true
+  },
+  "changed_document_links_checked": 58,
+  "missing_links": [],
+  "bash_blocks_syntax_checked": 5,
+  "source_sha256": {
+    "fsa_study/__init__.py": "58a6b4c16acd83a89ad26ea7bbeb4f67272f4860484c5f949e7f2e947bce68b9",
+    "fsa_study/complexity.py": "1ed6d4350acbdb171814f34b0b5afdb72e85663138a4c402fcacc5287ebc68de",
+    "fsa_study/data.py": "dd432d5fe34a32de58ab8b0afe96e0b48e661c8460dda3a15cb394b8c110498c",
+    "fsa_study/engine.py": "25c8fe689da99384b387194e86111447ef20f5c557e8213c66826601114841da",
+    "fsa_study/generators.py": "7115e7dbde8987b06bdfc1b12b5119619c722aea662aa3ccb3050c2b02b94e9e",
+    "fsa_study/leaderboard.py": "e65630d3716b4e4638b1d5491ac4d2ed0726a4e27acf84bee64a8222f4a303d1",
+    "fsa_study/metrics.py": "f9093f745df73b5df8e0b9da3a91ff54441f47094cac9279f4c4be869ff68e22",
+    "fsa_study/model.py": "24617f7de604ed04118fcf26a688832dff11724cf277926b5eda436560aaf0db",
+    "fsa_study/utilizers.py": "f96033a6df7b9655f998a4007863f98972099c4235224a6ca21ef8bef40c6705",
+    "plan_study.py": "d8554285bd8dbaf2cba90239c4032e46911115790b3f3c3cbd452076a491c5dd",
+    "recover_evaluation.py": "f1bb77f989703c98c415f5e67c0d64093d16a229a08a2d465d60ddd37a5ee4f8",
+    "run_plan.py": "6a3df742b224f6e7d827bcaa7c18a0a3f91d40fed971c3af2c68ae4d144eb350",
+    "run_study.py": "b7fd0793c0590f527ffbe56968af2964aabd276602a297a4d2a3a78439ce5022",
+    "summarize_study.py": "944e02de20e4982dd3048a409429d4661794b9fe10e077da6f7880fcda4dca97"
+  },
+  "artifact_sha256": {
+    "tests.txt": "dc4525a28f5b4608b45ba4c1256d602c7c52e5f2a802302d7b9bdbbe06ebbbfc",
+    "tests.xml": "b260977ff6b5398d6f440622d299f64cb49d9442732dd65596fe2952ff792b64"
+  },
+  "limits": [
+    "Synthetic data and inference tests; no real server dataset/checkpoint available.",
+    "Original pair registration not verified.",
+    "No training or downloads performed.",
+    "Old and new training source hashes retain separate comparison cohorts."
+  ]
+}

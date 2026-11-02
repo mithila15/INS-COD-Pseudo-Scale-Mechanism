@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "metadata": {
+    "config": {
+      "generator": "carafe",
+      "utilizer": "aff",
+      "channels": 48,
+      "seed": 3407,
+      "baseline": false,
+      "legacy_reference": false,
+      "generator_options": {},
+      "utilizer_options": {}
+    },
+    "architecture": "controlled_common_decoder",
+    "generator": {
+      "name": "carafe",
+      "channels": 48,
+      "num_branches": 3,
+      "branch_order": [
+        "main",
+        "large_or_local",
+        "small_or_context"
+      ],
+      "output_alignment": "input B,C,H,W; bilinear align_corners=False",
+      "family": "content_aware_upsampling",
+      "description": "Content-predicted normalized local kernels upsample by two; small branch average-pools",
+      "papers": [
+        "Wang et al., CARAFE: Content-Aware ReAssembly of FEatures, ICCV 2019"
+      ],
+      "normalization": "none",
+      "checked_date": "2026-10-28",
+      "full_paper_reproduction": false,
+      "carafe_kernel": 5,
+      "carafe_compressed": 64,
+      "native_scale_factors": [
+        2.0,
+        0.5
+      ],
+      "padding": "zero for CARAFE local patches",
+      "adaptation": "Torch unfold/einsum implementation; pooled small branch; output realignment",
+      "memory": "unfold workspace B*C*k*k*H*W; no official fused CUDA kernel",
+      "official_checkpoint_compatible": false,
+      "checkpoint_note": "Subpixel/kernel channel order differs; no direct official-weight import or mapping provided"
+    },
+    "utilizer": {
+      "name": "aff",
+      "channels": 48,
+      "num_branches": 3,
+      "bank_order": [
+        "main",
+        "large_or_local",
+        "small_or_context"
+      ],
+      "citation": "https://openaccess.thecvf.com/content/WACV2021/html/Dai_Attentional_Feature_Fusion_WACV_2021_paper.html",
+      "checked_date": "2026-10-28",
+      "adaptation": "Paper Eq.(4) convex blend, no code x2 gain. New three-way order: AFF(M, AFF(L,S)); separate gates, not iAFF.",
+      "normalization": "local GN (Identity at C=1); no norm after global pooling; sigmoid pairwise selection",
+      "output": "one fused B,C,H,W tensor; no residual head",
+      "reduction": 4,
+      "hidden_channels": 12,
+      "formula": "aux=aL*L+(1-aL)*S; fused=aM*M+(1-aM)*aux"
+    }
+  },
+  "parameters": 25581379,
+  "encoder_parameters": 24849856,
+  "latency_ms": {
+    "median": 334.8032335052267,
+    "mean": 334.91626390095917,
+    "stdev": 5.643821478558657,
+    "samples": [
+      329.6945420006523,
+      342.7843200042844,
+      336.2763070035726,
+      342.60046400595456,
+      336.43610399303725,
+      340.4911249963334,
+      330.0853719993029,
+      329.3938290007645,
+      328.07041599880904,
+      333.33016000688076
+    ]
+  },
+  "images_per_second": 2.985820958207387,
+  "cuda_memory": null,
+  "diagnostics": [
+    {
+      "level": 2,
+      "mean_rms": 0.39692991971969604,
+      "branches": [
+        {
+          "rms": 0.23360267281532288,
+          "relative_difference_rms": 0.8043530583381653,
+          "cosine_channel_mean": 0.5992374420166016
+        },
+        {
+          "rms": 0.2503434717655182,
+          "relative_difference_rms": 0.7387822270393372,
+          "cosine_channel_mean": 0.676554799079895
+        }
+      ],
+      "fused_rms": 0.30123069882392883,
+      "fused_main_cosine": 0.9308809638023376,
+      "mean_branch_weights": [
+        0.504988431930542,
+        0.24272049963474274,
+        0.2522910237312317
+      ],
+      "weight_min": 0.000579062441829592
+    },
+    {
+      "level": 3,
+      "mean_rms": 0.3882170021533966,
+      "branches": [
+        {
+          "rms": 0.22146421670913696,
+          "relative_difference_rms": 0.810168981552124,
+          "cosine_channel_mean": 0.5930964350700378
+        },
+        {
+          "rms": 0.24240373075008392,
+          "relative_difference_rms": 0.7446848750114441,
+          "cosine_channel_mean": 0.6700906157493591
+        }
+      ],
+      "fused_rms": 0.28988116979599,
+      "fused_main_cosine": 0.9228842854499817,
+      "mean_branch_weights": [
+        0.49630895256996155,
+        0.2589764893054962,
+        0.24471457302570343
+      ],
+      "weight_min": 0.0006674512405879796
+    },
+    {
+      "level": 4,
+      "mean_rms": 0.37434977293014526,
+      "branches": [
+        {
+          "rms": 0.2068188488483429,
+          "relative_difference_rms": 0.8082780838012695,
+          "cosine_channel_mean": 0.5999994277954102
+        },
+        {
+          "rms": 0.2358291745185852,
+          "relative_difference_rms": 0.7404221892356873,
+          "cosine_channel_mean": 0.6760362386703491
+        }
+      ],
+      "fused_rms": 0.2779093384742737,
+      "fused_main_cosine": 0.9269304275512695,
+      "mean_branch_weights": [
+        0.503897488117218,
+        0.2423657774925232,
+        0.2537367045879364
+      ],
+      "weight_min": 0.0020678152795881033
+    },
+    {
+      "level": 5,
+      "mean_rms": 0.03039718046784401,
+      "branches": [
+        {
+          "rms": 0.02113966830074787,
+          "relative_difference_rms": 0.6095922589302063,
+          "cosine_channel_mean": 0.8064906001091003
+        },
+        {
+          "rms": 0.02489359676837921,
+          "relative_difference_rms": 0.5420207977294922,
+          "cosine_channel_mean": 0.8410990238189697
+        }
+      ],
+      "fused_rms": 0.025554312393069267,
+      "fused_main_cosine": 0.9546939134597778,
+      "mean_branch_weights": [
+        0.49868151545524597,
+        0.25244614481925964,
+        0.248872309923172
+      ],
+      "weight_min": 0.0033369313459843397
+    }
+  ],
+  "protocol": {
+    "generator": "carafe",
+    "utilizer": "aff",
+    "baseline": false,
+    "legacy_reference": false,
+    "checkpoint": null,
+    "image": null,
+    "size": 384,
+    "batch_size": 1,
+    "channels": 48,
+    "seed": 3407,
+    "device": "cpu",
+    "threads": 2,
+    "warmup": 3,
+    "repeats": 10,
+    "output": "/home/robin/shMin/INS_COD/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-10-28/profile-carafe-aff-cpu.json",
+    "dtype": "float32",
+    "inference_mode": true,
+    "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
+    "input": "synthetic_uniform_RGB",
+    "weights": "random_initialization",
+    "interpretation": "Execution diagnostics only; random input/weights cannot establish COD quality or learned branch utility"
+  },
+  "checkpoint_sha256": null,
+  "image_sha256": null,
+  "environment": {
+    "torch": "2.11.0+cu130",
+    "python": "3.12.13",
+    "device": "x86_64"
+  }
+}
