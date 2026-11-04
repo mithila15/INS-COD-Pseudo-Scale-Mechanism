@@ -85,3 +85,19 @@ def test_active_process_blocks_before_changes(tmp_path, monkeypatch):
     with pytest.raises(ValueError, match="active"):
         installer.install(archive, tmp_path / "work")
     assert not (tmp_path / "work").exists()
+
+
+@pytest.mark.parametrize("source_dir,blocked", [("branch", True), ("main", False)])
+def test_process_guard_is_scoped_to_install_destination(tmp_path, monkeypatch, source_dir, blocked):
+    work = tmp_path / "branch"
+    proc = tmp_path / "fake-proc" / "123" / "cmdline"
+    proc.parent.mkdir(parents=True)
+    proc.write_bytes(f"python\0{tmp_path / source_dir / 'run_study.py'}\0train\0".encode())
+    real_glob = Path.glob
+    monkeypatch.setattr(Path, "glob", lambda self, pattern: iter([proc]) if self == Path("/proc")
+                        else real_glob(self, pattern))
+    if blocked:
+        with pytest.raises(ValueError, match="PID 123 is active"):
+            installer.check_processes(work)
+    else:
+        installer.check_processes(work)

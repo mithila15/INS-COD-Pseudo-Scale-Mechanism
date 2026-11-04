@@ -21,7 +21,7 @@ PRESERVED = {"results", "datasets", "data", "checkpoints", "weights", ".venv", "
 
 
 def check_processes(work):
-    """Refuse to replace source files while a nearby study process is running."""
+    """Refuse to replace source files used by a process in this destination."""
     for proc in Path("/proc").glob("[0-9]*/cmdline"):
         try:
             args = proc.read_bytes().decode(errors="replace").split("\0")
@@ -34,7 +34,7 @@ def check_processes(work):
                 source = Path(arg) if Path(arg).is_absolute() else (proc.parent / "cwd").resolve(strict=True) / arg
             except OSError:
                 continue
-            if source.resolve().is_relative_to(work.parent):
+            if source.resolve().is_relative_to(work):
                 raise ValueError(f"Experiment PID {proc.parent.name} is active; stop it before installing.")
 
 

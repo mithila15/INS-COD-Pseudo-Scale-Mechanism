@@ -7,6 +7,6 @@
 
 - [2026-11-02](2026-11-02/README.md): 서버 결과 전송 복구, full4040 3/8 완료 스냅샷·21개 지표 재집계, 전체 ZIP·예측 보존 및 단일 seed·중복·geometry 한계.
 
-- [2026-11-04](2026-11-04/README.md): ConvNeXt 마지막 stage·기존 priority8 8회 비교 준비, CNN 호환·평가·문서 검증.
+- [2026-11-04](2026-11-04/README.md): ConvNeXt 마지막 stage·기존 priority8 준비와 별도 pseudo-scale 연구 브랜치. Core 4개·stride·fusion·feature teacher 비교와 영문·한글 실행 안내.
 
 [저장소 목차](../README.md)

@@ -12,10 +12,11 @@ from fsa_study.data import geometry_protocol, manifest_digest, sha256_file
 from fsa_study.benchmark import benchmark_coverage, validate_test_extension
 from fsa_study.overlap import overlap_metadata
 from fsa_study.leaderboard import build_leaderboard, summarize_benchmark_coverage, summarize_data_integrity, write_leaderboard
+from fsa_study.conditions import variant_name
 
 
 def _variant(model):
-    return "single" if model["baseline"] else "legacy_full" if model["legacy_reference"] else f"{model['generator']}__{model['utilizer']}"
+    return variant_name(model)
 
 
 def _number(value, source):
@@ -160,6 +161,8 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
         # backbone or endpoint/decoder change creates its own ranking cohort.
         protocol["backbone"] = model.get("backbone", "pvt_v2_b2")
         protocol["feature_mode"] = model.get("feature_mode", "multistage")
+        protocol["output_stride"] = model.get("output_stride", 32)
+        protocol["feature_distillation"] = config.get("feature_distillation")
         protocol["architecture"] = model.get("architecture", "common")
         protocol["generator_options"] = model.get("generator_options", {})
         protocol["utilizer_options"] = model.get("utilizer_options", {})

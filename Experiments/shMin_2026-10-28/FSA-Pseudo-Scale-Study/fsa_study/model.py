@@ -1,4 +1,4 @@
-"""Single-pass encoder study with multistage and final-stage-only decoders."""
+"""Single-pass pseudo features and a matched three-pass image-scale reference."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -10,6 +10,7 @@ from torch.nn import functional as F
 
 from .generators import build_generator
 from .utilizers import build_utilizer
+from .conditions import validate_scale_options
 from .backbones import (BACKBONE_CHANNELS, BACKBONE_STAGES, build_cnn_backbone,
                         load_backbone, validate_backbone_options)
 
@@ -64,10 +65,11 @@ class CommonRefinement(nn.Module):
 
 
 class LastStageDecoder(nn.Module):
-    """Decode a single stride-32 feature without earlier-stage skip connections.
+    """Decode a final-stage feature without earlier-stage skip connections.
 
     The only spatial convolution kernel is 3x3. Five interpolation/convolution
-    steps recover image resolution; this is decoding, not a feature bank for
+    steps recover image resolution (the first preserves size at stride16);
+    this is decoding, not a feature bank for
     cross-stage fusion. The region gate and auxiliary losses remain supervised
     by the same GT targets as the historical study.
     """
@@ -91,9 +93,12 @@ class StudyModel(nn.Module):
     def __init__(self, generator="legacy", utilizer="mean", channels=48, seed=0,
                  backbone_weights=None, baseline=False, legacy_reference=False,
                  generator_options=None, utilizer_options=None,
-                 backbone="pvt_v2_b2", feature_mode="multistage"):
+                 backbone="pvt_v2_b2", feature_mode="multistage", output_stride=32, input_mode="single"):
         super().__init__()
         validate_backbone_options(backbone, feature_mode)
+        validate_scale_options(backbone, feature_mode, output_stride, input_mode, baseline, legacy_reference)
+        if input_mode == "image_pyramid" and generator_options:
+            raise ValueError("Image-pyramid reference uses actual resized RGB inputs, not generator_options")
         if channels < 4:
             raise ValueError("channels must be >=4")
         if baseline and legacy_reference:
@@ -102,12 +107,14 @@ class StudyModel(nn.Module):
             raise ValueError("legacy_reference requires backbone=pvt_v2_b2 and feature_mode=multistage")
         self.baseline, self.legacy_reference = baseline, legacy_reference
         self.backbone_name, self.feature_mode = backbone, feature_mode
+        self.output_stride, self.input_mode = output_stride, input_mode
         self.feature_levels = (5,) if feature_mode == "last" else (2, 3, 4, 5)
         self.endpoint_keys = tuple(f"reduction_{i}" for i in self.feature_levels)
         self.config = dict(generator=generator, utilizer=utilizer, channels=channels, seed=seed,
                            baseline=baseline, legacy_reference=legacy_reference,
                            generator_options=generator_options or {}, utilizer_options=utilizer_options or {},
-                           backbone=backbone, feature_mode=feature_mode)
+                           backbone=backbone, feature_mode=feature_mode,
+                           output_stride=output_stride, input_mode=input_mode)
         # All common modules are created first, under the same isolated seed. Changing
         # variant parameter counts therefore cannot perturb encoder/decoder initialization.
         with torch.random.fork_rng(devices=[]):
@@ -116,7 +123,7 @@ class StudyModel(nn.Module):
                 self.reference = PvtV2B2_FSA_ZoomNeXt(pretrained=False, mid_dim=channels)
             else:
                 self.backbone = (pvt_v2_eff_b2(pretrained=False) if backbone == "pvt_v2_b2"
-                                 else build_cnn_backbone(backbone, feature_mode))
+                                 else build_cnn_backbone(backbone, feature_mode, output_stride))
                 self.normalizer = PixelNormalizer()
                 stage_channels = BACKBONE_CHANNELS[backbone]
                 if feature_mode == "multistage":
@@ -141,13 +148,15 @@ class StudyModel(nn.Module):
         if not baseline and not legacy_reference:
             generators, utilizers = [], []
             for level in range(len(self.endpoint_keys)):
-                with torch.random.fork_rng(devices=[]):
-                    torch.random.default_generator.manual_seed(seed + 10000 + level)
-                    generators.append(build_generator(generator, channels, **(generator_options or {})))
+                if input_mode == "single":
+                    with torch.random.fork_rng(devices=[]):
+                        torch.random.default_generator.manual_seed(seed + 10000 + level)
+                        generators.append(build_generator(generator, channels, **(generator_options or {})))
                 with torch.random.fork_rng(devices=[]):
                     torch.random.default_generator.manual_seed(seed + 20000 + level)
                     utilizers.append(build_utilizer(utilizer, channels, num_branches=3, **(utilizer_options or {})))
-            self.generators = nn.ModuleList(generators)
+            if input_mode == "single":
+                self.generators = nn.ModuleList(generators)
             self.utilizers = nn.ModuleList(utilizers)
 
     @property
@@ -171,34 +180,69 @@ class StudyModel(nn.Module):
                                  "last_stage_progressive_decoder" if self.feature_mode == "last" else
                                  "controlled_common_decoder"),
                 "backbone": self.backbone_name, "feature_mode": self.feature_mode,
-                "encoder_calls_per_image": 1,
+                "input_mode": self.input_mode, "output_stride": self.output_stride,
+                "encoder_calls_per_image": 3 if self.input_mode == "image_pyramid" else 1,
+                "input_scales": [1.0, 1.5, .5] if self.input_mode == "image_pyramid" else [1.0],
+                "stride_adaptation": ("final 2x2 downsampler stride1; right/bottom replicate padding; all stages retained"
+                                      if self.output_stride == 16 else "original backbone strides"),
                 "encoder_stage_sources": list(stages[-1:] if self.feature_mode == "last" else stages),
-                "encoder_output_strides": [32] if self.feature_mode == "last" else [4, 8, 16, 32],
+                "encoder_output_strides": [self.output_stride] if self.feature_mode == "last" else [4, 8, 16, 32],
                 "encoder_stage_fusion": self.feature_mode == "multistage",
                 "deep_supervision_heads": len(self.endpoint_keys),
                 "frozen_stem_policy": "first encoder stem; normalization statistics follow training policy",
-                "generator": None if self.baseline or self.legacy_reference else self.generators[0].metadata,
+                "generator": None if self.baseline or self.legacy_reference or self.input_mode == "image_pyramid" else self.generators[0].metadata,
                 "utilizer": None if self.baseline or self.legacy_reference else self.utilizers[0].metadata}
 
-    def forward(self, x):
+    def projected_features(self, x):
+        """One actual encoder invocation; also used by the frozen teacher."""
+        if self.legacy_reference:
+            raise ValueError("Projected feature interface is unavailable for legacy_reference")
+        endpoints = self.encoder(self.normalizer(x))
+        return [projection(endpoints[key]) for key, projection in zip(self.endpoint_keys, self.projections)]
+
+    def image_pyramid_banks(self, x):
+        """Shared encoder/projections on RGB scales [1,1.5,.5], aligned to 1x."""
+        main = self.projected_features(x)
+        banks = [[feature] for feature in main]
+        for scale in (1.5, .5):
+            size = tuple(max(32, int(round(n * scale))) for n in x.shape[-2:])
+            scaled = F.interpolate(x, size=size, mode="bilinear", align_corners=False)
+            auxiliary = self.projected_features(scaled)
+            for bank, feature in zip(banks, auxiliary):
+                bank.append(resize(feature, bank[0]))
+        return banks
+
+    def forward(self, x, return_features=False):
         if x.ndim != 4 or x.shape[1] != 3 or min(x.shape[-2:]) < 64:
             raise ValueError("Input must have shape B,3,H,W with H,W>=64 and RGB values in [0,1]")
         if self.legacy_reference:
+            if return_features:
+                raise ValueError("Feature export is unavailable for legacy_reference")
             logits, auxiliary = self.reference.body({"image_m": x})
             return {"logits": resize(logits, x), **auxiliary}
-        endpoints = self.encoder(self.normalizer(x))  # Exactly one encoder call.
-        features = [projection(endpoints[key]) for key, projection in zip(self.endpoint_keys, self.projections)]
-        if not self.baseline:
-            features = [u(g(f)) for f, g, u in zip(features, self.generators, self.utilizers)]
+        if self.input_mode == "image_pyramid":
+            banks = self.image_pyramid_banks(x)
+            features = [u(bank) for u, bank in zip(self.utilizers, banks)]
+        else:
+            features = self.projected_features(x)
+            banks = [[f] for f in features] if self.baseline else [g(f) for f, g in zip(features, self.generators)]
+            if not self.baseline:
+                features = [u(bank) for u, bank in zip(self.utilizers, banks)]
         po, pe = self.prior(features)
         if self.feature_mode == "last":
             logits, deep_logits = self.last_decoder(features[0], po, x.shape[-2:])
-            return {"logits": logits, "po": po, "pe": pe, "deep_logits": deep_logits}
+            result = {"logits": logits, "po": po, "pe": pe, "deep_logits": deep_logits}
+            if return_features:
+                result["feature_banks"] = banks
+            return result
         refined = [None] * 4
         deeper = None
         for level in reversed(range(4)):
             deeper = self.refinement[level](features[level], deeper, po)
             refined[level] = deeper
         logits = resize(self.predictor(self.up(refined[0])), x)
-        return {"logits": logits, "po": po, "pe": pe,
-                "deep_logits": [head(f) for head, f in zip(self.deep_heads, refined)]}
+        result = {"logits": logits, "po": po, "pe": pe,
+                  "deep_logits": [head(f) for head, f in zip(self.deep_heads, refined)]}
+        if return_features:
+            result["feature_banks"] = banks
+        return result

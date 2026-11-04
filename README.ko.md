@@ -1,61 +1,49 @@
-# 2026-11-04 · INS_COD — ConvNeXt 마지막 Stage Priority8 실험
+# 2026-11-04 · INS_COD — Pseudo-scale 자체의 효과를 확인하는 비교
 
 [English](README.md) | **한국어**
 
-입력 이미지 한 장에서 pseudo-scale 특징을 만들고 결합 방식을 비교한다. 이번에는 **ConvNeXt-Tiny의 마지막 stage만 사용하고, 기존 priority8 × seed 3407 = 총 8회**를 실행한다. Planner 기본값도 이 범위다. 생성 12종 × 활용 13종 전체 목록은 나중에 명시적으로 요청하는 확장 실험용으로 보존했다.
+연구 브랜치 **`research/pseudo-scale-mechanism`**에서 pseudo-scale을 같은 해상도의 학습 분기 및 실제 RGB 멀티스케일과 비교한다. **처음에는 seed 하나로 네 개만 실행**한다. 기존 main/priority8 실험과 결과는 보존했다.
 
-ConvNeXt도 내부적으로 여러 stage를 만든다. 따라서 CNN으로 바꾸는 것만으로 다중 stage 효과가 사라지지는 않는다. 이번 `last` 모드는 stride 32의 마지막 특징 하나만 decoder에 전달하며 앞 stage의 skip, ASPP, 여러 kernel을 혼합하는 decoder를 사용하지 않는다. [구조·비교의 한계](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.ko.md). 후속 비교용 ResNet50 Layer4도 지원하지만 이번 8회에는 포함하지 않는다.
+| 첫 실행 | 달라지는 부분 | 추론 encoder 호출 |
+| --- | --- | ---: |
+| `single` | Pseudo 분기 없음 | 1 |
+| `projection__mean` | 같은 해상도에서 학습 분기 두 개 추가 | 1 |
+| `native_conv__mean` | 같은 분기 연산을 1.5배·0.5배 특징 해상도에서 수행 | 1 |
+| `image_pyramid__mean` | 실제 RGB 1배·1.5배·0.5배를 공유 encoder로 처리한 뒤 mean fusion | 3 |
 
-Pseudo-scale은 중간 특징 텐서다. **현재 모델은 pseudo-label을 생성하지 않는다.** 분할·deep·region은 GT mask, edge는 GT에서 계산한 경계로 학습하고 UAL은 예측 확신도를 정규화한다. [Pseudo-label과 감독 신호를 구분한 설명](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/PSEUDO-LABELS.ko.md).
+ConvNeXt-Tiny의 마지막 stage만 decoder에 전달한다. 이후 **각각 따로 실행하는** stride 16 비교, 원본 특징을 보존하는 `anchor_gated` fusion, 실제 RGB scale 참고군으로 학습한 frozen feature teacher도 추가했다. Teacher 감독 대상은 **특징이며 pseudo-mask label이 아니다.** 학생 추론에는 teacher가 없다. 새 모델의 학습 성능이나 향상을 확인했다고 주장하지 않는다.
 
-## 1. 환경과 기존 데이터
+## 설치와 실행
 
-[환경 설정](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.ko.md)의 Python 3.12.13 / torch 2.11.0 / torchvision 0.26.0 프로필을 설치하거나 서버의 기존 `fsa-study-clean`을 재사용한다. CNN 때문에 추가할 의존성은 없다. 먼저 [Windows pull·SCP·설치 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md#windows에서-수정-코드-전송)로 서버 소스를 갱신한다.
+[한국어: 환경·브랜치 전송·설치·전체 단계별 명령·결과 위치](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.ko.md) · [English guide](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.md).
 
-실행기는 기존 `results/priority8-full4040-fixed-20261101_200834/manifest.json`과 데이터 파일을 재사용한다. CAMO 1,000 + COD10K 3,040 = **4,040장 전체 학습**, validation holdout 없음이다. 테스트는 CAMO 250, CHAMELEON 76, COD10K 2,026, NC4K 4,121장이다. 다른 manifest를 쓰려면 `MANIFEST` 환경변수에 절대 경로를 지정한다. 새 데이터 준비는 [상세 실행 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md)를 따른다.
+기존 [고정 환경](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.ko.md), full4040 manifest와 데이터 파일, 공식 TorchVision ConvNeXt-Tiny 로컬 가중치를 재사용한다. 안내서는 새 코드를 **`/home/master/mithila/shMin-scale-study`**에 별도로 설치한다. 결과는 기존 **`/home/master/mithila/shMin`** 실험 트리의 새 폴더에 저장한다.
 
-이미 확인한 COD10K train/test 중복 7쌍과 CHAMELEON 이미지/GT 크기 불일치 2건은 기록을 유지한다. 모델 변경으로 독립 분할이 되는 것은 아니다. 평가는 기존 명시적 규약에 따라 예측을 원본 GT 크기로 맞춘다. [벤치마크 규약](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md).
-
-## 2. ConvNeXt 가중치 준비
-
-**torchvision ConvNeXt-Tiny IMAGENET1K_V1**의 `convnext_tiny-983f1562.pth`(약 109 MB)를 아래 위치에 준비한다. 기존 PVT 가중치는 호환되지 않는다. 로더는 flat state dict 또는 `state_dict` wrapper를 받으며 알려진 classification head만 제외하고 엄격하게 검사한다. 모델 생성·학습 과정에서 자동 다운로드하지 않는다. [공식 출처·직접 실행할 다운로드 명령](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.ko.md#로컬-사전학습-가중치).
-
-## 3. 기존 우선순위 8개만 시작
-
-서버 소스 갱신과 가중치 준비 후 **Ubuntu 실험 서버 터미널**에서 실행한다. 각 실험을 학습 → 4개 데이터셋 평가 → 추론 비용 측정 순서로 처리하고 단계마다 리더보드를 갱신한다. 기존 PVT checkpoint를 이어 학습하는 과정은 아니다.
+브랜치 설치와 입력 준비 후 **Ubuntu Bash에서** 실행한다.
 
 ```bash
-STUDY="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+STUDY="/home/master/mithila/shMin-scale-study/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+EXISTING="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
 export PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
-WEIGHTS="$STUDY/weights/convnext_tiny-983f1562.pth"
+export MANIFEST="$EXISTING/results/priority8-full4040-fixed-20261101_200834/manifest.json"
+WEIGHTS="$EXISTING/weights/convnext_tiny-983f1562.pth"
+STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
+CORE="$EXISTING/results/scale-mechanism-core-os32-seed3407-$STAMP"
 
-bash "$STUDY/launch_convnext_priority8.sh" "$WEIGHTS"
+OUTPUT="$CORE" bash "$STUDY/launch_scale_mechanism.sh" core "$WEIGHTS"
 ```
 
-학습 없이 명령만 확인하려면 `"$WEIGHTS"` 앞에 `--prepare-only`를 넣는다. 출력된 새 plan의 `run_all.sh`로 이후 시작할 수 있다. 새 결과 위치를 지정하려면 `OUTPUT` 환경변수에 아직 없는 절대 경로를 넣는다. 기존 결과가 있으면 덮어쓰지 않고 중단한다.
+**네 개의** 학습·평가·profiling을 순서대로 시작한다. Seed 3407, 150 epoch, batch 4, 입력 384×384, 채널 48, full4040 학습이다. Early stopping과 test 기반 checkpoint 선택은 없으며 `best.pth`는 최종 checkpoint다. 명령 준비만 하려면 `core` 앞에 `--prepare-only`를 넣는다. 이후 `resolution` 4개, `fusion` 2개, `distill` 2개 명령은 안내서에 따로 있으며 자동 시작하지 않는다. Distillation은 같은 stride·manifest로 학습을 완료한 실제 scale 참고군 checkpoint가 필요하다.
 
-| 순서 | 실험 | 비교 목적 |
-| ---: | --- | --- |
-| 1 | `single` | 같은 ConvNeXt/마지막 stage decoder에서 pseudo 생성·결합 제외 |
-| 2 | `native_conv__asff` | Resize → convolution → 정렬 후 공간 가중 결합 |
-| 3 | `native_conv__sk` | 같은 생성기 + 채널 선택 결합 |
-| 4 | `native_conv__mean` | 같은 생성기 + 평균 결합 |
-| 5 | `projection__mean` | 원래 특징 해상도에서 동일한 분기 합성곱 사용 |
-| 6 | `dysample__asff` | 학습형 업샘플링 + 공간 가중 결합 |
-| 7 | `dysample__sk` | 학습형 업샘플링 + 채널 선택 결합 |
-| 8 | `dysample__mean` | 학습형 업샘플링 + 평균 결합 |
+## 결과와 해석
 
-공통 조건은 **150 epoch, batch 4, 384×384 입력, 특징 채널 48, seed 3407**이다. Adam lr 1e-4, encoder lr ×0.1, 첫 stem/encoder BN 고정과 기존 loss 가중치를 유지한다. `full_train`은 **early stopping 없이 최종 epoch를 고정 선택**하며 validation/test 점수로 checkpoint를 선택하지 않는다. 이때 `best.pth`는 최종 checkpoint다. [전체 plan 명령·구조 변경](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.ko.md).
+Launcher가 결과 루트를 출력한다. Core 리더보드는 **`$CORE/plans/core/leaderboard/leaderboard.html`** 또는 `.md`다. 각 모델의 `runs/core/<case>__seed3407/test/metrics.json`에는 Sα·weighted Fβ·MAE·E/Fβ 각 버전 등 **데이터셋별 21개 지표**가 나온다. 학습 로그에는 loss를 표시하고 전체 test 지표는 평가 후 기록한다. 추론 비용은 참고군 encoder 3회, 학생 1회를 실제로 포함해 측정한다.
 
-## 4. 결과 위치와 해석
+학습은 CAMO 1,000 + COD10K 3,040장이다. 평가는 CAMO 250·CHAMELEON 76·COD10K 2,026·NC4K 4,121장이다. [기존 COD10K 분할 간 중복 7쌍과 CHAMELEON 크기 불일치 2건](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md)은 계속 명시한다. Backbone·stride·teacher 조건이 다르면 별도 비교군으로 기록하며 seed 하나로 통계적 유의성을 주장하지 않는다. 기준 모델만 이겼다는 이유로 scale 효과라고 결론내리지 않고 학습 분기 대조군도 비교한다.
 
-새 결과는 `Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/convnext-last-priority8-seed3407-<시각>/`에 저장되고 실행기가 절대 경로를 출력한다. 통합 로그는 `run.log`, 리더보드는 `plans/priority8/leaderboard/leaderboard.html`(브라우저)과 `leaderboard.md`(터미널)다.
+[브랜치 검증](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-04-mechanism/README.ko.md) · [연구 판단 기록](Progress/2026-11-04/Pseudo-Scale-Mechanism/README.md) · [이전 ConvNeXt priority8](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.ko.md) · [최근 업로드된 실제 PVT 결과](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.ko.md).
 
-각 `runs/priority8/<case>__seed3407/`에 설정·학습 로그·checkpoint가 저장된다. `test/metrics.json`은 **21개 지표**를 포함한다: Sα(`S`), weighted Fβ(`wF`), MAE, adaptive/mean/max E·Fβ, IoU, Dice/F1, 경계 지표 등이다. 곡선·이미지별 지표도 유지하고 `profile.json`에 장비·조건과 함께 연산량·추론 비용을 기록한다. [평가 상세](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.ko.md).
-
-Backbone과 feature mode가 다르면 리더보드 비교 그룹을 분리한다. 우선 같은 ConvNeXt/마지막 stage 구조의 8개를 비교한다. 과거 PVT/multistage와는 encoder와 decoder가 함께 달라졌으므로 점수 차이를 백본이나 pseudo-scale 한 요소의 효과로 단정하지 않는다. 실제 입력 스케일의 근사와 비용 절감을 주장하려면 동일 조건의 다중 입력 스케일 참고군이 추가로 필요하며, seed 하나로 통계적 유의성을 확정할 수 없다.
-
-업로드된 실제 학습 결과는 아직 [2026-11-02 PVT full4040 검토](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.ko.md)다. 당시 3/8 완료, 부분 실행 1개, 실행 이력 없는 4개였으며 ConvNeXt 결과나 현재 서버 상태를 뜻하지 않는다. [전체 서버 ZIP](https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102). 새 CNN 검사는 초기화·추론·gradient 연결·실행 절차 검증이며 이번 코드 수정에서 학습을 시작하지 않았다. [2026-11-04 변경·검증 기록](Progress/2026-11-04/ConvNeXt-Priority8/README.md).
+이번 **ConvNeXt·ZoomNeXt·FitNets**의 참고 범위는 [영문](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.md#7-references-and-adaptation-boundaries)·[한글](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.ko.md#7-참고-논문과-적용-범위) 안내서에 적었다. 기존 참고문헌은 아래에 보존한다.
 
 ## 참고 논문
 

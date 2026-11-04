@@ -20,6 +20,9 @@ UTILIZER_NAMES = (
     "adjacent", "legacy_gated", "bifpn", "sk", "asff", "aff", "mhsiu",
 )
 
+# Explicit branch experiments; not silently added to the historical full grid.
+EXPERIMENTAL_UTILIZER_NAMES = ("anchor_gated",)
+
 _CITATIONS = {
     "sk": "https://openaccess.thecvf.com/content_CVPR_2019/html/Li_Selective_Kernel_Networks_CVPR_2019_paper.html",
     "asff": "https://arxiv.org/abs/1911.09516",
@@ -407,8 +410,28 @@ class MHSIUUtilizer(_Utilizer):
         return (values * weights).sum(dim=2).reshape(b, self.channels, h, w)
 
 
+class AnchorGatedUtilizer(_Utilizer):
+    """Preserve the main feature and learn a small, channel-gated supplement."""
+    def __init__(self, channels, num_branches=3, gate_init=0.01):
+        super().__init__("anchor_gated", channels, num_branches)
+        self._require_triplet()
+        if not math.isfinite(gate_init) or not 0 < gate_init < 1:
+            raise ValueError("gate_init must be finite and strictly between zero and one")
+        self.projection = nn.Conv2d(2 * channels, channels, 1, bias=False)
+        self.gate_logits = nn.Parameter(torch.full((1, channels, 1, 1), math.log(gate_init / (1 - gate_init))))
+        self.metadata.update({"formula": "M + sigmoid(a_c) * P(concat(L,S))",
+                              "gate_init": gate_init, "gate": "learned per-channel, shared across images and spatial locations",
+                              "adaptation": "Study proposal; no branch subtraction or performance guarantee"})
+
+    def forward(self, bank):
+        main, large, small = self._check(bank)
+        return main + self.gate_logits.sigmoid() * self.projection(torch.cat([large, small], dim=1))
+
+
 def build_utilizer(name: str, channels: int, num_branches: int = 3, **kwargs: Any) -> nn.Module:
     """Construct a utilizer; unknown arguments raise instead of being ignored."""
+    if name == "anchor_gated":
+        return AnchorGatedUtilizer(channels, num_branches, **kwargs)
     if name not in UTILIZER_NAMES:
         raise ValueError(f"unknown utilizer {name!r}; choose from {UTILIZER_NAMES}")
     if name in {"signed", "absolute", "relative", "normalized", "adjacent"}:

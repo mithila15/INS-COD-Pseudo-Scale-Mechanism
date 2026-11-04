@@ -13,6 +13,7 @@
 | Pseudo-scale features | Learned/spatial transformations of an encoder feature | Inputs to the fusion/utilization module, then the decoder |
 | Region/edge predictions | Auxiliary model heads | Supervised auxiliary outputs; the region prediction also gates decoder features |
 | UAL term | Final prediction probabilities | Confidence regularization; no discrete label or teacher target is constructed |
+| Optional feature targets | Frozen final-epoch image-pyramid teacher on training images | Auxiliary branch cosine loss; no mask prediction target |
 | Saved prediction PNGs | Test-time model inference | Evaluation artifacts, not inputs to training |
 
 Implementation evidence: [dataset and target preparation](../fsa_study/data.py), [losses and training](../fsa_study/engine.py), [feature generators](../fsa_study/generators.py), [feature utilization](../fsa_study/utilizers.py), and [model heads](../fsa_study/model.py).
@@ -36,19 +37,20 @@ The following is a code-level description of this study's implementation, not a 
 | `deep` | Mean of the same mask loss over all available deep heads | 0.25 |
 | `region` | Same mask loss for region logits `po` | 0.5 |
 | `edge` | Dice loss for edge logits `pe` against the derived edge target | 1 |
+| `distill` (optional) | Cosine distance to corresponding frozen real-scale auxiliary features | 0.1 in the separate distill launcher |
 | `ual` | Mean of `1 - (2 * sigmoid(logits) - 1)^2`, with a cosine coefficient increasing from 0 to 1 over training | Scheduled 0–1 |
 
-Spatial logits are bilinearly aligned to the target size inside supervised losses. In `last` mode there is one deep head; in the historical common multistage decoder there are four. Averaging the heads keeps the overall deep-loss coefficient at 0.25. The UAL term encourages confident predictions but does not produce stored targets, threshold predictions into pseudo masks, or make this a teacher–student method.
+Spatial logits are bilinearly aligned to the target size inside supervised losses. In `last` mode there is one deep head; in the historical common multistage decoder there are four. Averaging the heads keeps the overall deep-loss coefficient at 0.25. The UAL term encourages confident predictions but does not produce stored targets, threshold predictions into pseudo masks, or itself constitute teacher–student supervision.
 
 ## Pseudo-scale generation is a separate process
 
-For the `native_conv` cases in priority8, one projected encoder feature supplies an unchanged main branch and two independently transformed branches. The feature is resized to 1.5× or 0.5× spatial resolution, processed at that resolution, and aligned back to the main grid. The selected utilizer combines these features before segmentation prediction. No branch is treated as a label, and no loss currently forces a branch to equal an encoder output from a differently scaled RGB image.
+For the `native_conv` cases in priority8, one projected encoder feature supplies an unchanged main branch and two independently transformed branches. The feature is resized to 1.5× or 0.5× spatial resolution, processed at that resolution, and aligned back to the main grid. The selected utilizer combines these features before segmentation prediction. No branch is treated as a mask label. The core and original priority8 runs have no teacher matching; the separate distill stage adds cosine supervision from resized-RGB teacher features.
 
 The original motivations and adaptation limits remain in [generation](GENERATION.md) and [utilization](UTILIZATION.md). The word *approximation* describes the research objective; agreement with true multi-input-scale features still requires a reference measurement.
 
 ## If pseudo-labeling is added later
 
-Pseudo-labeling is a **deferred, separate experiment**. It is not required to run the new ConvNeXt shortlist, and this update introduces no teacher model or pseudo-mask cache. A later implementation would need to declare the following before training:
+Pseudo-labeling is a **deferred, separate experiment**. It is not required to run the new ConvNeXt shortlist, and this branch introduces an optional frozen feature teacher, but no pseudo-mask cache. Its targets, provenance, frozen state and student-only inference are specified in the [mechanism guide](SCALE-MECHANISM.md). A later implementation would need to declare the following before training:
 
 - Which teacher checkpoint produces the probabilities, how it was trained, and which images are eligible. Test images or test annotations must not become training supervision.
 - Whether targets are soft probabilities or hard masks, how confidence is measured, the threshold/ignore policy, and how geometric transforms keep targets aligned.

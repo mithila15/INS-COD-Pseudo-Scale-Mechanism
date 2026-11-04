@@ -4,6 +4,8 @@
 
 이번에는 기존 **priority8 후보만 ConvNeXt-Tiny의 마지막 stage로 바꾸어 seed `3407` 하나로 실행**한다. 총 8개는 pseudo를 쓰지 않는 baseline, `native_conv + asff/sk/mean`, `projection + mean`, `dysample + asff/sk/mean`이다. 사용자가 지정한 후보 목록이며, 전체 generator×utilizer 조합이나 추가 seed, ResNet 학습은 이 계획에 포함하지 않는다. 업로드된 full4040 기록의 기존 조건을 사용하며, 그 기록을 서버의 실시간 상태로 해석하지 않는다.
 
+**연구 브랜치 갱신:** [새 mechanism 실행 안내](SCALE-MECHANISM.ko.md)는 대조 실험 네 개부터 시작하고, 실제 RGB scale 참고군·stride 16·선택적 feature teacher를 추가한다. 아래 8개 명령은 보존한 기존 priority8을 별도로 실행하는 방법이다.
+
 ## 백본 변경으로 무엇을 확인하는가
 
 이 연구에서 scale은 다음 세 가지 의미를 구분해야 한다.
@@ -16,7 +18,7 @@
 
 PVTv2뿐 아니라 **ConvNeXt와 ResNet도 계층적 백본**이다. 따라서 PVTv2를 CNN으로 바꾸는 것만으로 다중 stage 특징이 제거되는 것은 아니다. 디코더가 어떤 인코더 출력을 사용하는지가 별도 조건이다. `last`에서도 앞선 backbone layer는 마지막 특징을 계산하기 위해 실행되지만, 그 출력이 디코더로 직접 연결되지는 않는다. [ConvNeXt 논문](https://arxiv.org/abs/2201.03545), [버전을 고정한 ConvNeXt 구현](https://github.com/pytorch/vision/blob/v0.26.0/torchvision/models/convnext.py), [PVTv2 논문](https://arxiv.org/abs/2106.13797).
 
-연구 가설은 특징 수준 scale 변환으로 유용한 scale 정보를 만들면서 이미지를 여러 번 인코딩하는 비용을 줄일 수 있다는 것이다. 인코딩한 특징을 resize한 값과 resize한 이미지를 인코딩한 값은 일반적으로 같지 않다. 현재 loss는 분할 정답을 사용하며 **실제 multi-scale teacher 특징과의 일치 loss는 없다.** 따라서 실제 다중 scale 특징과의 유사도와 계산 비용 절감은 앞으로 측정해야 하는 대상이다.
+연구 가설은 특징 수준 scale 변환으로 유용한 scale 정보를 만들면서 이미지를 여러 번 인코딩하는 비용을 줄일 수 있다는 것이다. 인코딩한 특징을 resize한 값과 resize한 이미지를 인코딩한 값은 일반적으로 같지 않다. 아래 priority8의 loss는 분할 정답을 사용하며 teacher 특징 일치 loss가 없다. 연구 브랜치에서는 선택적 distillation 단계를 따로 제공한다. 따라서 실제 다중 scale 특징과의 유사도와 계산 비용 절감은 앞으로 측정해야 하는 대상이다.
 
 ## 구현된 백본과 특징 선택
 
@@ -125,7 +127,7 @@ PYTHONUNBUFFERED=1 bash "$OUT/plans/priority8/run_all.sh" 2>&1 | tee "$OUT/run.l
 
 목록에 포함된 no-pseudo baseline은 pseudo 후보들과 **동일한 ConvNeXt, 마지막 stage 디코더, 초기화, 학습 데이터, seed, 입력 크기, loss**를 사용한다. 따라서 이 백본·seed 조건에서 pseudo 후보가 분할 성능을 개선하는지 비교한다. `projection + mean`은 `native_conv + mean`에 대해 같은 해상도에서 학습 branch만 추가한 대조군이다.
 
-실제 입력 이미지를 여러 scale로 인코딩하는 동일 백본·디코더 reference와의 비교는 추후 필요하다. 이번 수정은 그러한 reference나 feature-matching teacher를 추가하지 않는다. ResNet50 `layer4` 지원은 추후 명시적인 백본 비교용이며 이번 계획에는 없다. 안정적인 개선을 주장하려면 추가 seed 검증도 필요하다.
+별도 [mechanism 실험](SCALE-MECHANISM.ko.md)에 실제 RGB 멀티스케일 reference와 선택적 feature teacher를 구현했다. 아래 priority8 명령의 8개에는 포함하지 않는다. ResNet50 `layer4` 지원은 추후 명시적인 백본 비교용이며 이번 계획에는 없다. 안정적인 개선을 주장하려면 추가 seed 검증도 필요하다.
 
 과거 PVT multistage와 이번 ConvNeXt last의 비교는 백본과 디코더가 받는 정보가 함께 달라진다. 그 점수 차이를 pseudo-scale 생성 하나의 효과로 설명할 수 없다. 같은 profiling 조건에서 파라미터 수·latency·메모리·FLOPs와 분할 지표를 함께 보고한다. 리더보드에서는 백본과 feature mode가 다른 조건을 별도 cohort로 둔다. 구현 완료를 새 ConvNeXt·ResNet 학습 결과로 주장하지 않는다.
 

@@ -1,0 +1,241 @@
+{
+  "status": "initialized_models_only",
+  "optimizer_steps": 0,
+  "dataset_downloads": 0,
+  "pretrained_weights": false,
+  "device": "cuda:0",
+  "torch": "2.11.0+cu130",
+  "base_revision": "1a003b9a7becddc0fd844bb85de62f005b96a9f0",
+  "compatibility": [
+    {
+      "case": {
+        "baseline": true
+      },
+      "state_tensors_equal": true,
+      "max_logit_difference": 0.0
+    },
+    {
+      "case": {
+        "generator": "native_conv",
+        "utilizer": "sk"
+      },
+      "state_tensors_equal": true,
+      "max_logit_difference": 0.0
+    },
+    {
+      "case": {
+        "backbone": "convnext_tiny",
+        "feature_mode": "last",
+        "baseline": true
+      },
+      "state_tensors_equal": true,
+      "max_logit_difference": 0.0
+    },
+    {
+      "case": {
+        "backbone": "convnext_tiny",
+        "feature_mode": "last",
+        "generator": "native_conv",
+        "utilizer": "mean"
+      },
+      "state_tensors_equal": true,
+      "max_logit_difference": 0.0
+    }
+  ],
+  "inference": [
+    {
+      "variant": "single",
+      "output_stride": 32,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27889828,
+      "encoder_calls": 1,
+      "macs_per_image": 13643983872.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "projection__mean",
+      "output_stride": 32,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27895684,
+      "encoder_calls": 1,
+      "macs_per_image": 13644771840.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "native_conv__mean",
+      "output_stride": 32,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27895684,
+      "encoder_calls": 1,
+      "macs_per_image": 13644968832.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "image_pyramid__mean",
+      "output_stride": 32,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27889828,
+      "encoder_calls": 3,
+      "macs_per_image": 46386127872.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "native_conv__anchor_gated",
+      "output_stride": 32,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27900340,
+      "encoder_calls": 1,
+      "macs_per_image": 13645632384.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "single",
+      "output_stride": 16,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27889828,
+      "encoder_calls": 1,
+      "macs_per_image": 20341545984.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "projection__mean",
+      "output_stride": 16,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27895684,
+      "encoder_calls": 1,
+      "macs_per_image": 20344697856.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "native_conv__mean",
+      "output_stride": 16,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27895684,
+      "encoder_calls": 1,
+      "macs_per_image": 20345485824.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "image_pyramid__mean",
+      "output_stride": 16,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27889828,
+      "encoder_calls": 3,
+      "macs_per_image": 69807688704.0,
+      "unsupported_operators": []
+    },
+    {
+      "variant": "native_conv__anchor_gated",
+      "output_stride": 16,
+      "input_shape": [
+        1,
+        3,
+        384,
+        384
+      ],
+      "finite_logits": true,
+      "parameters": 27900340,
+      "encoder_calls": 1,
+      "macs_per_image": 20348140032.0,
+      "unsupported_operators": []
+    }
+  ],
+  "gradients": [
+    {
+      "output_stride": 32,
+      "input_shape": [
+        2,
+        3,
+        128,
+        128
+      ],
+      "finite_connected_student": true,
+      "frozen_teacher": true,
+      "optimizer_steps": 0
+    },
+    {
+      "output_stride": 16,
+      "input_shape": [
+        2,
+        3,
+        128,
+        128
+      ],
+      "finite_connected_student": true,
+      "frozen_teacher": true,
+      "optimizer_steps": 0
+    }
+  ],
+  "gpu": "NVIDIA GeForce RTX 5080",
+  "source_sha256": {
+    "fsa_study/__init__.py": "58a6b4c16acd83a89ad26ea7bbeb4f67272f4860484c5f949e7f2e947bce68b9",
+    "fsa_study/backbones.py": "ae529da77d1414a0a5a379eb9cf4add59d14d24bc9a2e32dc673338ed2ad34ae",
+    "fsa_study/benchmark.py": "9108567b5057744a0ff888f6c9c1db87d7c1d2f71dc01444f708a9fa777c0836",
+    "fsa_study/complexity.py": "047f171abe283aed53316c5b00ddf9774b5e34843ff21c0a1321daa9414e9146",
+    "fsa_study/conditions.py": "6350c77d19aef64e06802f31de5b63b2c504b266b459e9abea422476288035a2",
+    "fsa_study/data.py": "0ba206079a0fd29be0f4512d726a1ea349752d990ce961f92ab7e095edbda129",
+    "fsa_study/distillation.py": "10ea48c8c17f806c6d93744d6e0c17a47e0608ea792e513c3651611a986d200b",
+    "fsa_study/engine.py": "58d93c74d43504142fec0b122c8e9b66eec247a8391f392b3d20570f3657c287",
+    "fsa_study/generators.py": "7115e7dbde8987b06bdfc1b12b5119619c722aea662aa3ccb3050c2b02b94e9e",
+    "fsa_study/leaderboard.py": "ce2c6a82a13305c7c9eb42b2eca13d4f9170500603e17987bf22b4ae133efbea",
+    "fsa_study/metrics.py": "f9093f745df73b5df8e0b9da3a91ff54441f47094cac9279f4c4be869ff68e22",
+    "fsa_study/model.py": "62432cbdfcdfcd7dd1afcf090c8344a65bf05ba428fc0eb7c8e676a57544dc24",
+    "fsa_study/overlap.py": "5a0657eebe40a2a728a6c29445286b143c0f4b8926d44a292a433b328075d755",
+    "fsa_study/training_protocol.py": "bf4e74f31a3d75d2fd81f2d3e5305db57f1bc94ad65c6e51459c2c574bfa8a35",
+    "fsa_study/utilizers.py": "b2b8d5ec49894a44ff67fb38a9567b0d229e2ad6839dc1784b140eced9a84fc8"
+  }
+}

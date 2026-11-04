@@ -57,6 +57,10 @@ def build_parser():
                        help="Encoder architecture; weights must match this backbone")
     train.add_argument("--feature-mode", choices=FEATURE_MODES, default="multistage",
                        help="multistage: four encoder endpoints; last: final endpoint only, without earlier-stage skips")
+    train.add_argument("--output-stride", type=int, choices=[16, 32], default=32)
+    train.add_argument("--input-mode", choices=["single", "image_pyramid"], default="single")
+    train.add_argument("--distill-teacher", help="Completed real-image-pyramid study checkpoint; used only in training")
+    train.add_argument("--distill-weight", type=float, default=0., help="Explicit positive feature-loss weight requires a teacher")
     train.add_argument("--generator", default="legacy")
     train.add_argument("--utilizer", default="mean")
     train.add_argument("--generator-options", type=json_object, default={})

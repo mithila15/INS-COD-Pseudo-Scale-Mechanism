@@ -18,6 +18,8 @@ def main():
                         help="Random-initialization profiling only; checkpoints retain their saved backbone")
     parser.add_argument("--feature-mode", choices=FEATURE_MODES, default="multistage",
                         help="Random-initialization profiling only; checkpoints retain their saved endpoint mode")
+    parser.add_argument("--output-stride", type=int, choices=[16, 32], default=32)
+    parser.add_argument("--input-mode", choices=["single", "image_pyramid"], default="single")
     controls = parser.add_mutually_exclusive_group()
     controls.add_argument("--baseline", action="store_true")
     controls.add_argument("--legacy-reference", action="store_true")
@@ -54,7 +56,8 @@ def main():
     else:
         model = StudyModel(generator=args.generator, utilizer=args.utilizer, channels=args.channels,
                            seed=args.seed, baseline=args.baseline, legacy_reference=args.legacy_reference,
-                           backbone=args.backbone, feature_mode=args.feature_mode)
+                           backbone=args.backbone, feature_mode=args.feature_mode,
+                           output_stride=args.output_stride, input_mode=args.input_mode)
     model.eval().to(args.device)
     if args.image:
         from PIL import Image
@@ -102,6 +105,11 @@ def main():
         if hasattr(model, "generators"):
             handles += [m.register_forward_hook(branch_hook(level))
                         for level, m in zip(model.feature_levels, model.generators)]
+        elif model.input_mode == "image_pyramid":
+            for level, module in zip(model.feature_levels, model.utilizers):
+                record = branch_hook(level)
+                handles.append(module.register_forward_pre_hook(
+                    lambda module, inputs, record=record: record(module, inputs, inputs[0])))
         def utilization_hook(level):
             def hook(module, inputs, fused):
                 bank = inputs[0]
@@ -133,6 +141,8 @@ def main():
               "protocol": {**vars(args), "dtype": "float32", "inference_mode": True,
                            "backbone": model.config.get("backbone", "pvt_v2_b2"),
                            "feature_mode": model.config.get("feature_mode", "multistage"),
+                           "output_stride": model.config.get("output_stride", 32),
+                           "input_mode": model.config.get("input_mode", "single"),
                            "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
                            "input": "local_image" if args.image else "synthetic_uniform_RGB",
                            "weights": "study_checkpoint" if args.checkpoint else "random_initialization",

@@ -78,7 +78,7 @@ _MOVEMENT = {
     "unbind", "unsqueeze", "squeeze", "expand", "expand_as", "repeat", "repeat_interleave", "as_strided",
     "cat", "stack", "pixel_shuffle", "pixel_unshuffle", "im2col", "unfold", "meshgrid", "arange",
     "empty", "empty_like", "empty_strided", "zeros", "zeros_like", "ones", "ones_like", "full", "full_like",
-    "new_empty", "new_zeros", "new_full", "constant_pad_nd", "reflection_pad2d", "replication_pad2d",
+    "new_empty", "new_zeros", "new_full", "pad", "constant_pad_nd", "reflection_pad2d", "replication_pad2d",
     "index", "index_select", "gather", "slice_scatter", "select_scatter", "_local_scalar_dense",
 }
 _ELEMENTWISE = {

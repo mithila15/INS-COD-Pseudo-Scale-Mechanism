@@ -2,7 +2,9 @@
 
 **English** | [한국어](CNN-BACKBONES.ko.md) · [Study guide](../README.md) · [Supervision and pseudo-labels](PSEUDO-LABELS.md)
 
-The immediate experiment reuses the previous **priority8 shortlist with ConvNeXt-Tiny, the final encoder stage, and one seed (`3407`)**. It schedules exactly eight runs: the no-pseudo baseline, `native_conv + asff/sk/mean`, `projection + mean`, and `dysample + asff/sk/mean`. This is the user-selected shortlist; it does not schedule the full generator–utilizer sweep, additional seeds, or ResNet training. The uploaded full4040 snapshot supplies the historical settings, not the live state of the remote server.
+This preserved priority8 protocol reuses the previous **priority8 shortlist with ConvNeXt-Tiny, the final encoder stage, and one seed (`3407`)**. It schedules exactly eight runs: the no-pseudo baseline, `native_conv + asff/sk/mean`, `projection + mean`, and `dysample + asff/sk/mean`. This is the user-selected shortlist; it does not schedule the full generator–utilizer sweep, additional seeds, or ResNet training. The uploaded full4040 snapshot supplies the historical settings, not the live state of the remote server.
+
+**Research-branch update:** the new [mechanism guide](SCALE-MECHANISM.md) starts four controls and adds an actual RGB-scale reference, stride-16 adaptation and optional feature teacher. The eight-case command below remains the separate original priority8 experiment.
 
 ## What the backbone change tests
 
@@ -16,7 +18,7 @@ There are three different meanings of scale in this study:
 
 PVTv2, ConvNeXt, and ResNet are all hierarchical backbones. **Changing PVTv2 to a CNN does not itself remove multi-stage features.** The distinction comes from selecting which encoder outputs the segmentation head consumes. Earlier backbone layers still execute to compute the final feature; `last` removes their direct skip connections to the head. See the [ConvNeXt paper](https://arxiv.org/abs/2201.03545), [versioned ConvNeXt implementation](https://github.com/pytorch/vision/blob/v0.26.0/torchvision/models/convnext.py), and [PVTv2 paper](https://arxiv.org/abs/2106.13797).
 
-The research hypothesis is that feature-level scale transformations can provide useful scale-dependent information with less cost than repeated image encoding. A feature resized after encoding is not generally equal to a feature obtained by encoding a resized image. The present loss supervises segmentation; it does **not** match pseudo features to a multi-scale teacher. Similarity to true multi-scale features and an efficiency advantage remain measurements to establish.
+The research hypothesis is that feature-level scale transformations can provide useful scale-dependent information with less cost than repeated image encoding. A feature resized after encoding is not generally equal to a feature obtained by encoding a resized image. The priority8 loss below supervises segmentation and does **not** match teacher features. The research branch offers a separate optional distillation stage. Similarity to true multi-scale features and an efficiency advantage remain measurements to establish.
 
 ## Implemented backbone and feature interfaces
 
@@ -125,7 +127,7 @@ Each variant has its own directory under `$OUT/runs/priority8/`, such as `single
 
 The included no-pseudo baseline uses the **same ConvNeXt, final-stage decoder, initialization, training data, seed, input size, and losses** as the pseudo variants. It tests whether each variant improves segmentation under this one backbone/seed condition. `projection + mean` supplies a same-resolution learned-branch control against `native_conv + mean`.
 
-A later actual multi-input-scale reference on the same backbone and decoder is still needed to test the proposed accuracy–cost trade-off. Such a reference and a feature-matching teacher are not added by this update. ResNet50 `layer4` is available for a later explicit cross-backbone experiment, but is not in this plan. Additional seeds are needed before claiming a stable improvement.
+The separate [mechanism experiment](SCALE-MECHANISM.md) now implements the actual multi-input-scale reference and optional feature teacher. They are not part of the eight-case priority8 command below. ResNet50 `layer4` is available for a later explicit cross-backbone experiment, but is not in this plan. Additional seeds are needed before claiming a stable improvement.
 
 Changing from the historical PVT multistage model to ConvNeXt final-stage changes both the backbone and decoder information path. A score difference between them cannot be attributed solely to pseudo-scale generation. Report parameters, latency, memory, and FLOPs together with segmentation metrics under the same profiling protocol. The leaderboard keeps backbone and feature-mode conditions in separate cohorts. No new trained ConvNeXt or ResNet result is claimed by this implementation.
 

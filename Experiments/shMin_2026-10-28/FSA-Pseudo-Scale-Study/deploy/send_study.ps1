@@ -2,7 +2,8 @@
 [CmdletBinding()]
 param(
     [string]$Repo = (Join-Path $PSScriptRoot '../../../..'),
-    [string]$Server = 'master@192.168.1.200'
+    [string]$Server = 'master@192.168.1.200',
+    [string]$Branch = 'main'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -23,8 +24,9 @@ if ($Origin -notin @('https://github.com/sh-min/INS_COD.git', 'https://github.co
                     'git@github.com:sh-min/INS_COD.git')) {
     throw "Unexpected repository origin: $Origin"
 }
-if ((Invoke-GitChecked -C $Repo branch --show-current).Trim() -ne 'main') {
-    throw 'Switch to the intended main checkout before transferring.'
+Invoke-GitChecked check-ref-format --branch $Branch | Out-Null
+if ((Invoke-GitChecked -C $Repo branch --show-current).Trim() -ne $Branch) {
+    throw "Switch to the intended $Branch checkout before transferring."
 }
 if (Invoke-GitChecked -C $Repo status --porcelain) {
     throw 'This checkout has local changes. Preserve them before pulling; nothing was reset or stashed.'
@@ -39,11 +41,11 @@ if ($ScpCommand) {
     }
 }
 
-Invoke-GitChecked -C $Repo pull --ff-only origin main
+Invoke-GitChecked -C $Repo pull --ff-only origin $Branch
 $Revision = (Invoke-GitChecked -C $Repo rev-parse HEAD).Trim()
-$Published = (Invoke-GitChecked -C $Repo rev-parse refs/remotes/origin/main).Trim()
+$Published = (Invoke-GitChecked -C $Repo rev-parse "refs/remotes/origin/$Branch").Trim()
 if ($Revision -ne $Published) {
-    throw 'Local main contains unpublished commits. Transfer stopped; only the published origin/main may be sent.'
+    throw "Local branch contains unpublished commits. Transfer stopped; only published origin/$Branch may be sent."
 }
 $ShortRevision = $Revision.Substring(0, 12)
 $ZipName = "ins-cod-study-$ShortRevision.zip"
@@ -63,5 +65,6 @@ Write-Host "Transferred commit: $Revision"
 Write-Host "Local archive: $Zip"
 Write-Host "Server archive: /home/master/$ZipName"
 Write-Host "Version for server installation: $ShortRevision"
-Write-Host 'Active source destination after install_study.py: /home/master/mithila/shMin'
+Write-Host "Transferred branch: $Branch"
+Write-Host 'Choose the source destination with install_study.py --work; use a separate directory for research branches.'
 Write-Host 'Transfer only: extraction, evaluation and training have not started.'

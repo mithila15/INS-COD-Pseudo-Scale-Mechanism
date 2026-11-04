@@ -102,6 +102,8 @@ def _mark_completed(job, historical=False):
     if historical:
         config.pop("backbone")
         config.pop("feature_mode")
+        for key in ("output_stride", "input_mode", "distill_teacher", "distill_weight"):
+            config.pop(key)
     (run / "config.json").write_text(json.dumps(config))
     (run / "status.json").write_text(json.dumps({"status": "training_complete"}))
     (run / "best.pth").write_bytes(b"synthetic checkpoint identity, not model weights")
@@ -166,6 +168,48 @@ def test_backbone_feature_mode_and_architecture_have_separate_rank_cohorts(tmp_p
         matched = [b for b in boards if b["dataset"] == dataset and b["metric"] == metric]
         assert len(matched) == 5
         assert all(len(b["rows"]) == 1 for b in matched)
+
+
+def test_scale_reference_has_own_variant_and_stride_teacher_have_own_cohorts(tmp_path):
+    common = {"backbone": "convnext_tiny", "feature_mode": "last", "utilizer": "mean"}
+    _report_run(tmp_path, "single", 3407, **common, baseline=True)
+    _report_run(tmp_path, "pseudo", 3407, **common)
+    _report_run(tmp_path, "reference", 3407, **common, input_mode="image_pyramid", generator="identity")
+    _report_run(tmp_path, "dense", 3407, **common, output_stride=16)
+    _report_run(tmp_path, "teacher", 3407, **common)
+    config_path = tmp_path / "teacher/config.json"
+    config = json.loads(config_path.read_text())
+    config["feature_distillation"] = {"checkpoint_sha256": "teacher-identity", "weight": .1}
+    config_path.write_text(json.dumps(config))
+    boards = [b for b in build_leaderboard(aggregate(tmp_path))["boards"]
+              if b["dataset"] == "camo" and b["metric"] == "S"]
+    assert len(boards) == 3
+    core = next(b for b in boards if b["protocol"]["output_stride"] == 32
+                and b["protocol"]["feature_distillation"] is None)
+    assert {row["variant"] for row in core["rows"]} == {"single", "native_conv__mean", "image_pyramid__mean"}
+    assert all(len(b["rows"]) == 1 for b in boards if b is not core)
+
+
+def test_completed_teacher_identity_is_checked_even_when_path_moves(tmp_path):
+    teacher = tmp_path / "teacher.pth"
+    teacher.write_bytes(b"synthetic teacher identity")
+    path = _plan(tmp_path, "--phase", "selected", "--backbone", "convnext_tiny", "--feature-mode", "last",
+                 "--generator", "native_conv", "--training-protocol", "full_train",
+                 "--distill-teacher", str(teacher), "--distill-weight", ".1")
+    job, = read_plan(path)["jobs"]
+    _mark_completed(job)
+    config_path = Path(job["run"]) / "config.json"
+    config = json.loads(config_path.read_text())
+    config["feature_distillation"] = {"checkpoint_sha256": sha256_file(teacher)}
+    config_path.write_text(json.dumps(config))
+    assert completed(job, "train")
+    relocated = tmp_path / "relocated.pth"
+    teacher.rename(relocated)
+    job["train"][job["train"].index("--distill-teacher") + 1] = str(relocated)
+    assert completed(job, "train")
+    relocated.write_bytes(b"different teacher identity")
+    with pytest.raises(ValueError, match="feature teacher disagrees"):
+        completed(job, "train")
 
 
 def test_last_stage_profile_reports_final_endpoint_and_backbone(tmp_path):

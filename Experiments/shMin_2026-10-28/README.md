@@ -6,6 +6,6 @@
 
 [COD10K-test 평가 복구·전체 학습 4,040장·ZoomNeXt 조건 대조](FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.ko.md)는 기존 결과를 보존하고 새 결과 경로를 사용한다. 2026-11-02 13:16 KST 서버 스냅샷에는 새 전체 학습·4개 테스트셋 평가를 끝낸 3개 실험, 15 epoch까지 실행한 1개, 실행 기록이 없는 4개가 있다. 과거 3,636/404 holdout 결과와 새 4,040장·최종 epoch 고정 결과를 분리한다. 중복 7쌍의 위치도 과거 train/test 6·validation/test 1에서 새 train/test 7·validation/test 0으로 달라진다. [검토·산출물 목록](FSA-Pseudo-Scale-Study/results/server-review-20261102/asset-index.md).
 
-현재 후속 실행은 [ConvNeXt 마지막 stage priority8](FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.ko.md)이며 seed3407로 총 8회다. [변경·검증 기록](../../Progress/2026-11-04/ConvNeXt-Priority8/README.md).
+이 연구 브랜치의 현재 실행은 [Pseudo-scale mechanism](FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.ko.md)이며 ConvNeXt 마지막 stage·seed3407로 core 4개부터 시작한다. 실제 RGB scale·stride 16·원본 보존 fusion·feature teacher를 구분한다. [변경·검증 기록](../../Progress/2026-11-04/Pseudo-Scale-Mechanism/README.md). 이전 [ConvNeXt priority8](FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.ko.md) 8개 실행도 별도로 보존했다.
 
 [전체 실험 목록](../README.md)

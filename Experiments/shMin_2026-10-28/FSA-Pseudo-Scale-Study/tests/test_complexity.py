@@ -105,6 +105,13 @@ def test_unknown_operator_invalidates_total_instead_of_silently_counting_zero():
     assert result["estimated_total_flops_per_image"] is None
 
 
+@pytest.mark.parametrize("mode", ["constant", "reflect", "replicate", "circular"])
+def test_padding_copies_data_without_floating_arithmetic(mode):
+    result = count(F.pad, torch.randn(1, 3, 4, 4), (0, 1, 0, 1), mode=mode)
+    assert result["coverage"]["all_observed_ops_classified"]
+    assert result["macs"] == result["estimated_total_flops"] == 0
+
+
 def test_noncontraction_einsum_is_explicitly_unsupported():
     result = count(torch.einsum, "ij,ij->ij", torch.ones(2, 3), torch.ones(2, 3))
     assert result["coverage"]["unsupported_calls"] == 1

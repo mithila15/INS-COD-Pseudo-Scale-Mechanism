@@ -1,61 +1,49 @@
-# 2026-11-04 · INS_COD — ConvNeXt Final-Stage Priority8 Experiments
+# 2026-11-04 · INS_COD — Testing Whether Pseudo Scale Adds Value
 
 **English** | [한국어](README.ko.md)
 
-Generate pseudo-scale features from one input image, then compare how those features are fused. The current experiment uses **ConvNeXt-Tiny's final stage only**, with **the original priority8 shortlist × seed 3407 = eight training runs**. The planner defaults to this eight-case scope. The larger 12-generator × 13-utilizer catalog remains available for explicitly requested later studies.
+This research branch, **`research/pseudo-scale-mechanism`**, tests pseudo-scale features against both a same-resolution learned-branch control and actual multi-input-scale encoding. **Start with four cases**, one seed, instead of the full sweep. The earlier main/priority8 experiments and their results remain preserved.
 
-ConvNeXt is itself hierarchical: changing PVTv2 to a CNN does not remove multiple stages inside the encoder. Here the decoder receives only the final stride-32 feature; earlier-stage skips, ASPP and multikernel decoder fusion are excluded from this mode. [Architecture and comparison limits](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.md). ResNet50 Layer4 is implemented for a later comparison and is not included in this run.
+| First run | What changes | Encoder calls at inference |
+| --- | --- | ---: |
+| `single` | No pseudo branches | 1 |
+| `projection__mean` | Two learned branches at unchanged resolution | 1 |
+| `native_conv__mean` | Same branch operators at 1.5× / 0.5× feature resolution | 1 |
+| `image_pyramid__mean` | Actual 1× / 1.5× / 0.5× RGB inputs, shared encoder, mean fusion | 3 |
 
-Pseudo-scale features are intermediate tensors. **This implementation does not generate pseudo-labels:** segmentation, deep and region targets use ground-truth masks, edges come from those masks, and UAL regularizes prediction confidence. [Separate supervision/pseudo-label account](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/PSEUDO-LABELS.md).
+ConvNeXt-Tiny's final stage is the sole decoder input. The branch also provides **separately invoked** stride-16 comparisons, original-feature-preserving `anchor_gated` fusion, and a frozen feature teacher trained from the actual RGB-scale reference. The optional teacher supervises features, **not pseudo-mask labels**, and is absent from student inference. No new trained result or accuracy gain is claimed.
 
-## 1. Environment and existing data
+## Installation and execution
 
-Install the pinned Python 3.12.13 / torch 2.11.0 / torchvision 0.26.0 profile using the [environment guide](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.md), or reuse the server's existing `fsa-study-clean` environment. No new dependency is required for the CNN adapters. Update the server source first using [Windows pull/SCP and installation](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows).
+[English: environment, branch transfer, installation, all stage commands and result locations](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.md) · [한국어 실행 안내](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.ko.md).
 
-The launcher reuses the existing `results/priority8-full4040-fixed-20261101_200834/manifest.json` and its dataset files. Training uses CAMO 1,000 + COD10K 3,040 = **4,040 images**, without a validation holdout. Tests remain CAMO 250, CHAMELEON 76, COD10K 2,026 and NC4K 4,121. A different absolute manifest can be supplied through the `MANIFEST` environment variable. Dataset preparation instructions remain in [advanced execution](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md).
+Use the existing [pinned environment](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.md), full4040 manifest and dataset files, plus the local official TorchVision ConvNeXt-Tiny checkpoint. The guide installs this branch in **`/home/master/mithila/shMin-scale-study`**, independently of the old source. Results still go into new directories under the original **`/home/master/mithila/shMin`** experiment tree.
 
-The acknowledged seven COD10K train/test duplicates and two CHAMELEON geometry mismatches remain recorded. The new model does not make those splits independent. Predictions are resized to untouched GT dimensions under the existing explicit evaluation policy. [Benchmark protocol](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md).
-
-## 2. Supply the matching backbone checkpoint
-
-Use **torchvision ConvNeXt-Tiny IMAGENET1K_V1**, `convnext_tiny-983f1562.pth` (about 109 MB), at the path below. The old PVT checkpoint cannot initialize this model. The strict local loader accepts a flat state dictionary or a `state_dict` wrapper and excludes only known classification-head keys. Nothing downloads automatically during model construction or training. [Official weight source and user-run download command](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.md#local-pretrained-initialization).
-
-## 3. Start exactly eight experiments
-
-Run this block in the **Ubuntu experiment server terminal** after installing the updated code and supplying the weights. It starts training → four-dataset evaluation → inference profiling sequentially, updating the leaderboard after each stage. It does not resume the old PVT checkpoints.
+After branch installation and input preparation, run in **Ubuntu Bash**:
 
 ```bash
-STUDY="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+STUDY="/home/master/mithila/shMin-scale-study/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+EXISTING="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
 export PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
-WEIGHTS="$STUDY/weights/convnext_tiny-983f1562.pth"
+export MANIFEST="$EXISTING/results/priority8-full4040-fixed-20261101_200834/manifest.json"
+WEIGHTS="$EXISTING/weights/convnext_tiny-983f1562.pth"
+STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
+CORE="$EXISTING/results/scale-mechanism-core-os32-seed3407-$STAMP"
 
-bash "$STUDY/launch_convnext_priority8.sh" "$WEIGHTS"
+OUTPUT="$CORE" bash "$STUDY/launch_scale_mechanism.sh" core "$WEIGHTS"
 ```
 
-To inspect commands without starting experiments, insert `--prepare-only` before `"$WEIGHTS"`. It prints the new plan's `run_all.sh` command. To choose a result root, set `OUTPUT` to a new absolute directory before launching. Existing outputs are rejected rather than overwritten.
+This starts **four** sequential training/evaluation/profile jobs: seed 3407, 150 epochs, batch 4, 384×384 input, 48 channels, full4040 training. There is no early stopping or test-based checkpoint selection; `best.pth` is the fixed final checkpoint. To create commands only, insert `--prepare-only` before `core`. Separate `resolution` (4), `fusion` (2) and `distill` (2) commands are in the guide; none starts automatically. Distillation requires the completed reference checkpoint with matching stride and manifest.
 
-| Order | Case | Purpose |
-| ---: | --- | --- |
-| 1 | `single` | Same ConvNeXt/final-stage decoder, no pseudo generation or fusion |
-| 2 | `native_conv__asff` | Resize → convolution → align; spatial fusion |
-| 3 | `native_conv__sk` | Same generator; channel-selective fusion |
-| 4 | `native_conv__mean` | Same generator; uniform fusion |
-| 5 | `projection__mean` | Matching branch convolutions at the original feature resolution |
-| 6 | `dysample__asff` | Learned upsampling; spatial fusion |
-| 7 | `dysample__sk` | Learned upsampling; channel-selective fusion |
-| 8 | `dysample__mean` | Learned upsampling; uniform fusion |
+## Results and limits
 
-Common settings: **150 epochs, batch 4, 384×384 input, 48 feature channels, seed 3407**, Adam lr 1e-4, encoder lr ×0.1, frozen first stem/encoder BN, and the existing loss weights. `full_train` uses the fixed final epoch; it has **no early stopping and no validation/test-based checkpoint selection**. `best.pth` is the selected final checkpoint. [Explicit plan command and architectural changes](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.md).
+The launcher prints the result root. For core, the leaderboard is **`$CORE/plans/core/leaderboard/leaderboard.html`** or `.md`; each model's `runs/core/<case>__seed3407/test/metrics.json` has **21 metrics per dataset**, including Sα, weighted Fβ, MAE and E/Fβ variants. Training logs show losses; full test scores appear after evaluation. Inference profiles count all three encodings for the reference and one for the student.
 
-## 4. Results and interpretation
+Training uses CAMO 1,000 + COD10K 3,040 images. Evaluation covers CAMO 250, CHAMELEON 76, COD10K 2,026 and NC4K 4,121. [The existing seven COD10K cross-split duplicates and two CHAMELEON geometry mismatches](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md) remain disclosed. Backbone/stride/teacher conditions have separate report cohorts, and one seed cannot establish statistical significance. A gain over the no-branch baseline alone does not prove a scale-specific benefit; compare the learned-branch control too.
 
-The launcher prints a fresh root under `Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/convnext-last-priority8-seed3407-<timestamp>/`. The combined log is `run.log`. The leaderboard is `plans/priority8/leaderboard/leaderboard.html` (browser) or `leaderboard.md` (terminal).
+[Branch verification](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-04-mechanism/README.md) · [Research decision record](Progress/2026-11-04/Pseudo-Scale-Mechanism/README.md) · [Historical ConvNeXt priority8](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.md) · [Latest uploaded actual PVT results](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.md).
 
-Each `runs/priority8/<case>__seed3407/` contains configuration, training history and checkpoints. Test scores are in `test/metrics.json`: **21 scalar metrics**, including Sα (`S`), weighted Fβ (`wF`), MAE, adaptive/mean/max E and Fβ, IoU, Dice/F1 and boundary metrics. Curves and per-image scores are retained. `profile.json` reports model complexity and inference costs with measured hardware/settings. [Evaluation details](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.md).
-
-Different backbones and feature modes have separate comparison cohorts. The valid first comparison is among these eight ConvNeXt/final-stage cases. Historical PVT/multistage scores involve a different encoder and decoder; changes cannot be attributed solely to the backbone or pseudo-scale operator. Showing approximation of real input-scale features and the claimed cost advantage still requires a matched multiple-input-scale reference. A single seed does not establish statistical significance.
-
-The latest uploaded actual training snapshot remains [the 2026-11-02 PVT full4040 review](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.md): 3/8 complete at export, one partial, four without run history. It is not a ConvNeXt result or live server status. [Complete exported server ZIP](https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102). New CNN checks are initialization/inference/gradient and workflow checks only; no training is launched by this code update. [2026-11-04 change and verification record](Progress/2026-11-04/ConvNeXt-Priority8/README.md).
+New reference/adaptation details for **ConvNeXt, ZoomNeXt and FitNets** are in the [English](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.md#7-references-and-adaptation-boundaries) and [Korean](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.ko.md#7-참고-논문과-적용-범위) guides. The existing bibliography follows.
 
 ## Referenced papers
 

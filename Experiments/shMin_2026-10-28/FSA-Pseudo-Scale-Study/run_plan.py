@@ -18,6 +18,7 @@ import sys
 
 from fsa_study.data import sha256_file
 from run_study import build_parser
+from fsa_study.conditions import variant_name, validate_scale_options, validate_distillation_options
 
 HERE = Path(__file__).resolve().parent
 ACTIONS = ("train", "evaluate", "profile")
@@ -86,10 +87,12 @@ def read_plan(path, *, rebind_entrypoints=False):
         train, evaluate = parsed["train"], parsed["evaluate"]
         if train.legacy_reference and (train.backbone != "pvt_v2_b2" or train.feature_mode != "multistage"):
             raise ValueError("Legacy reference requires PVTv2-B2 multistage")
-        for field in ("backbone", "feature_mode"):
+        validate_scale_options(**{key: getattr(train, key) for key in ("backbone", "feature_mode", "output_stride", "input_mode", "baseline", "legacy_reference")})
+        validate_distillation_options(train.distill_teacher, train.distill_weight, vars(train))
+        for field in ("backbone", "feature_mode", "output_stride"):
             if field in plan and plan[field] != getattr(train, field):
                 raise ValueError(f"Plan {field} disagrees with training command")
-        variant = "single" if train.baseline else "legacy_full" if train.legacy_reference else f"{train.generator}__{train.utilizer}"
+        variant = variant_name(vars(train))
         if variant != job["variant"] or train.seed != job["seed"]:
             raise ValueError("Plan variant/seed disagrees with training command")
         if evaluate.split != "test":
@@ -119,11 +122,12 @@ def completed(job, action):
         return False
     arguments = vars(build_parser().parse_args(job["train"][2:]))
     # Ignore only filesystem/loader choices that do not alter the trained model.
-    ignore = {"output", "manifest", "data_root", "workers", "device", "backbone_weights"}
+    ignore = {"output", "manifest", "data_root", "workers", "device", "backbone_weights", "distill_teacher"}
     def recorded_argument(key):
         # Historical checkpoints predate these explicit options. Their original
         # implementation was always PVTv2-B2 with four-stage fusion.
-        defaults = {"training_protocol": "holdout", "backbone": "pvt_v2_b2", "feature_mode": "multistage"}
+        defaults = {"training_protocol": "holdout", "backbone": "pvt_v2_b2", "feature_mode": "multistage",
+                    "output_stride": 32, "input_mode": "single", "distill_weight": 0.}
         return config.get(key, defaults.get(key))
     if any(recorded_argument(k) != v for k, v in arguments.items() if k not in ignore):
         raise ValueError(f"Existing training configuration disagrees with plan: {run}")
@@ -132,6 +136,10 @@ def completed(job, action):
         raise ValueError(f"Existing training manifest disagrees with plan: {run}")
     if arguments["backbone_weights"] and config.get("backbone_sha256") != sha256_file(arguments["backbone_weights"]):
         raise ValueError(f"Existing backbone initialization disagrees with plan: {run}")
+    teacher = arguments.get("distill_teacher")
+    recorded_teacher = config.get("feature_distillation")
+    if bool(teacher) != bool(recorded_teacher) or (teacher and recorded_teacher.get("checkpoint_sha256") != sha256_file(teacher)):
+        raise ValueError(f"Existing feature teacher disagrees with plan: {run}")
     if action == "train":
         return True
     command = job[action]

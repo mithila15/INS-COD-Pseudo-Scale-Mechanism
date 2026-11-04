@@ -6,10 +6,11 @@
 
 [COD10K 중복 기록](results/verification-2026-11-01-overlap/README.ko.md)에 학습 원본/test의 바이트 중복 7쌍을 정리했다. 정확한 기록 쌍을 명시적으로 인정하지 않으면 준비는 계속 엄격하게 중단한다. 배포 개수를 유지하는 경우에도 **독립 분할이 아님**을 표시한다. [서버 복구 명령](docs/BENCHMARK-PROTOCOL.ko.md#확인된-cod10k-중복을-명시적으로-기록하고-진행하기)을 참고한다.
 
-## 현재 실행 범위: ConvNeXt priority8
+## 현재 브랜치: 먼저 네 개 대조 실험
 
-현재 요청한 비교는 **ConvNeXt-Tiny 마지막 stage, priority8, seed 3407: 총 8회**다. [CNN 구조·실행 안내](docs/CNN-BACKBONES.ko.md)에 새 decoder와 정확한 목록을 정리했다. [Pseudo-label 문서](docs/PSEUDO-LABELS.ko.md)는 GT 감독 신호와 pseudo-scale을 구분한다. 맞는 사전학습 가중치를 준비한 뒤 [launch_convnext_priority8.sh](launch_convnext_priority8.sh)를 사용한다. 아래 목록·PVT 도식은 기존 개발 설정을 보존한 것이며 158개 전체 조합은 이번 실행 범위가 아니다.
+`research/pseudo-scale-mechanism`에서는 [새 한국어 실행 안내](docs/SCALE-MECHANISM.ko.md)와 [launch_scale_mechanism.sh](launch_scale_mechanism.sh)를 사용한다. **ConvNeXt 마지막 stage, seed 3407로 core 네 개**부터 비교한다. 실제 RGB scale 참고군, 선택적 stride 16·`anchor_gated` fusion·frozen feature distillation은 각각 구분한다. [감독 신호 문서](docs/PSEUDO-LABELS.ko.md)는 feature target과 pseudo-mask label을 구분한다. [검증 기록](results/verification-2026-11-04-mechanism/README.ko.md).
 
+이전 [ConvNeXt priority8 안내](docs/CNN-BACKBONES.ko.md)와 [실행기](launch_convnext_priority8.sh)도 보존했다. 아래 과거 목록은 생성 12종 × 기존 활용 13종이며, `anchor_gated`는 명시적으로 선택하는 추가 연구 연산자다. 과거 sweep에 자동 추가하지 않았다. 기존 참고문헌도 보존했다.
 
 ## 2026-11-02 실제 서버 결과
 
@@ -35,7 +36,7 @@
 | 선택한 변형 대 `single` | 공통 조건 | 추가 분기의 품질 이득이 비용을 감수할 만한지 |
 | `legacy_full` 대 공통 구조 변형 | 데이터와 학습 조건 | 전체 구조 참고군이며 **단일 모듈 ablation은 아님** |
 
-기존 PVT 전체 목록은 명시적 `cross`·`generation`·`utilization` phase로 보존한다. Seed 하나면 각각 158·14·15회이며, seed 세 개를 명시하면 474·42·45회다. 현재 planner 기본값은 `priority8`와 seed 3407로 총 8회다.
+기존 PVT 전체 목록은 명시적 `cross`·`generation`·`utilization` phase로 보존한다. Seed 하나면 각각 158·14·15회이며, seed 세 개를 명시하면 474·42·45회다. 하위 planner 기본값은 `priority8`와 seed 3407로 총 8회다. 새 브랜치 launcher는 `mechanism4`를 명시해 4회만 준비한다.
 
 ## 공통 조건 고정
 

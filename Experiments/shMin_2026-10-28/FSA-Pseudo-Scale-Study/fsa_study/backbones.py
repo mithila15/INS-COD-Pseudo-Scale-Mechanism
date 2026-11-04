@@ -11,6 +11,9 @@ from pathlib import Path
 
 import torch
 from torch import nn
+from torch.nn import functional as F
+
+from .conditions import validate_scale_options
 
 
 BACKBONE_NAMES = ("pvt_v2_b2", "convnext_tiny", "resnet50")
@@ -44,16 +47,25 @@ class ConvNeXtFeatures(nn.Module):
     """Expose stage endpoints while executing the CNN exactly once per image."""
     backbone_name = "convnext_tiny"
 
-    def __init__(self, feature_mode="multistage"):
+    def __init__(self, feature_mode="multistage", output_stride=32):
         super().__init__()
         validate_backbone_options(self.backbone_name, feature_mode)
         from torchvision.models import convnext_tiny
         self.features = convnext_tiny(weights=None).features
         self.feature_mode = feature_mode
+        validate_scale_options(self.backbone_name, feature_mode, output_stride)
+        self.output_stride = output_stride
+        if output_stride == 16:
+            # Retain all pretrained tensors and the final stage. The last 2x2
+            # downsampler becomes stride1; explicit bottom/right padding below
+            # keeps the stride16 spatial grid instead of shrinking it by one.
+            self.features[6][1].stride = (1, 1)
 
     def forward(self, x):
         endpoints = {}
         for index, block in enumerate(self.features):
+            if index == 6 and self.output_stride == 16:
+                x = F.pad(x, (0, 1, 0, 1), mode="replicate")
             x = block(x)
             if index in (1, 3, 5, 7) and (self.feature_mode == "multistage" or index == 7):
                 endpoints[f"reduction_{(index + 3) // 2}"] = x
@@ -83,10 +95,11 @@ class ResNetFeatures(nn.Module):
         return endpoints
 
 
-def build_cnn_backbone(backbone, feature_mode):
+def build_cnn_backbone(backbone, feature_mode, output_stride=32):
     validate_backbone_options(backbone, feature_mode)
+    validate_scale_options(backbone, feature_mode, output_stride)
     if backbone == "convnext_tiny":
-        return ConvNeXtFeatures(feature_mode)
+        return ConvNeXtFeatures(feature_mode, output_stride)
     if backbone == "resnet50":
         return ResNetFeatures(feature_mode)
     raise ValueError("The archived PVT encoder must be constructed by StudyModel")

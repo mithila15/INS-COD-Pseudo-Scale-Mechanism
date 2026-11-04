@@ -206,6 +206,8 @@ def training_model_config(args):
     """Persist the architecture needed to reconstruct a checkpoint without guessing."""
     return {"backbone": getattr(args, "backbone", "pvt_v2_b2"),
             "feature_mode": getattr(args, "feature_mode", "multistage"),
+            "output_stride": getattr(args, "output_stride", 32),
+            "input_mode": getattr(args, "input_mode", "single"),
             "generator": args.generator, "utilizer": args.utilizer, "channels": args.channels,
             "seed": args.seed, "baseline": args.baseline, "legacy_reference": args.legacy_reference,
             "generator_options": args.generator_options, "utilizer_options": args.utilizer_options}
@@ -248,6 +250,11 @@ def _select_checkpoint(protocol, epoch, epochs, improved):
 def train(args):
     """Only called by explicit `train`; no other command performs optimizer steps."""
     _validate_args(args)
+    from .conditions import validate_scale_options, validate_distillation_options
+    model_config = training_model_config(args)
+    validate_scale_options(**{k: model_config[k] for k in ("backbone", "feature_mode", "output_stride", "input_mode", "baseline", "legacy_reference")})
+    teacher_path, distill_weight = getattr(args, "distill_teacher", None), getattr(args, "distill_weight", 0.)
+    validate_distillation_options(teacher_path, distill_weight, model_config)
     if args.epochs < 1 or args.lr <= 0 or args.eval_interval < 1:
         raise ValueError("--epochs, --lr and --eval-interval must be positive")
     manifest, root = load_manifest(args.manifest, verify_files=True, data_root=args.data_root)
@@ -279,6 +286,10 @@ def train(args):
     from .model import StudyModel
     model_config = training_model_config(args)
     model = StudyModel(**model_config, backbone_weights=str(weights) if weights else None).to(args.device)
+    teacher = None
+    if teacher_path:
+        from .distillation import load_feature_teacher
+        teacher = load_feature_teacher(teacher_path, manifest, model_config, protocol, args.size, args.device)
     output = Path(args.output).expanduser().resolve()
     output.mkdir(parents=True, exist_ok=False)
     config = {key: value for key, value in vars(args).items() if key != "handler"}
@@ -294,6 +305,9 @@ def train(args):
                    "edge_protocol": "5x5 morphological gradient after nearest mask resize",
                    "model_metadata": model.metadata, "source_sha256": _source_hashes(), "environment": _environment()})
     config.update(training_info)
+    if teacher is not None:
+        config["feature_distillation"] = {**teacher.metadata, "weight": distill_weight}
+        config["loss_weights"]["distill"] = distill_weight
     config.update({"steps_per_epoch": len(train_data) // args.batch_size,
                    "planned_optimizer_steps": args.epochs * (len(train_data) // args.batch_size)})
     _json_write(output / "config.json", config)
@@ -317,8 +331,11 @@ def train(args):
             mask = batch["mask"].to(args.device, non_blocking=True)
             edge = batch["edge"].to(args.device, non_blocking=True)
             optimizer.zero_grad(set_to_none=False)
-            outputs = model(image)
+            outputs = model(image, return_features=True) if teacher is not None else model(image)
             loss, terms = study_loss(outputs, mask, edge, step / max(1, total_steps - 1))
+            if teacher is not None:
+                terms["distill"] = distill_weight * teacher.loss(outputs["feature_banks"], image)
+                loss = loss + terms["distill"]
             if not torch.isfinite(loss):
                 raise FloatingPointError(f"Nonfinite training loss at epoch={epoch}, step={step}")
             loss.backward()

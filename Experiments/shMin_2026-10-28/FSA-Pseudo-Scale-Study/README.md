@@ -6,10 +6,11 @@ Use the [repository README](../../../README.md) for environment → data → pla
 
 The [COD10K overlap record](results/verification-2026-11-01-overlap/README.md) documents seven byte-identical train-source/test pairs. Preparation remains strict unless the exact documented pairs are explicitly acknowledged. This preserves published counts while marking the split **non-disjoint**; see the [server recovery commands](docs/BENCHMARK-PROTOCOL.md#acknowledge-the-verified-cod10k-overlaps).
 
-## Current scope: ConvNeXt priority8
+## Current branch: four mechanism controls first
 
-The current requested comparison is **ConvNeXt-Tiny, final stage only, priority8 with seed 3407: eight runs**. The [CNN architecture and execution guide](docs/CNN-BACKBONES.md) describes the new decoder and exact shortlist. [Pseudo-label documentation](docs/PSEUDO-LABELS.md) distinguishes GT supervision from pseudo-scale features. Use [launch_convnext_priority8.sh](launch_convnext_priority8.sh) after supplying the matching pretrained weights. The catalogs and PVT diagrams below preserve the historical development configuration; a 158-configuration sweep is not the current run.
+On `research/pseudo-scale-mechanism`, use [the new English execution guide](docs/SCALE-MECHANISM.md) and [launch_scale_mechanism.sh](launch_scale_mechanism.sh): **four core cases, ConvNeXt final stage, seed 3407**. Actual RGB-scale encoding, optional stride 16, `anchor_gated` fusion and frozen feature distillation are separate conditions. The [supervision audit](docs/PSEUDO-LABELS.md) distinguishes feature targets from pseudo-mask labels. [Verification](results/verification-2026-11-04-mechanism/README.md).
 
+The earlier [ConvNeXt priority8 guide](docs/CNN-BACKBONES.md) and [launcher](launch_convnext_priority8.sh) remain available. The historical catalogs below still describe 12 generators × 13 original utilizers; `anchor_gated` is an explicit additional research operator, not silently inserted into old sweeps. Existing paper references are retained.
 
 ## 2026-11-02 actual server results
 
@@ -35,7 +36,7 @@ Official ZoomNeXt trains on 4,040 images, while the existing study uses 3,636 tr
 | Selected variants vs `single` | Common protocol | Whether extra branches improve quality enough to justify their cost |
 | `legacy_full` vs controlled variants | Data and training protocol | Whole-architecture reference; **not** a one-module ablation |
 
-The historical PVT matrix remains available through explicit `cross`, `generation` and `utilization` phases. With the current single-seed default they contain 158, 14 and 15 runs; explicitly passing `--seeds 3407 3408 3409` gives 474, 42 and 45. The current requested/default scope is `priority8` with seed 3407: eight runs.
+The historical PVT matrix remains available through explicit `cross`, `generation` and `utilization` phases. With the current single-seed default they contain 158, 14 and 15 runs; explicitly passing `--seeds 3407 3408 3409` gives 474, 42 and 45. The low-level planner retains its historical `priority8` default. The new branch launcher explicitly requests `mechanism4` with seed 3407: four runs.
 
 ## Keep the comparison conditions fixed
 
