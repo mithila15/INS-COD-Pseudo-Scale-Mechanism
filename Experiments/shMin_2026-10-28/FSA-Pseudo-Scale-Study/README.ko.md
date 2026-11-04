@@ -1,10 +1,15 @@
-# 2026-11-02 · Pseudo-Scale Study — 방법별 비교 기준·실험 조건·평가 복구
+# 2026-11-04 · Pseudo-Scale Study — 방법별 비교 기준·실험 조건·평가 복구
 
 [English](README.md) | **한국어** | [실행 안내](../../../README.ko.md) | [환경 설정](environment/README.ko.md)
 
 환경 → 데이터 → 계획 생성 → 학습 → validation/비용 → 테스트 명령은 [저장소 README](../../../README.ko.md)에 있다. 이 문서는 **무엇을 비교하고 결과를 어떻게 해석할지** 설명한다. 생성 12종 × 활용 13종과 대조군 2개로 158개 구성, seed 3개 기준 474회다. Fusion을 지원하며 공통 decoder에 residual 표현을 강제하지 않는다.
 
 [COD10K 중복 기록](results/verification-2026-11-01-overlap/README.ko.md)에 학습 원본/test의 바이트 중복 7쌍을 정리했다. 정확한 기록 쌍을 명시적으로 인정하지 않으면 준비는 계속 엄격하게 중단한다. 배포 개수를 유지하는 경우에도 **독립 분할이 아님**을 표시한다. [서버 복구 명령](docs/BENCHMARK-PROTOCOL.ko.md#확인된-cod10k-중복을-명시적으로-기록하고-진행하기)을 참고한다.
+
+## 현재 실행 범위: ConvNeXt priority8
+
+현재 요청한 비교는 **ConvNeXt-Tiny 마지막 stage, priority8, seed 3407: 총 8회**다. [CNN 구조·실행 안내](docs/CNN-BACKBONES.ko.md)에 새 decoder와 정확한 목록을 정리했다. [Pseudo-label 문서](docs/PSEUDO-LABELS.ko.md)는 GT 감독 신호와 pseudo-scale을 구분한다. 맞는 사전학습 가중치를 준비한 뒤 [launch_convnext_priority8.sh](launch_convnext_priority8.sh)를 사용한다. 아래 목록·PVT 도식은 기존 개발 설정을 보존한 것이며 158개 전체 조합은 이번 실행 범위가 아니다.
+
 
 ## 2026-11-02 실제 서버 결과
 
@@ -30,7 +35,7 @@
 | 선택한 변형 대 `single` | 공통 조건 | 추가 분기의 품질 이득이 비용을 감수할 만한지 |
 | `legacy_full` 대 공통 구조 변형 | 데이터와 학습 조건 | 전체 구조 참고군이며 **단일 모듈 ablation은 아님** |
 
-전체 실험은 `cross`를 한 번 생성한 뒤 위 부분집합으로 분석한다. 단계별 대안은 `generation --utilizer mean` 42회 → validation으로 생성기 선택 → `utilization --generator <선택값>` 45회다. phase 간 대조군이 중복되므로 결과 root와 집계를 분리한다. 전체 cross는 474회이며 세 계획을 모두 실행하는 것이 필수는 아니다.
+기존 PVT 전체 목록은 명시적 `cross`·`generation`·`utilization` phase로 보존한다. Seed 하나면 각각 158·14·15회이며, seed 세 개를 명시하면 474·42·45회다. 현재 planner 기본값은 `priority8`와 seed 3407로 총 8회다.
 
 ## 공통 조건 고정
 
@@ -157,6 +162,8 @@ PYTHONUNBUFFERED=1 bash "$RECOVERY/run_all.sh" 2>&1 | tee "$RECOVERY/run.log"
 각 실험의 21개 테스트 지표는 `$RUN` 아래 `runs/priority8/<variant>__seed3407/test-geometry-v1-<timestamp>/metrics.json`에 저장하고, 같은 폴더에 크기 검사 기록을 둔다. 새 리더보드는 `$RECOVERY/leaderboard/leaderboard.html`이며 터미널용 `leaderboard.md`도 있다. 기존 학습 소스 해시를 보존하므로 이전 baseline과 수정 코드로 학습한 모델은 서로 다른 비교 그룹에 표시될 수 있다. 하나의 순위를 만들기 위해 출처 정보를 지우지 말고, 기록된 코드 차이를 확인해 그룹을 해석한다. Epoch 로그에는 validation MAE가 나오며 전체 21개 지표는 각 테스트 평가가 끝난 뒤 생성된다.
 
 ## 참고 논문
+
+**2026-11-04 추가:** [A ConvNet for the 2020s / 2020년대를 위한 합성곱 신경망](https://openaccess.thecvf.com/content/CVPR2022/html/Liu_A_ConvNet_for_the_2020s_CVPR_2022_paper.html)(IEEE/CVF CVPR 2022, 학회; ConvNeXt 백본), [Deep Residual Learning for Image Recognition / 영상 인식을 위한 심층 잔차 학습](https://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html)(IEEE CVPR 2016, 학회; 후속 ResNet50 비교), [PVT v2: Improved Baselines with Pyramid Vision Transformer / 피라미드 비전 트랜스포머를 통한 개선된 기준 모델](https://doi.org/10.1007/s41095-022-0274-8)(*Computational Visual Media*, 2022, 저널; 기존 백본 보존). 실제 CNN은 기록한 TorchVision 변형을 사용하며 pseudo 생성기와 decoder는 이 연구의 적용이다.
 
 확인일 **2026-10-28**. 한국어 제목은 이해를 위한 번역이다. 전체 논문의 재현이 아닌 아이디어 적용 실험이다. 공식 출처·발표처·수식·수정 범위는 [GENERATION](docs/GENERATION.md)과 [UTILIZATION](docs/UTILIZATION.md)에 보존한다.
 

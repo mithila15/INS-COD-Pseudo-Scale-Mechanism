@@ -8,6 +8,8 @@ from pathlib import Path
 import shlex
 import sys
 
+from run_study import BACKBONE_NAMES, FEATURE_MODES
+
 HERE = Path(__file__).resolve().parent
 
 
@@ -19,11 +21,16 @@ def names(module, constant):
     raise ValueError(constant)
 
 
-def variants(phase, generator, utilizer):
+def variants(phase, generator, utilizer, baseline=False):
     generators = names("generators", "GENERATOR_NAMES")
     utilizers = names("utilizers", "UTILIZER_NAMES")
     if generator not in generators or utilizer not in utilizers:
         raise ValueError(f"Unknown generator/utilizer; choose {generators} / {utilizers}")
+    if baseline and phase != "selected":
+        raise ValueError("--baseline is only valid with --phase selected")
+    if phase == "selected":
+        return [("single", ["--baseline"])] if baseline else [
+            (f"{generator}__{utilizer}", ["--generator", generator, "--utilizer", utilizer])]
     if phase == "priority8":
         pairs = [("native_conv", "asff"), ("native_conv", "sk"), ("native_conv", "mean"),
                  ("projection", "mean"), ("dysample", "asff"), ("dysample", "sk"), ("dysample", "mean")]
@@ -35,13 +42,18 @@ def variants(phase, generator, utilizer):
         (f"{g}__{u}", ["--generator", g, "--utilizer", u]) for g, u in pairs]
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--phase", choices=["generation", "utilization", "cross", "priority8"], default="cross")
+    parser.add_argument("--phase", choices=["selected", "generation", "utilization", "cross", "priority8"], default="priority8",
+                        help="Default priority8: the previous eight-case shortlist; selected creates only one requested case")
     parser.add_argument("--training-protocol", choices=["holdout", "full_train"], default="holdout")
+    parser.add_argument("--backbone", choices=BACKBONE_NAMES, default="pvt_v2_b2")
+    parser.add_argument("--feature-mode", choices=FEATURE_MODES, default="multistage")
+    parser.add_argument("--baseline", action="store_true", help="Selected phase only: run the no-pseudo control instead of the requested pair")
     parser.add_argument("--generator", default="legacy", help="Fixed generator for utilization phase")
     parser.add_argument("--utilizer", default="mean", help="Fixed utilizer for generation phase")
-    parser.add_argument("--seeds", nargs="+", type=int, default=[3407, 3408, 3409])
+    parser.add_argument("--seeds", nargs="+", type=int, default=[3407],
+                        help="Default: one seed3407. Multiple seeds must be requested explicitly")
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--output", required=True, help="New plan directory; command scripts and plan.json only")
     parser.add_argument("--results", required=True, help="Absolute NEW root for future run directories")
@@ -58,7 +70,7 @@ def main():
     init = parser.add_mutually_exclusive_group(required=True)
     init.add_argument("--backbone-weights")
     init.add_argument("--random-init", action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if len(set(args.seeds)) != len(args.seeds):
         parser.error("seeds must be unique")
     for field in ("evaluation_subdir", "profile_name"):
@@ -71,7 +83,13 @@ def main():
             parser.error(f"{field} must be an absolute path")
     if args.epochs < 1 or args.batch_size < 1 or args.size < 64 or args.size % 32 or args.channels < 4:
         parser.error("invalid epochs/batch-size/size/channels")
-    variants_list = variants(args.phase, args.generator, args.utilizer)
+    try:
+        variants_list = variants(args.phase, args.generator, args.utilizer, args.baseline)
+    except ValueError as error:
+        parser.error(str(error))
+    if (args.backbone != "pvt_v2_b2" or args.feature_mode != "multistage") and any(
+            "--legacy-reference" in flags for _, flags in variants_list):
+        parser.error("This phase includes legacy_full, which requires PVTv2-B2 multistage. Use --phase selected or priority8 for this backbone/feature mode.")
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=False)
     jobs = []
@@ -83,6 +101,7 @@ def main():
                             "--epochs", str(args.epochs), "--batch-size", str(args.batch_size),
                             "--size", str(args.size), "--channels", str(args.channels),
                             "--workers", str(args.workers), "--device", args.device,
+                            "--backbone", args.backbone, "--feature-mode", args.feature_mode,
                             "--training-protocol", args.training_protocol] + flags
             train += ["--backbone-weights", args.backbone_weights] if args.backbone_weights else ["--random-init"]
             evaluate = base + ["evaluate", "--manifest", args.manifest, "--checkpoint", str(run / "best.pth"),
@@ -96,6 +115,7 @@ def main():
                          "train": train, "evaluate": evaluate, "profile": profile})
     payload = {"schema_version": 2, "phase": args.phase, "variant_count": len(variants_list),
                "training_protocol": args.training_protocol,
+               "backbone": args.backbone, "feature_mode": args.feature_mode,
                "results": args.results, "evaluation_subdir": args.evaluation_subdir, "profile_name": args.profile_name,
                "run_count": len(jobs), "seeds": args.seeds, "status": "commands_only_not_executed", "jobs": jobs}
     (output / "plan.json").write_text(json.dumps(payload, indent=2) + "\n")

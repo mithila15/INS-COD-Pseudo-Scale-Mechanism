@@ -7,11 +7,17 @@ from pathlib import Path
 import statistics
 import time
 
+from run_study import BACKBONE_NAMES, FEATURE_MODES
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--generator", default="legacy")
     parser.add_argument("--utilizer", default="mean")
+    parser.add_argument("--backbone", choices=BACKBONE_NAMES, default="pvt_v2_b2",
+                        help="Random-initialization profiling only; checkpoints retain their saved backbone")
+    parser.add_argument("--feature-mode", choices=FEATURE_MODES, default="multistage",
+                        help="Random-initialization profiling only; checkpoints retain their saved endpoint mode")
     controls = parser.add_mutually_exclusive_group()
     controls.add_argument("--baseline", action="store_true")
     controls.add_argument("--legacy-reference", action="store_true")
@@ -47,7 +53,8 @@ def main():
         model.load_state_dict(checkpoint["model"], strict=True)
     else:
         model = StudyModel(generator=args.generator, utilizer=args.utilizer, channels=args.channels,
-                           seed=args.seed, baseline=args.baseline, legacy_reference=args.legacy_reference)
+                           seed=args.seed, baseline=args.baseline, legacy_reference=args.legacy_reference,
+                           backbone=args.backbone, feature_mode=args.feature_mode)
     model.eval().to(args.device)
     if args.image:
         from PIL import Image
@@ -93,7 +100,8 @@ def main():
                 diagnostics.append(row)
             return hook
         if hasattr(model, "generators"):
-            handles += [m.register_forward_hook(branch_hook(i+2)) for i, m in enumerate(model.generators)]
+            handles += [m.register_forward_hook(branch_hook(level))
+                        for level, m in zip(model.feature_levels, model.generators)]
         def utilization_hook(level):
             def hook(module, inputs, fused):
                 bank = inputs[0]
@@ -106,7 +114,8 @@ def main():
                     row["weight_min"] = float(weights.min())
             return hook
         if hasattr(model, "utilizers"):
-            handles += [m.register_forward_hook(utilization_hook(i+2)) for i, m in enumerate(model.utilizers)]
+            handles += [m.register_forward_hook(utilization_hook(level))
+                        for level, m in zip(model.feature_levels, model.utilizers)]
         prediction = model(x)["logits"]
         for handle in handles:
             handle.remove()
@@ -122,6 +131,8 @@ def main():
               "images_per_second": args.batch_size * 1000 / statistics.mean(durations),
               "cuda_memory": memory, "diagnostics": diagnostics, "complexity": complexity,
               "protocol": {**vars(args), "dtype": "float32", "inference_mode": True,
+                           "backbone": model.config.get("backbone", "pvt_v2_b2"),
+                           "feature_mode": model.config.get("feature_mode", "multistage"),
                            "timed_scope": "device tensor to all heads, including deep/region/edge; excludes IO/transfer",
                            "input": "local_image" if args.image else "synthetic_uniform_RGB",
                            "weights": "study_checkpoint" if args.checkpoint else "random_initialization",

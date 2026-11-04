@@ -53,7 +53,7 @@ def _fake_run(root, name, seed=1, manifest="data", metric_protocol="official_py_
     return run
 
 
-@pytest.mark.parametrize("phase,expected", [("generation", 42), ("utilization", 45), ("cross", 474)])
+@pytest.mark.parametrize("phase,expected", [("generation", 14), ("utilization", 15), ("cross", 158)])
 def test_plan_cli_counts_absolute_commands_and_shell_syntax(tmp_path, phase, expected):
     manifest = tmp_path / "manifest.json"
     manifest.write_text("{}")  # Plan generation intentionally does not touch dataset content.

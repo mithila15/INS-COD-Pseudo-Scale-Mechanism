@@ -1,6 +1,8 @@
-# 2026-10-28 · FSA Study Environment — 환경 설치와 실행 검사
+# 2026-11-04 · FSA Study Environment — 환경 설치와 실행 검사
 
 [English](README.md) | **한국어** · [실험 안내](../../../../README.ko.md)
+
+현재 CNN 실험: 기존 torch/torchvision 잠금 환경에서 ConvNeXt-Tiny와 ResNet50을 지원한다. [CNN 안내](../docs/CNN-BACKBONES.ko.md)의 모델별 **torchvision 가중치**를 사용한다. 아래 PVT 전용 초기화 설명은 기존 PVT 설정에만 해당한다.
 
 실험을 준비하거나 학습하기 전에 전용 환경을 만든다. 아래 명령은 **Linux x86_64, Python 3.12.13**을 기준으로 기록된 패키지 버전과 배포 파일 해시를 사용한다. 이 lock 전체를 완전히 새 환경에 설치하는 과정은 **아직 검증하지 않았다**. 기존 검증은 아래에 설명한 로컬 overlay 환경에서 수행했다.
 

@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "phase": "priority8",
+  "variant_count": 8,
+  "training_protocol": "full_train",
+  "backbone": "convnext_tiny",
+  "feature_mode": "last",
+  "evaluation_subdir": "test",
+  "profile_name": "profile.json",
+  "run_count": 8,
+  "seeds": [
+    3407
+  ],
+  "status": "commands_only_not_executed",
+  "variants": [
+    "single",
+    "native_conv__asff",
+    "native_conv__sk",
+    "native_conv__mean",
+    "projection__mean",
+    "dysample__asff",
+    "dysample__sk",
+    "dysample__mean"
+  ],
+  "validation": "launcher --prepare-only; temporary weight placeholder; no model or training execution"
+}

@@ -1,164 +1,65 @@
-# 2026-11-02 · INS_COD — Pseudo-scale experiment guide
+# 2026-11-04 · INS_COD — ConvNeXt Final-Stage Priority8 Experiments
 
 **English** | [한국어](README.ko.md)
 
-Compare **how to generate pseudo-scale features** and **how to use them** in a single-encoder camouflaged object detector. Utilization includes subtraction, direct fusion, and channel/spatial attention. The study provides **12 generators × 13 utilizers**, plus a no-pseudo baseline and the archived full FSA reference: **158 configurations, 474 runs with three seeds**.
+Generate pseudo-scale features from one input image, then compare how those features are fused. The current experiment uses **ConvNeXt-Tiny's final stage only**, with **the original priority8 shortlist × seed 3407 = eight training runs**. The planner defaults to this eight-case scope. The larger 12-generator × 13-utilizer catalog remains available for explicitly requested later studies.
 
-**Latest actual results:** [2026-11-02 full-4040 snapshot review](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.md) — **3/8 runs complete on all four test datasets**, one run at epoch 15/150 and four with no run history in the export. CAMO/CHAMELEON improve with native-scale ASFF/SK fusion; COD10K/NC4K are mixed. One seed, no overall winner. [Complete server ZIP and predictions](https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102).
+ConvNeXt is itself hierarchical: changing PVTv2 to a CNN does not remove multiple stages inside the encoder. Here the decoder receives only the final stride-32 feature; earlier-stage skips, ASPP and multikernel decoder fusion are excluded from this mode. [Architecture and comparison limits](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.md). ResNet50 Layer4 is implemented for a later comparison and is not included in this run.
 
-This README is the execution guide. See the [method catalog and comparison rationale](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md) for what each variant tests. Referenced papers and adaptations are retained below. The historical holdout [priority8 results](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/priority8-report-20261101_172449/README.md) cover eight runs with one seed and **three test datasets; COD10K-test is missing**.
+Pseudo-scale features are intermediate tensors. **This implementation does not generate pseudo-labels:** segmentation, deep and region targets use ground-truth masks, edges come from those masks, and UAL regularizes prediction confidence. [Separate supervision/pseudo-label account](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/PSEUDO-LABELS.md).
 
-For existing results, use the [four-dataset recovery and full-data training guide](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md). The historical holdout training uses **3,636 images + 404 validation**, while official ZoomNeXt uses **4,040 training images**. The new `full_train` option uses all 4,040 and a fixed final-epoch checkpoint; other architecture/training differences remain. [Windows pull and SCP transfer](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows) preserves the existing server checkout and results.
+## 1. Environment and existing data
 
-The server audit found **seven exact COD10K train-source/test duplicates**: **six train/test + one validation/test** in the historical holdout split; **seven train/test + zero validation/test** in the new `full_train` split. Strict preparation stops by default. The [explicit overlap policy](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#acknowledge-the-verified-cod10k-overlaps) records only the verified ID/hash pairs, preserves published sample counts and exposes `disjoint=false`; it does not make COD10K evaluation independent. [Evidence and limits](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/verification-2026-11-01-overlap/README.md).
+Install the pinned Python 3.12.13 / torch 2.11.0 / torchvision 0.26.0 profile using the [environment guide](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.md), or reuse the server's existing `fsa-study-clean` environment. No new dependency is required for the CNN adapters. Update the server source first using [Windows pull/SCP and installation](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#transfer-the-updated-source-from-windows).
 
-## 1. Set up the environment
+The launcher reuses the existing `results/priority8-full4040-fixed-20261101_200834/manifest.json` and its dataset files. Training uses CAMO 1,000 + COD10K 3,040 = **4,040 images**, without a validation holdout. Tests remain CAMO 250, CHAMELEON 76, COD10K 2,026 and NC4K 4,121. A different absolute manifest can be supplied through the `MANIFEST` environment variable. Dataset preparation instructions remain in [advanced execution](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md).
 
-Start from a checkout of this repository. Set `REPO` to its absolute path on your machine. Use the **same terminal** for all blocks below. The documented profile uses Python 3.12.13, PyTorch 2.11.0, torchvision 0.26.0, timm 1.0.30 and the checked-in dependency lock.
+The acknowledged seven COD10K train/test duplicates and two CHAMELEON geometry mismatches remain recorded. The new model does not make those splits independent. Predictions are resized to untouched GT dimensions under the existing explicit evaluation policy. [Benchmark protocol](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md).
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/) first if it is unavailable. The following block creates a **new** environment and downloads Python/packages only. If this environment already exists, reuse its `PY` path and skip creation/sync unless deliberately rebuilding it. GPU execution requires a driver compatible with the locked CUDA runtime; CPU execution can use `DEVICE=cpu`. This lock is the documented Linux CUDA profile, not a separate CPU-only or macOS lock.
+## 2. Supply the matching backbone checkpoint
 
-```bash
-REPO=/home/robin/shMin/INS_COD
-STUDY="$REPO/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
-PY="$REPO/.venv/fsa-study-clean/bin/python"
+Use **torchvision ConvNeXt-Tiny IMAGENET1K_V1**, `convnext_tiny-983f1562.pth` (about 109 MB), at the path below. The old PVT checkpoint cannot initialize this model. The strict local loader accepts a flat state dictionary or a `state_dict` wrapper and excludes only known classification-head keys. Nothing downloads automatically during model construction or training. [Official weight source and user-run download command](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.md#local-pretrained-initialization).
 
-if [ -e "$REPO/.venv/fsa-study-clean" ]; then
-  printf '%s\n' 'Environment already exists; run the checks below before reusing it.'
-else
-  uv python install --no-bin 3.12.13 &&
-  uv venv --directory "$STUDY" --no-project --managed-python --python 3.12.13 \
-    "$REPO/.venv/fsa-study-clean" &&
-  uv pip sync --directory "$STUDY" --python "$PY" --require-hashes \
-    "$STUDY/environment/requirements.lock"
-fi
+## 3. Start exactly eight experiments
 
-"$PY" -c 'import torch, torchvision, timm, einops, py_sod_metrics; print(torch.__version__); print("CUDA available:", torch.cuda.is_available())'
-PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 "$PY" -m pytest -q "$STUDY/tests"
-```
-
-The checks import dependencies and test operators; they do not run training. For installation prerequisites, CUDA checks, troubleshooting, and the distinction between the historical local verification environment and a fresh installation, see [environment setup](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/environment/README.md). The original setup check did not validate a fresh full lock installation or real-data training. The 2026-11-02 server snapshot now contains actual user-run pretrained-data training and evaluation; this artifact review did not independently rebuild that environment or rerun training.
-
-## 2. Prepare existing data and backbone weights
-
-Replace `DATA` and `WEIGHTS` with existing absolute paths. `WEIGHTS` must be a **PVTv2-B2 backbone** state dictionary (flat or `state_dict` wrapper), not a full FSA checkpoint. The loader removes the classification-head keys and loads the backbone strictly. Data and model weights are not downloaded by these commands.
+Run this block in the **Ubuntu experiment server terminal** after installing the updated code and supplying the weights. It starts training → four-dataset evaluation → inference profiling sequentially, updating the leaderboard after each stage. It does not resume the old PVT checkpoints.
 
 ```bash
-DATA=/absolute/path/to/COD-Data
-WEIGHTS=/absolute/path/to/pvt_v2_b2.pth
-DEVICE=cuda:0
-RUN="$STUDY/results/$(date +%Y%m%d_%H%M%S)"
-MANIFEST="$RUN/data/manifest.json"
+STUDY="/home/master/mithila/shMin/Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+export PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
+WEIGHTS="$STUDY/weights/convnext_tiny-983f1562.pth"
 
-"$PY" "$STUDY/run_study.py" prepare \
-  --data-root "$DATA" --manifest "$MANIFEST" \
-  --split-seed 1729 --val-fraction 0.1
+bash "$STUDY/launch_convnext_priority8.sh" "$WEIGHTS"
 ```
 
-Expected layout:
+To inspect commands without starting experiments, insert `--prepare-only` before `"$WEIGHTS"`. It prints the new plan's `run_all.sh` command. To choose a result root, set `OUTPUT` to a new absolute directory before launching. Existing outputs are rejected rather than overwritten.
 
-```text
-COD-Data/
-  COD10K-v3/Train/{Image,GT_Object}/
-  COD10K-v3/Test/{Image,GT_Object}/
-  CAMO-V.1.0-CVIU2019/Images/{Train,Test}/
-  CAMO-V.1.0-CVIU2019/GT/
-  CHAMELEON/{Imgs,GT}/
-  NC4K/{Imgs,GT}/
-```
+| Order | Case | Purpose |
+| ---: | --- | --- |
+| 1 | `single` | Same ConvNeXt/final-stage decoder, no pseudo generation or fusion |
+| 2 | `native_conv__asff` | Resize → convolution → align; spatial fusion |
+| 3 | `native_conv__sk` | Same generator; channel-selective fusion |
+| 4 | `native_conv__mean` | Same generator; uniform fusion |
+| 5 | `projection__mean` | Matching branch convolutions at the original feature resolution |
+| 6 | `dysample__asff` | Learned upsampling; spatial fusion |
+| 7 | `dysample__sk` | Learned upsampling; channel-selective fusion |
+| 8 | `dysample__mean` | Learned upsampling; uniform fusion |
 
-`prepare` checks image/mask pairing and hashes, selects COD10K foreground files with the `COD10K-CAM-` prefix, and creates one fixed split. CAMO and COD10K training data are required. The CLI now requires **all four test datasets by default**: CAMO 250, CHAMELEON 76, COD10K 2,026 and NC4K 4,121. An intentional subset must be explicit with `--test-datasets`; `none` prepares training/validation only. Partial test coverage remains visibly incomplete in the leaderboard. Keep the **same manifest for every compared run**. Test evaluation requires at least one test dataset in it.
+Common settings: **150 epochs, batch 4, 384×384 input, 48 feature channels, seed 3407**, Adam lr 1e-4, encoder lr ×0.1, frozen first stem/encoder BN, and the existing loss weights. `full_train` uses the fixed final epoch; it has **no early stopping and no validation/test-based checkpoint selection**. `best.pth` is the selected final checkpoint. [Explicit plan command and architectural changes](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/CNN-BACKBONES.md).
 
-The default 10% holdout gives **3,636 training images and 404 validation images** from the original 4,040 training images. The commands below use this default `holdout` protocol. For fresh full-data training, set `--training-protocol full_train` in both preparation and planning, and omit `--val-fraction` or use `0`; [migration of existing priority8 plans](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/BENCHMARK-PROTOCOL.md#train-a-separate-full-data-comparison) preserves old results. Renamed data, explicit test selection and the full evaluation protocol are described in [advanced execution details](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/RUNNING.md).
+## 4. Results and interpretation
 
-## 3. Choose the experiment scope and generate commands
+The launcher prints a fresh root under `Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/convnext-last-priority8-seed3407-<timestamp>/`. The combined log is `run.log`. The leaderboard is `plans/priority8/leaderboard/leaderboard.html` (browser) or `leaderboard.md` (terminal).
 
-Use **`cross` for the complete study**. It already contains the fixed-utilizer and fixed-generator comparisons; the other phases are optional ways to investigate one axis first, not additional mandatory runs.
+Each `runs/priority8/<case>__seed3407/` contains configuration, training history and checkpoints. Test scores are in `test/metrics.json`: **21 scalar metrics**, including Sα (`S`), weighted Fβ (`wF`), MAE, adaptive/mean/max E and Fβ, IoU, Dice/F1 and boundary metrics. Curves and per-image scores are retained. `profile.json` reports model complexity and inference costs with measured hardware/settings. [Evaluation details](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.md).
 
-| Phase | What changes | Fixed choice | Configurations | Runs with 3 seeds |
-| --- | --- | --- | ---: | ---: |
-| `generation` | All 12 generators | `--utilizer mean` by default | 14 | 42 |
-| `utilization` | All 13 utilizers | `--generator legacy` or a generator selected on validation | 15 | 45 |
-| `cross` | Every generator/utilizer pairing | Neither | 158 | 474 |
-| `priority8` | The fixed eight-job screening sequence | Prespecified variants | 8 | 24; use `--seeds 3407` for 8 |
+Different backbones and feature modes have separate comparison cohorts. The valid first comparison is among these eight ConvNeXt/final-stage cases. Historical PVT/multistage scores involve a different encoder and decoder; changes cannot be attributed solely to the backbone or pseudo-scale operator. Showing approximation of real input-scale features and the claimed cost advantage still requires a matched multiple-input-scale reference. A single seed does not establish statistical significance.
 
-The three matrix phases include `single` and `legacy_full`. `priority8` includes `single` and seven prespecified variants, without `legacy_full`. For a staged study, compare generation with mean fusion, inspect validation results, then manually choose the generator for utilization. Use separate phase output roots. The script does not select a winner automatically. In `cross`, `GENERATOR`/`UTILIZER` below do not restrict the grid.
-
-```bash
-PHASE=cross
-GENERATOR=legacy
-UTILIZER=mean
-PLAN="$RUN/plans/$PHASE"
-RUNS="$RUN/runs/$PHASE"
-
-"$PY" "$STUDY/plan_study.py" \
-  --phase "$PHASE" --generator "$GENERATOR" --utilizer "$UTILIZER" \
-  --seeds 3407 3408 3409 --manifest "$MANIFEST" \
-  --backbone-weights "$WEIGHTS" --python "$PY" --device "$DEVICE" \
-  --size 384 --channels 48 --epochs 150 --batch-size 4 --workers 2 \
-  --output "$PLAN" --results "$RUNS"
-```
-
-This writes `plan.json`, `train.sh`, `evaluate.sh`, `profile.sh`, and `run_all.sh`; it does **not** train. Keep size, channels, epochs, batch size, seeds, manifest and backbone initialization fixed across comparisons. Defaults use Adam, lr 1e-4, encoder lr ×0.1, frozen first patch embedding, and shared losses. [Full common protocol](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/README.md).
-
-## 4. Start training with automatic evaluation and leaderboards
-
-The following starts each planned run's **training → test evaluation → inference profiling**, sequentially, and refreshes the leaderboard after every stage. Under the default holdout protocol, `best.pth` is selected using **validation MAE only**. Under `full_train`, it is the **fixed final-epoch model**, with null validation MAE and no validation ranking. The full comparison is specified in the plan before execution; test rankings are descriptive and never select checkpoints.
-
-```bash
-bash "$PLAN/run_all.sh"
-```
-
-Open **`$PLAN/leaderboard/leaderboard.html`** in a browser. Validation MAE supplies the overall selection ranking; test tables rank each dataset separately (default S-measure), while cost tables show matching hardware/settings. Tables include seed means, sample SD, seed count, completion status and a comparison-group identifier. Different protocols or seed sets are kept in separate groups. The HTML supports sorting/filtering; CSV, JSON and Markdown are also saved.
-
-To train only and automatically update the validation leaderboard, use `bash "$PLAN/train.sh"` instead. `run_all.sh` later skips completed matching stages. Interrupted/partial training does **not** resume: preserve it and create a new run destination/plan. Raw checkpoints, predictions and profiles are never overwritten. Only the derived leaderboard files are refreshed.
-
-## 5. Inspect validation results and inference cost
-
-These optional commands complete profiling and save an additional immutable summary snapshot:
-
-```bash
-bash "$PLAN/profile.sh"
-"$PY" "$STUDY/summarize_study.py" \
-  --results "$RUNS" --plan "$PLAN/plan.json" \
-  --output "$RUN/summary/validation-$PHASE"
-```
-
-Profiles report parameters, latency, throughput, CUDA peak memory, **MACs and FLOPs**, plus a separately labeled estimate of noncontraction operations and an operator coverage table. The common convention is **2 FLOPs per convolution/matrix multiply-accumulate**. Interpolation, sampling and nonlinear operations have explicit approximate counting rules; these are not hardware instruction counts. Unsupported operations are listed, never silently treated as free. Profiling includes all heads, batch 1, FP32 and synthetic RGB; it excludes data loading, transfers and training memory. [Metric definitions and limitations](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/EVALUATION.md).
-
-## 6. Inspect test metrics and export paper tables
-
-If training was run separately, the following completes test evaluation and saves an additional report. Completed stages are skipped after identity checks.
-
-```bash
-bash "$PLAN/evaluate.sh"
-"$PY" "$STUDY/summarize_study.py" \
-  --results "$RUNS" --plan "$PLAN/plan.json" \
-  --test-metric S --output "$RUN/summary/test-$PHASE"
-```
-
-Each available dataset reports **21 scalar scores**: S, weighted F, MAE; adaptive/mean/max E and ordinary Fβ; fixed-threshold IoU, Dice/F1, precision, recall, specificity, BER, FPR, FNR, accuracy, balanced accuracy and Boundary IoU. Dice and F1 are aliases, not independent evidence. Mean/max threshold scores are computed from the dataset-average curve. Also saved: **PR/Fβ/E curves as CSV+SVG+PNG, per-image scores, and original-size grayscale probability PNGs**. For disk-limited runs, direct evaluation accepts `--no-save-predictions`; numeric scores and curves remain available.
-
-`--test-metric` chooses the descriptive test table ordering, e.g. `wF`, `Fbeta_max`, `MAE` or `BoundaryIoU_0_5`; metric direction is recorded. Missing datasets/scores remain missing. Rankings alone are not significance tests. For existing checkpoints, evaluate into a **new** folder such as `test-v2`, then pass `--evaluation-subdir test-v2` to the summarizer. Use a new profile path such as `profile-v2.json` and `--profile-name profile-v2.json` in the planner/summarizer to preserve an older profile. Old and expanded metric protocols are separated.
-
-Summarize **one phase root at a time**. Compare generators at a fixed utilizer and vice versa, keeping `single` and the whole-architecture `legacy_full` reference. Keep the same seed set, data split, initialization and measurement conditions.
-
-```text
-results/<run-id>/
-  data/manifest.json
-  plans/<phase>/{plan.json,train.sh,evaluate.sh,profile.sh,run_all.sh}
-  plans/<phase>/leaderboard/{leaderboard.html,leaderboard.md,leaderboard.csv,leaderboard.json,summary.json,summary.csv}
-  runs/<phase>/<variant>__seed<seed>/
-    config.json, manifest.json, history.jsonl, status.json
-    best.pth, last.pth
-    test/{metrics.json,per_image_metrics.csv}
-    test/predictions/<dataset-key>/*.png
-    test/curves/<dataset-key>/*.{csv,svg,png}
-    profile.json
-  summary/<snapshot>/{summary.json,summary.csv,leaderboard.html,leaderboard.md,leaderboard.csv,leaderboard.json}
-```
+The latest uploaded actual training snapshot remains [the 2026-11-02 PVT full4040 review](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/results/server-review-20261102/README.md): 3/8 complete at export, one partial, four without run history. It is not a ConvNeXt result or live server status. [Complete exported server ZIP](https://github.com/sh-min/INS_COD/releases/tag/server-transfer-20261102). New CNN checks are initialization/inference/gradient and workflow checks only; no training is launched by this code update. [2026-11-04 change and verification record](Progress/2026-11-04/ConvNeXt-Priority8/README.md).
 
 ## Referenced papers
+
+Added on **2026-11-04**: [A ConvNet for the 2020s](https://openaccess.thecvf.com/content/CVPR2022/html/Liu_A_ConvNet_for_the_2020s_CVPR_2022_paper.html) (IEEE/CVF CVPR 2022, conference; ConvNeXt backbone), [Deep Residual Learning for Image Recognition](https://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html) (IEEE CVPR 2016, conference; later ResNet50 comparison), and [PVT v2: Improved Baselines with Pyramid Vision Transformer](https://doi.org/10.1007/s41095-022-0274-8) (*Computational Visual Media*, 2022, journal; preserved historical backbone). The CNN implementation uses TorchVision's recorded variants; the pseudo generator and decoder are study adaptations.
 
 Checked on **2026-10-28**. Korean title translations are provided in the [Korean version](README.ko.md). These are adaptations of individual ideas to this study, not reproductions of the complete published networks. Details and mathematical definitions are in [generation](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/GENERATION.md) and [utilization](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/UTILIZATION.md).
 

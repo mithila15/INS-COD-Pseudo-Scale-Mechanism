@@ -7,6 +7,9 @@ import json
 import os
 from pathlib import Path
 
+BACKBONE_NAMES = ("pvt_v2_b2", "convnext_tiny", "resnet50")
+FEATURE_MODES = ("multistage", "last")
+
 
 def json_object(value):
     try:
@@ -50,6 +53,10 @@ def build_parser():
     _common_input(train)
     train.add_argument("--training-protocol", choices=["holdout", "full_train"], default="holdout",
                        help="holdout selects minimum validation MAE; full_train uses the predeclared final epoch, never test scores")
+    train.add_argument("--backbone", choices=BACKBONE_NAMES, default="pvt_v2_b2",
+                       help="Encoder architecture; weights must match this backbone")
+    train.add_argument("--feature-mode", choices=FEATURE_MODES, default="multistage",
+                       help="multistage: four encoder endpoints; last: final endpoint only, without earlier-stage skips")
     train.add_argument("--generator", default="legacy")
     train.add_argument("--utilizer", default="mean")
     train.add_argument("--generator-options", type=json_object, default={})
@@ -66,7 +73,7 @@ def build_parser():
     train.add_argument("--determinism", choices=["warn", "strict"], default="warn",
                        help="warn: record unsupported deterministic ops; strict: reject them (CUDA grid_sample backward may fail)")
     initialization = train.add_mutually_exclusive_group(required=True)
-    initialization.add_argument("--backbone-weights", help="Existing local PVT backbone checkpoint; never downloaded")
+    initialization.add_argument("--backbone-weights", help="Existing local checkpoint for the selected backbone; never downloaded")
     initialization.add_argument("--random-init", action="store_true", help="Explicitly run all weights from random initialization")
 
     evaluate = subparsers.add_parser("evaluate", help="Evaluate one exact study checkpoint without optimizer updates")
@@ -85,6 +92,9 @@ def build_parser():
 def main(argv=None):
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.command == "train" and args.legacy_reference and (
+            args.backbone != "pvt_v2_b2" or args.feature_mode != "multistage"):
+        parser.error("--legacy-reference requires --backbone pvt_v2_b2 --feature-mode multistage")
     try:
         if args.command == "prepare":
             from fsa_study.data import prepare_manifest

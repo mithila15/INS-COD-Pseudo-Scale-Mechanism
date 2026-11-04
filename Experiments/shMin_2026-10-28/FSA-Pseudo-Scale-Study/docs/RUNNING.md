@@ -1,5 +1,7 @@
 # 2026-11-01 · Pseudo-Scale Study — 실행과 재현 / Running and Reproduction
 
+Current request / 현재 실행: [ConvNeXt priority8 (English)](CNN-BACKBONES.md) · [ConvNeXt priority8 (한국어)](CNN-BACKBONES.ko.md). The current planner defaults to **8 cases × seed3407**. Historical larger-matrix examples below require an explicit phase and seed list. 아래 전체 조합 예시는 과거 확장용이며 이번 실행 명령이 아니다.
+
 이 문서의 명령은 **입력 준비, 명령 생성, 학습, 평가, 추론 측정, 결과 집계**를 구분한다. `prepare`와 `plan_study.py`는 학습하지 않는다. `train` 또는 생성된 `train.sh`/`run_all.sh`를 사용자가 실행해야 파라미터 업데이트가 시작된다. 데이터셋과 backbone 가중치는 자동 다운로드하지 않는다.
 
 The commands distinguish **input preparation, command generation, training, evaluation, inference profiling, and aggregation**. Only explicit `train`/`train.sh` execution starts optimization. Dataset and backbone files must already exist locally; no command downloads them.

@@ -156,6 +156,11 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
         protocol = {key: config.get(key) for key in ("manifest_sha256", "backbone_sha256", "backbone_initialization", "size", "epochs", "lr", "batch_size", "eval_interval", "determinism", "source_sha256", "loss_weights", "augmentation", "edge_protocol", "checkpoint_selection")}
         protocol["packages"] = config.get("environment", {}).get("packages", {})
         protocol["channels"] = model["channels"]
+        # Explicit default values keep old PVT artifacts comparable while a
+        # backbone or endpoint/decoder change creates its own ranking cohort.
+        protocol["backbone"] = model.get("backbone", "pvt_v2_b2")
+        protocol["feature_mode"] = model.get("feature_mode", "multistage")
+        protocol["architecture"] = model.get("architecture", "common")
         protocol["generator_options"] = model.get("generator_options", {})
         protocol["utilizer_options"] = model.get("utilizer_options", {})
         training_protocol = config.get("training_protocol", "holdout")
@@ -253,7 +258,7 @@ def aggregate(root, evaluation_subdir="test", plan=None, profile_name="profile.j
             "benchmark_coverage": summarize_benchmark_coverage(list(progress.values())),
             "data_integrity": summarize_data_integrity(list(progress.values())),
             "expected_seeds": {variant: sorted(seeds) for variant, seeds in expected.items()},
-            "plan": {key: plan_payload.get(key) for key in ("phase", "run_count", "variant_count", "seeds")} if plan_payload is not None else None,
+            "plan": {key: plan_payload.get(key) for key in ("phase", "run_count", "variant_count", "seeds", "backbone", "feature_mode")} if plan_payload is not None else None,
             "evaluation_subdir": evaluation_subdir,
             "profile_name": profile_name,
             "interpretation": "Descriptive mean/sample SD only, no significance claim; test metrics are not model-selection criteria"}

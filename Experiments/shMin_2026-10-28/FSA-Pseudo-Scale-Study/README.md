@@ -1,10 +1,15 @@
-# 2026-11-02 · Pseudo-Scale Study — Methods, comparison protocol and evaluation recovery
+# 2026-11-04 · Pseudo-Scale Study — Methods, comparison protocol and evaluation recovery
 
 **English** | [한국어](README.ko.md) | [Execution guide](../../../README.md) | [Environment setup](environment/README.md)
 
 Use the [repository README](../../../README.md) for environment → data → plan → training → validation/cost → test commands. This document explains **what to compare and how to interpret it**. There are 12 generators × 13 utilizers plus two controls: 158 configurations, or 474 runs with three seeds. Fusion is supported throughout; the decoder does not require a residual representation.
 
 The [COD10K overlap record](results/verification-2026-11-01-overlap/README.md) documents seven byte-identical train-source/test pairs. Preparation remains strict unless the exact documented pairs are explicitly acknowledged. This preserves published counts while marking the split **non-disjoint**; see the [server recovery commands](docs/BENCHMARK-PROTOCOL.md#acknowledge-the-verified-cod10k-overlaps).
+
+## Current scope: ConvNeXt priority8
+
+The current requested comparison is **ConvNeXt-Tiny, final stage only, priority8 with seed 3407: eight runs**. The [CNN architecture and execution guide](docs/CNN-BACKBONES.md) describes the new decoder and exact shortlist. [Pseudo-label documentation](docs/PSEUDO-LABELS.md) distinguishes GT supervision from pseudo-scale features. Use [launch_convnext_priority8.sh](launch_convnext_priority8.sh) after supplying the matching pretrained weights. The catalogs and PVT diagrams below preserve the historical development configuration; a 158-configuration sweep is not the current run.
+
 
 ## 2026-11-02 actual server results
 
@@ -30,7 +35,7 @@ Official ZoomNeXt trains on 4,040 images, while the existing study uses 3,636 tr
 | Selected variants vs `single` | Common protocol | Whether extra branches improve quality enough to justify their cost |
 | `legacy_full` vs controlled variants | Data and training protocol | Whole-architecture reference; **not** a one-module ablation |
 
-For the complete study, generate `cross` once and analyze these subsets. A staged alternative uses `generation --utilizer mean` (42 runs), chooses a generator from validation, then `utilization --generator <choice>` (45 runs). These phases include repeated controls, so keep their result roots and summaries separate. A cross plan has 474 runs; running all three plans is optional, not required.
+The historical PVT matrix remains available through explicit `cross`, `generation` and `utilization` phases. With the current single-seed default they contain 158, 14 and 15 runs; explicitly passing `--seeds 3407 3408 3409` gives 474, 42 and 45. The current requested/default scope is `priority8` with seed 3407: eight runs.
 
 ## Keep the comparison conditions fixed
 
@@ -157,6 +162,8 @@ PYTHONUNBUFFERED=1 bash "$RECOVERY/run_all.sh" 2>&1 | tee "$RECOVERY/run.log"
 Each run saves 21 test scores to `runs/priority8/<variant>__seed3407/test-geometry-v1-<timestamp>/metrics.json` under `$RUN`, with the geometry audit beside them. The new leaderboard is `$RECOVERY/leaderboard/leaderboard.html` (or `leaderboard.md` for terminal reading). Existing training-source hashes are preserved: the old baseline and variants trained with updated code may appear in separate comparison groups. Do not erase provenance to force one ranking; inspect the recorded code change when interpreting those groups. Epoch logs still report validation MAE; the full 21 metrics appear after each completed test evaluation.
 
 ## Referenced papers
+
+Added on **2026-11-04**: [A ConvNet for the 2020s](https://openaccess.thecvf.com/content/CVPR2022/html/Liu_A_ConvNet_for_the_2020s_CVPR_2022_paper.html) (IEEE/CVF CVPR 2022, conference; ConvNeXt backbone), [Deep Residual Learning for Image Recognition](https://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_paper.html) (IEEE CVPR 2016, conference; later ResNet50 comparison), and [PVT v2: Improved Baselines with Pyramid Vision Transformer](https://doi.org/10.1007/s41095-022-0274-8) (*Computational Visual Media*, 2022, journal; preserved historical backbone). The CNN implementation uses TorchVision's recorded variants; the pseudo generator and decoder are study adaptations.
 
 Checked on **2026-10-28**. Korean title translations are provided in the [Korean version](README.ko.md). These are adaptations, not full-paper reproductions. The original source, venue, formulas and precise changes are retained in [GENERATION](docs/GENERATION.md) and [UTILIZATION](docs/UTILIZATION.md).
 

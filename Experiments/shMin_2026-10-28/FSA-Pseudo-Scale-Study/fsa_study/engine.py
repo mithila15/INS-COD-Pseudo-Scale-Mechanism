@@ -168,7 +168,7 @@ def evaluate_model(model, loader, device, official=False, output=None, save_pred
 
 def _validate_args(args):
     if args.size < 64 or args.size % 32:
-        raise ValueError("--size must be >=64 and divisible by 32 for the shared PVT decoder")
+        raise ValueError("--size must be >=64 and divisible by 32 for the study encoders")
     if args.batch_size < 1 or args.workers < 0:
         raise ValueError("--batch-size must be positive and --workers nonnegative")
     if args.device.startswith("cuda") and not torch.cuda.is_available():
@@ -187,7 +187,7 @@ def _freeze_encoder_bn(model):
 
 def _optimizer(model, learning_rate):
     encoder_ids = {id(parameter) for parameter in model.encoder.parameters()}
-    fixed_ids = {id(parameter) for parameter in model.encoder.patch_embed1.parameters()}
+    fixed_ids = {id(parameter) for stem in model.frozen_stem_modules for parameter in stem.parameters()}
     groups = {"encoder": [], "other": []}
     for parameter in model.parameters():
         if id(parameter) in fixed_ids:
@@ -200,6 +200,15 @@ def _optimizer(model, learning_rate):
 
 def _model_config_digest(config):
     return hashlib.sha256(json.dumps(config, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def training_model_config(args):
+    """Persist the architecture needed to reconstruct a checkpoint without guessing."""
+    return {"backbone": getattr(args, "backbone", "pvt_v2_b2"),
+            "feature_mode": getattr(args, "feature_mode", "multistage"),
+            "generator": args.generator, "utilizer": args.utilizer, "channels": args.channels,
+            "seed": args.seed, "baseline": args.baseline, "legacy_reference": args.legacy_reference,
+            "generator_options": args.generator_options, "utilizer_options": args.utilizer_options}
 
 
 def validate_checkpoint(checkpoint, manifest):
@@ -268,9 +277,7 @@ def train(args):
     else:
         weight_hash = None
     from .model import StudyModel
-    model_config = {"generator": args.generator, "utilizer": args.utilizer, "channels": args.channels,
-                    "seed": args.seed, "baseline": args.baseline, "legacy_reference": args.legacy_reference,
-                    "generator_options": args.generator_options, "utilizer_options": args.utilizer_options}
+    model_config = training_model_config(args)
     model = StudyModel(**model_config, backbone_weights=str(weights) if weights else None).to(args.device)
     output = Path(args.output).expanduser().resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -279,6 +286,10 @@ def train(args):
                    "backbone_sha256": weight_hash, "backbone_initialization": "local_checkpoint" if weights else "random_explicit",
                    "checkpoint_selection": "minimum sample-weighted validation float MAE; strict improvement; no test access",
                    "loss_weights": {"seg": 1, "deep": .25, "region": .5, "edge": 1, "ual": 1},
+                   "supervision": {"type": "ground_truth_masks", "pseudo_labels": False,
+                                   "region_and_deep": "ground_truth_mask", "edge": "ground_truth_morphological_gradient",
+                                   "ual": "prediction_confidence_regularization_without_target"},
+                   "encoder_policy": {"lr_multiplier": .1, "frozen_stem": True, "frozen_batchnorm": True},
                    "augmentation": "stateless seeded horizontal flip p=.5, vertical flip p=.2; resized RGB/mask",
                    "edge_protocol": "5x5 morphological gradient after nearest mask resize",
                    "model_metadata": model.metadata, "source_sha256": _source_hashes(), "environment": _environment()})

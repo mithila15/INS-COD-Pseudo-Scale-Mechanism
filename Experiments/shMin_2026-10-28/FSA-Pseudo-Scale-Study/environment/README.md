@@ -1,6 +1,8 @@
-# 2026-10-28 · FSA Study Environment — Installation and Runtime Checks
+# 2026-11-04 · FSA Study Environment — Installation and Runtime Checks
 
 **English** | [한국어](README.ko.md) · [Experiment guide](../../../../README.md)
+
+Current CNN experiment: the existing torch/torchvision lock already supports ConvNeXt-Tiny and ResNet50. Use the matching **torchvision** weights described in the [CNN guide](../docs/CNN-BACKBONES.md). PVT-specific initialization instructions below apply only to the historical PVT configuration.
 
 Create a dedicated environment before preparing or training experiments. The commands below target **Linux x86_64 and Python 3.12.13**, using the recorded package versions and distribution hashes. A complete fresh installation from this lock has **not yet been validated**; the existing verification used the local overlay described below.
 

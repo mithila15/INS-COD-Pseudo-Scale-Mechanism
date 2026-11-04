@@ -84,6 +84,11 @@ def read_plan(path, *, rebind_entrypoints=False):
                 if checkpoint != run / "best.pth":
                     raise ValueError(f"Plan {action} must use the declared run's best checkpoint")
         train, evaluate = parsed["train"], parsed["evaluate"]
+        if train.legacy_reference and (train.backbone != "pvt_v2_b2" or train.feature_mode != "multistage"):
+            raise ValueError("Legacy reference requires PVTv2-B2 multistage")
+        for field in ("backbone", "feature_mode"):
+            if field in plan and plan[field] != getattr(train, field):
+                raise ValueError(f"Plan {field} disagrees with training command")
         variant = "single" if train.baseline else "legacy_full" if train.legacy_reference else f"{train.generator}__{train.utilizer}"
         if variant != job["variant"] or train.seed != job["seed"]:
             raise ValueError("Plan variant/seed disagrees with training command")
@@ -116,8 +121,10 @@ def completed(job, action):
     # Ignore only filesystem/loader choices that do not alter the trained model.
     ignore = {"output", "manifest", "data_root", "workers", "device", "backbone_weights"}
     def recorded_argument(key):
-        # Before full-training support, every run used the holdout protocol.
-        return config.get(key, "holdout" if key == "training_protocol" else None)
+        # Historical checkpoints predate these explicit options. Their original
+        # implementation was always PVTv2-B2 with four-stage fusion.
+        defaults = {"training_protocol": "holdout", "backbone": "pvt_v2_b2", "feature_mode": "multistage"}
+        return config.get(key, defaults.get(key))
     if any(recorded_argument(k) != v for k, v in arguments.items() if k not in ignore):
         raise ValueError(f"Existing training configuration disagrees with plan: {run}")
     manifest = json.loads(Path(arguments["manifest"]).read_text())
