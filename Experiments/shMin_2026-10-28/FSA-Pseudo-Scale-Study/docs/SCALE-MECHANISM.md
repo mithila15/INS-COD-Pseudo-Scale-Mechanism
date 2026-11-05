@@ -1,4 +1,4 @@
-# 2026-11-04 · Pseudo-Scale Mechanism — Small Controlled Experiments
+# 2026-11-05 · Pseudo-Scale Mechanism — Small Controlled Experiments
 
 **English** | [한국어](SCALE-MECHANISM.ko.md) · [Repository](../../../../README.md) · [Verification](../results/verification-2026-11-04-mechanism/README.md)
 
@@ -65,7 +65,7 @@ Run only in **Windows PowerShell**, not the Ubuntu Bash terminal. This uses a ne
 $Base = "C:\Users\User\OneDrive\Desktop\shMin"
 $Repo = Join-Path $Base "INS_COD-scale-study"
 New-Item -ItemType Directory -Force -Path $Base | Out-Null
-git clone --single-branch --branch research/pseudo-scale-mechanism "https://github.com/sh-min/INS_COD.git" "$Repo"
+git clone -c core.longpaths=true --single-branch --branch research/pseudo-scale-mechanism "https://github.com/sh-min/INS_COD.git" "$Repo"
 if ($LASTEXITCODE -ne 0) { throw "Clone failed; stop here." }
 ```
 
@@ -101,6 +101,45 @@ RELEASE=$(mktemp -d "/home/master/mithila/INS_COD-releases/scale-$VERSION-XXXXXX
 ```
 
 The installer preserves data, results, checkpoints and environments, and backs up replaced source files. It refuses to replace files used by a running study in the destination. The new active source is `/home/master/mithila/shMin-scale-study`; results below still go into the existing `shMin` experiment tree.
+
+### Recover an already installed CRLF launcher
+
+The 2026-11-05 server report reached `Manifest and backbone weights ready.` and then stopped with Bash `invalid option name`, before a new tmux session or training process existed. A controlled `core.autocrlf=true` export reproduces this error: `pipefail\r` is interpreted as an unknown shell option. Raw server bytes have not been read here; CRLF is the diagnosis supported by that reproduction.
+
+The corrected sender disables archive EOL conversion, and `.gitattributes` fixes shell scripts to LF. The installer also converts **source `.sh` files only** from CRLF to LF after validating the original ZIP checksum, records archive/installed hashes in `normalizations`, and preserves original files in its backup. Other source bytes and preserved input/result/checkpoint paths are unchanged. [Git attribute rules](https://git-scm.com/docs/gitattributes). [Reproduction and checks](../results/verification-2026-11-05-deployment/README.md).
+
+For the reported state (installed source and verified weights, **no active `scale-core` session/training**), run the complete block below in **Ubuntu Bash**. It backs up and repairs the existing launcher, creates a new four-case plan, starts training/evaluation/profiling in a detached tmux shell and attaches to it. It reuses the existing environment, manifest and weights; there is no download. Errors after training starts remain visible in the session.
+
+```bash
+(
+set -e
+REL="Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+STUDY="/home/master/mithila/shMin-scale-study/$REL"
+EXISTING="/home/master/mithila/shMin/$REL"
+export PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
+export MANIFEST="$EXISTING/results/priority8-full4040-fixed-20261101_200834/manifest.json"
+WEIGHTS="$EXISTING/weights/convnext_tiny-983f1562.pth"
+STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
+
+cp -p "$STUDY/launch_scale_mechanism.sh" "$STUDY/launch_scale_mechanism.sh.crlf-backup-$STAMP"
+sed -i 's/\r$//' "$STUDY/launch_scale_mechanism.sh"
+bash -n "$STUDY/launch_scale_mechanism.sh"
+
+OUT="$EXISTING/results/scale-mechanism-core-os32-seed3407-$STAMP"
+DEVICE=cuda:0 OUTPUT="$OUT" \
+  bash "$STUDY/launch_scale_mechanism.sh" --prepare-only core "$WEIGHTS"
+
+tmux new-session -d -s scale-core -c /home/master /bin/bash
+printf -v START_CMD '%q ' env PYTHONUNBUFFERED=1 bash "$OUT/plans/core/run_all.sh"
+printf -v LOG_ARG '%q' "$OUT/run.log"
+tmux send-keys -t scale-core \
+  'set +e' C-m 'set -o pipefail' C-m \
+  "$START_CMD 2>&1 | tee $LOG_ARG" C-m
+tmux attach -t scale-core
+)
+```
+
+The new result path is printed as `Result root:`; its leaderboard is `plans/core/leaderboard/leaderboard.html`. The actual user-run scope remains four cases, seed 3407, 150 epochs each. This repair does not implement partial optimizer-state resume. For subsequent installations use the corrected branch installer; the old `bb6f040` ZIP's embedded installer does not include the new normalization.
 
 ## 4. Ubuntu Bash: start only the four core runs
 

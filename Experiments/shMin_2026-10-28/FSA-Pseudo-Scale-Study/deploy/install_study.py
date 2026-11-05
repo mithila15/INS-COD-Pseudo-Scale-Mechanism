@@ -48,7 +48,7 @@ def install(archive, work):
     if not checksum or digest != checksum[0].lower():
         raise ValueError("ZIP checksum mismatch; no files changed")
     check_processes(work)
-    pending, seen = [], set()
+    pending, seen, normalizations = [], set(), []
     with zipfile.ZipFile(io.BytesIO(blob)) as bundle:
         revision = bundle.comment.decode("ascii").strip()
         if not re.fullmatch(r"[0-9a-f]{40}", revision):
@@ -79,6 +79,13 @@ def install(archive, work):
             if target.resolve() != target or target.is_symlink() or (target.exists() and not target.is_file()):
                 raise ValueError(f"Unexpected destination path: {target}; no files changed")
             data = bundle.read(info)
+            if rel.suffix.lower() == ".sh":
+                normalized = data.replace(b"\r\n", b"\n")
+                if normalized != data:
+                    normalizations.append({"path": str(rel), "conversion": "CRLF_to_LF",
+                                           "archive_sha256": hashlib.sha256(data).hexdigest(),
+                                           "installed_sha256": hashlib.sha256(normalized).hexdigest()})
+                data = normalized
             if not target.exists() or target.read_bytes() != data:
                 pending.append((target, data, mode & 0o777 or 0o644))
     backup_root = work / ".code-backups"
@@ -93,6 +100,7 @@ def install(archive, work):
             shutil.copy2(target, saved)
     receipt = {"commit": revision, "zip_sha256": digest, "target": str(work),
                "files": [str(t.relative_to(work)) for t, _, _ in pending],
+               "normalizations": normalizations,
                "status": "backed_up_before_install"}
     receipt_file = backup / "deployment.json"
     receipt_file.write_text(json.dumps(receipt, indent=2) + "\n")

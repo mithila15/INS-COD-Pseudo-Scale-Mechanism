@@ -1,6 +1,7 @@
 import hashlib
 import importlib.util
 from pathlib import Path
+import subprocess
 import zipfile
 
 import pytest
@@ -101,3 +102,43 @@ def test_process_guard_is_scoped_to_install_destination(tmp_path, monkeypatch, s
             installer.check_processes(work)
     else:
         installer.check_processes(work)
+
+
+def test_legacy_crlf_shell_archive_installs_executable_lf_and_preserves_other_bytes(tmp_path):
+    relative = installer.STUDY + "/launch_scale_mechanism.sh"
+    source = b'#!/usr/bin/env bash\r\nset -euo pipefail\r\nprintf "ready\\n"\r\n'
+    python_path = installer.STUDY + "/example.py"
+    python_bytes = b'print("untouched")\r\n'
+    archive = bundle(tmp_path, {relative: source, python_path: python_bytes})
+    original_archive = archive.read_bytes()
+    work = tmp_path / "work"
+    target = work / relative
+    target.parent.mkdir(parents=True)
+    target.write_bytes(source)
+
+    result = installer.install(archive, work)
+    expected = source.replace(b"\r\n", b"\n")
+    assert target.read_bytes() == expected
+    assert (work / python_path).read_bytes() == python_bytes
+    assert archive.read_bytes() == original_archive
+    assert (Path(result["backup"]) / relative).read_bytes() == source
+    assert result["normalizations"] == [{"path": relative, "conversion": "CRLF_to_LF",
+                                         "archive_sha256": hashlib.sha256(source).hexdigest(),
+                                         "installed_sha256": hashlib.sha256(expected).hexdigest()}]
+    process = subprocess.run(["bash", str(target)], capture_output=True, text=True)
+    assert process.returncode == 0 and process.stdout == "ready\n", process.stderr
+    assert installer.install(archive, work)["files"] == []
+
+
+def test_result_shell_scripts_are_preserved_without_normalization(tmp_path):
+    relative = installer.STUDY + "/results/historical/run_all.sh"
+    archived = b"archived\r\n"
+    original = b"existing result\r\n"
+    archive = bundle(tmp_path, {relative: archived})
+    work = tmp_path / "work"
+    target = work / relative
+    target.parent.mkdir(parents=True)
+    target.write_bytes(original)
+    result = installer.install(archive, work)
+    assert target.read_bytes() == original
+    assert result["normalizations"] == []

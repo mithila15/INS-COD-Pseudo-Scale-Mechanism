@@ -52,7 +52,9 @@ $ZipName = "ins-cod-study-$ShortRevision.zip"
 $Zip = Join-Path (Split-Path -Parent $Repo) $ZipName
 # model.py imports the archived sibling FSA-ZoomNeXt; preserve that source layout too.
 # Committed source only: no local datasets, virtual environments or checkpoints.
-Invoke-GitChecked -C $Repo archive --format=zip --output $Zip HEAD -- $Relative 'Experiments/FSA-ZoomNeXt' 'docs/MIGRATION.md'
+# git archive performs working-tree EOL conversion; a Windows autocrlf=true
+# default otherwise exports Bash launchers with CRLF even from LF Git blobs.
+Invoke-GitChecked -c core.autocrlf=false -c core.eol=lf -C $Repo archive --format=zip --output $Zip HEAD -- $Relative 'Experiments/FSA-ZoomNeXt' 'docs/MIGRATION.md'
 $Digest = (Get-FileHash -LiteralPath $Zip -Algorithm SHA256).Hash.ToLowerInvariant()
 $Checksum = "$Zip.sha256"
 [System.IO.File]::WriteAllText($Checksum, "$Digest  $ZipName`n", [System.Text.Encoding]::ASCII)

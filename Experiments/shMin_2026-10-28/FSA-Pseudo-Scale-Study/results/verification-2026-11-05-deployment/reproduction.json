@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-05",
+  "scope": "deployment and Bash startup only; no training or optimizer steps",
+  "server_observation": {
+    "commit": "bb6f040aceda2f90fda7a429f2a1f47625aca3ab",
+    "zip_sha256": "bdf62bbc0bc3e426c08da54e916fe0b53f67a62307932862cbd4d3793e6fa597",
+    "installation": "installed",
+    "weights": "Manifest and backbone weights ready.",
+    "failure": "launch_scale_mechanism.sh: invalid option name",
+    "raw_server_bytes_read": false
+  },
+  "reproduction": {
+    "platform": "Linux Git with explicit Windows-style core.autocrlf=true",
+    "without_fix": {
+      "crlf_lines": 3,
+      "bash_exit": 2,
+      "stderr": "bash: line 2: set: pipefail\\r: invalid option name"
+    },
+    "with_export_override": {
+      "crlf_lines": 0,
+      "bash_exit": 0,
+      "stdout": "ok\n"
+    }
+  },
+  "regressions": {
+    "tests_passed": 52,
+    "warnings": 1,
+    "full_model_suite_rerun": false,
+    "actual_windows_powershell_run": false,
+    "server_training_started_by_agent": false
+  }
+}

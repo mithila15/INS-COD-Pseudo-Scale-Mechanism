@@ -1,4 +1,4 @@
-# 2026-11-04 · Pseudo-Scale Mechanism — 소수 대조 실험 실행 방법
+# 2026-11-05 · Pseudo-Scale Mechanism — 소수 대조 실험 실행 방법
 
 [English](SCALE-MECHANISM.md) | **한국어** · [저장소](../../../../README.ko.md) · [검증 기록](../results/verification-2026-11-04-mechanism/README.ko.md)
 
@@ -65,7 +65,7 @@ Manifest는 기존 study의 `results/priority8-full4040-fixed-20261101_200834/ma
 $Base = "C:\Users\User\OneDrive\Desktop\shMin"
 $Repo = Join-Path $Base "INS_COD-scale-study"
 New-Item -ItemType Directory -Force -Path $Base | Out-Null
-git clone --single-branch --branch research/pseudo-scale-mechanism "https://github.com/sh-min/INS_COD.git" "$Repo"
+git clone -c core.longpaths=true --single-branch --branch research/pseudo-scale-mechanism "https://github.com/sh-min/INS_COD.git" "$Repo"
 if ($LASTEXITCODE -ne 0) { throw "Clone failed; stop here." }
 ```
 
@@ -101,6 +101,45 @@ RELEASE=$(mktemp -d "/home/master/mithila/INS_COD-releases/scale-$VERSION-XXXXXX
 ```
 
 설치기는 데이터·결과·checkpoint·가상환경을 보존하고 교체되는 소스는 백업한다. 대상 경로의 코드를 쓰는 실험 프로세스가 실행 중이면 교체를 거부한다. 새 활성 코드는 `/home/master/mithila/shMin-scale-study`이며, 아래 결과는 기존 `shMin` 실험 트리 안의 새 폴더에 저장한다.
+
+### 이미 설치한 CRLF 실행 스크립트 복구
+
+2026-11-05 서버 출력은 `Manifest and backbone weights ready.`까지 진행한 뒤 Bash `invalid option name`에서 멈췄다. 새 tmux 세션·학습 프로세스가 생기기 전이다. `core.autocrlf=true`로 ZIP을 만드는 재현 검사에서 같은 오류가 나왔다. 옵션 끝의 CR 때문에 `pipefail\r`를 잘못된 옵션으로 읽는다. 서버 원본 바이트를 직접 읽은 것은 아니며, 재현 결과에 근거한 CRLF 진단이다.
+
+수정한 전송기는 archive 줄바꿈 변환을 끄고 `.gitattributes`는 shell 파일을 LF로 고정한다. 설치기는 원본 ZIP checksum 검증 후 **소스 `.sh`만** CRLF에서 LF로 바꾸며, `normalizations`에 원본·설치 hash를 기록하고 교체 전 파일을 백업한다. 다른 소스 바이트와 보존 대상 입력·결과·checkpoint는 그대로 둔다. [Git 줄바꿈 규칙](https://git-scm.com/docs/gitattributes). [재현·검증 기록](../results/verification-2026-11-05-deployment/README.ko.md).
+
+보고된 상태처럼 코드·가중치는 준비됐고 **활성 `scale-core` 세션·학습이 없을 때**, **Ubuntu Bash에서** 아래 블록 전체를 실행한다. 현재 launcher를 백업·복구하고, 새 네 가지 plan을 만든 뒤 detached tmux shell에서 학습·평가·profiling을 시작하고 화면에 연결한다. 기존 환경·manifest·가중치를 재사용하며 다운로드는 없다. 학습 실행 단계에서 오류가 나면 세션에 출력이 남는다.
+
+```bash
+(
+set -e
+REL="Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study"
+STUDY="/home/master/mithila/shMin-scale-study/$REL"
+EXISTING="/home/master/mithila/shMin/$REL"
+export PY="/home/master/mithila/INS_COD/.venv/fsa-study-clean/bin/python"
+export MANIFEST="$EXISTING/results/priority8-full4040-fixed-20261101_200834/manifest.json"
+WEIGHTS="$EXISTING/weights/convnext_tiny-983f1562.pth"
+STAMP=$(TZ=Asia/Seoul date +%Y%m%d_%H%M%S)
+
+cp -p "$STUDY/launch_scale_mechanism.sh" "$STUDY/launch_scale_mechanism.sh.crlf-backup-$STAMP"
+sed -i 's/\r$//' "$STUDY/launch_scale_mechanism.sh"
+bash -n "$STUDY/launch_scale_mechanism.sh"
+
+OUT="$EXISTING/results/scale-mechanism-core-os32-seed3407-$STAMP"
+DEVICE=cuda:0 OUTPUT="$OUT" \
+  bash "$STUDY/launch_scale_mechanism.sh" --prepare-only core "$WEIGHTS"
+
+tmux new-session -d -s scale-core -c /home/master /bin/bash
+printf -v START_CMD '%q ' env PYTHONUNBUFFERED=1 bash "$OUT/plans/core/run_all.sh"
+printf -v LOG_ARG '%q' "$OUT/run.log"
+tmux send-keys -t scale-core \
+  'set +e' C-m 'set -o pipefail' C-m \
+  "$START_CMD 2>&1 | tee $LOG_ARG" C-m
+tmux attach -t scale-core
+)
+```
+
+새 결과는 `Result root:`에 출력된다. 그 아래 `plans/core/leaderboard/leaderboard.html`에 표를 저장한다. 실행 범위는 네 가지·seed 3407·각 150 epoch다. Optimizer 상태를 이어가는 resume 기능을 추가한 것은 아니다. 이후 설치에는 수정한 브랜치 설치기를 사용한다. 과거 `bb6f040` ZIP 안의 설치기에는 이번 줄바꿈 보정이 없다.
 
 ## 4. Ubuntu Bash: core 네 개만 시작
 

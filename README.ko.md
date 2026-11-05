@@ -1,4 +1,4 @@
-# 2026-11-04 · INS_COD — Pseudo-scale 자체의 효과를 확인하는 비교
+# 2026-11-05 · INS_COD — Pseudo-scale 자체의 효과를 확인하는 비교
 
 [English](README.md) | **한국어**
 
@@ -12,6 +12,8 @@
 | `image_pyramid__mean` | 실제 RGB 1배·1.5배·0.5배를 공유 encoder로 처리한 뒤 mean fusion | 3 |
 
 ConvNeXt-Tiny의 마지막 stage만 decoder에 전달한다. 이후 **각각 따로 실행하는** stride 16 비교, 원본 특징을 보존하는 `anchor_gated` fusion, 실제 RGB scale 참고군으로 학습한 frozen feature teacher도 추가했다. Teacher 감독 대상은 **특징이며 pseudo-mask label이 아니다.** 학생 추론에는 teacher가 없다. 새 모델의 학습 성능이나 향상을 확인했다고 주장하지 않는다.
+
+**2026-11-05 배포 복구:** Windows ZIP의 CRLF 줄바꿈으로 학습 전 launcher가 중단되는 문제를 재현하고 전송기·설치기를 수정했다. [현재 서버 복구 명령](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.ko.md#이미-설치한-crlf-실행-스크립트-복구).
 
 ## 설치와 실행
 

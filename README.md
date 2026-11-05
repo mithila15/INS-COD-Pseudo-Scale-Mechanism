@@ -1,4 +1,4 @@
-# 2026-11-04 · INS_COD — Testing Whether Pseudo Scale Adds Value
+# 2026-11-05 · INS_COD — Testing Whether Pseudo Scale Adds Value
 
 **English** | [한국어](README.ko.md)
 
@@ -12,6 +12,8 @@ This research branch, **`research/pseudo-scale-mechanism`**, tests pseudo-scale 
 | `image_pyramid__mean` | Actual 1× / 1.5× / 0.5× RGB inputs, shared encoder, mean fusion | 3 |
 
 ConvNeXt-Tiny's final stage is the sole decoder input. The branch also provides **separately invoked** stride-16 comparisons, original-feature-preserving `anchor_gated` fusion, and a frozen feature teacher trained from the actual RGB-scale reference. The optional teacher supervises features, **not pseudo-mask labels**, and is absent from student inference. No new trained result or accuracy gain is claimed.
+
+**2026-11-05 deployment repair:** Windows archive CRLF conversion could stop the launcher before training. The sender and installer now handle shell line endings. [Existing-server repair](Experiments/shMin_2026-10-28/FSA-Pseudo-Scale-Study/docs/SCALE-MECHANISM.md#recover-an-already-installed-crlf-launcher).
 
 ## Installation and execution
 
